@@ -1,0 +1,20 @@
+.nav {
+    height: 40px;
+    border-top: 5px rgba(52, 52, 139) solid;
+    background-color: #f1f3f4;
+}
+
+a {
+    display: inline-block;
+    text-decoration: none;
+    line-height: 40px;
+    padding: 0px 1.5em;
+    color: black;
+    font-size: 18px;
+    font-weight: 550;
+}
+
+a:hover {
+    background-color: rgb(232, 234, 237);
+    border-bottom: 2px orange solid;
+}
