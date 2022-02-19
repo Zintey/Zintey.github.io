@@ -26,11 +26,11 @@ a:hover {
 }
 
 .head_ {
-    height: 300px;
+    height: 500px;
     background-color: #ecc949cf;
-    line-height: 250px;
+    line-height: 450px;
     text-align: center;
-    font-size: 45px;
+    font-size: 85px;
     font-weight: 800;
     color: rgba(255, 255, 255, 0.9);
     border: 20px white double;
@@ -42,9 +42,9 @@ a:hover {
     text-decoration: overline rgba(60, 60, 60);
 }
 .head_:active {
-    height: 305px;
-    line-height: 260px;
-    font-size: 40px;
+    height: 505px;
+    line-height: 460px;
+    font-size: 80px;
     color:white;
     border: 15px white double;
     border-top: 7px white solid;
