@@ -1,3 +1,8 @@
+* {
+    padding: 0px;
+    margin: 1px 0px;
+}
+
 .nav {
     height: 40px;
     border-top: 5px rgba(52, 52, 139) solid;
