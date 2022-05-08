@@ -6,7 +6,6 @@
 body {
     /* background: rgb(240, 240, 240); */
     background: rgba(19, 27, 92, 0.2);
-
 }
 
 .w {
@@ -23,17 +22,18 @@ body {
     font-family: 'lemon', 'ink free', 'kalam', 'courgette';
     font-size: 80px;
     font-weight: 800;
-
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .banner::after {
+    content: "Z_'s showroom";
     position: fixed;
     left: 20%;
-    content: "Z_'s showroom";
+    transition: all 1s;
 }
 
 .banner:hover::after {
+    margin-left: 50px;
     color: rgba(255, 255, 255);
 }
 
@@ -41,7 +41,7 @@ body {
 .works,
 .collection {
     position: relative;
-    height: 300px;
+    height: 250px;
     margin-top: 100px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, .3);
@@ -75,6 +75,7 @@ body {
     border: rgba(0, 0, 0, .3) solid 2px;
     border-radius: 10px;
     box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, .3);
+    transition: all .3s;
 }
 
 img {
@@ -98,15 +99,24 @@ img:hover {
     position: absolute;
     bottom: 0%;
     left: 50%;
-    margin-left: -65px;
-    margin-bottom: -50px;
-    font-size: 30px;
+    font-size: 1px;
     font-weight: 400;
     font-family: 'ink free', 'kalam', 'lemon';
+    color: transparent;
     background: transparent;
+    transition: all 1s;
+}
+
+.dictionary:hover::before {
+    margin-bottom: -20px;
+    margin-left: -60px;
+    font-size: 30px;
+    font-weight: 800;
+    color: black;
 }
 
 .drawer:hover {
+    border-bottom: 0;
     box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, .3);
 }
 
