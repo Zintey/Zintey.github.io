@@ -1,0 +1,23 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+img {
+    display: block;
+    width: 300px;
+    filter: blur(4px);
+    /* margin: 100px; */
+}
+
+div {
+    height: 500px;
+    width: 500px;
+    background-image: url(../img/showroom\ icon.png);
+    filter: blur(10px);
+}
+
+div::after {
+    content: "123123";
+    display: block;
+}
