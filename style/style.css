@@ -2,26 +2,3 @@
     padding: 0px;
     margin: 0px;
 }
-
-a {
-    display: inline-block;
-    text-decoration: none;
-    color: black;
-    font-size: 28px;
-    margin: 0px 72px;
-}
-
-#startButton {
-    background-color: orange;
-    height: 100px;
-    width: 200px;
-    line-height: 100px;
-    border-radius: 20px 5px 5px 5px;
-}
-
-#button {
-    background-color: orange;
-    height: 50px;
-    width: 50px;
-    border-radius: 50px;
-}
