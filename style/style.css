@@ -20,13 +20,13 @@ body {
     line-height: 400px;
     text-align: center;
     font-family: 'lemon', 'ink free', 'kalam', 'courgette';
-    font-size: 80px;
+    font-size: 100px;
     font-weight: 800;
     color: rgba(255, 255, 255, 0.8);
 }
 
 .banner::after {
-    content: "Z_'s showroom";
+    content: "Showroom";
     position: fixed;
     left: 20%;
     transition: all 1s;
@@ -50,7 +50,7 @@ body {
 
 .works::before,
 .collection::before {
-    content: "my works";
+    content: "Works";
     display: block;
     position: absolute;
     top: -40px;
@@ -64,24 +64,30 @@ body {
 }
 
 .collection::before {
-    content: 'my collection'
+    content: 'Collections'
 }
 
 .drawer {
     float: left;
     width: 196px;
     height: 196px;
-    margin: 25px 25px;
+    margin: 25px 40px;
+    margin-right: 0;
     border: rgba(0, 0, 0, .3) solid 2px;
     border-radius: 10px;
     box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, .3);
     transition: all .3s;
 }
 
+.drawer:hover {
+    border-bottom: 0;
+    box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, .3);
+}
+
 img {
     width: 100%;
     height: 100%;
-    filter: blur(2px);
+    filter: blur(1.5px);
     display: block;
 }
 
@@ -89,16 +95,20 @@ img:hover {
     filter: blur(0px);
 }
 
-.dictionary {
+.dictionary,
+.timer,
+.writingmaster {
     position: relative;
 }
 
-.dictionary::before {
-    content: "Dictionary";
+.dictionary::before,
+.timer::before,
+.writingmaster::before {
     display: block;
     position: absolute;
-    bottom: 0%;
-    left: 50%;
+    bottom: -15%;
+    width: 100%;
+    text-align: center;
     font-size: 1px;
     font-weight: 400;
     font-family: 'ink free', 'kalam', 'lemon';
@@ -107,17 +117,26 @@ img:hover {
     transition: all 1s;
 }
 
-.dictionary:hover::before {
-    margin-bottom: -20px;
-    margin-left: -60px;
+.dictionary:hover::before,
+.timer:hover::before,
+.writingmaster:hover::before {
+    /* margin-bottom: -20px;
+    margin-left: -60px; */
     font-size: 30px;
     font-weight: 800;
     color: black;
 }
 
-.drawer:hover {
-    border-bottom: 0;
-    box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, .3);
+.dictionary::before {
+    content: "Dictionary";
+}
+
+.timer::before {
+    content: "Timer";
+}
+
+.writingmaster::before {
+    content: "Writingmaster";
 }
 
 .ball {
