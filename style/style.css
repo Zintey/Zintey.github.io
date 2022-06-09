@@ -97,13 +97,15 @@ img:hover {
 
 .dictionary,
 .timer,
-.writingmaster {
+.writingmaster,
+.snake {
     position: relative;
 }
 
 .dictionary::before,
 .timer::before,
-.writingmaster::before {
+.writingmaster::before,
+.snake::before {
     display: block;
     position: absolute;
     bottom: -15%;
@@ -119,7 +121,8 @@ img:hover {
 
 .dictionary:hover::before,
 .timer:hover::before,
-.writingmaster:hover::before {
+.writingmaster:hover::before,
+.snake:hover::before {
     /* margin-bottom: -20px;
     margin-left: -60px; */
     font-size: 30px;
@@ -137,6 +140,10 @@ img:hover {
 
 .writingmaster::before {
     content: "Writingmaster";
+}
+
+.snake::before {
+    content: "Snake";
 }
 
 .ball {
