@@ -8,13 +8,13 @@
 #define white 7
 using namespace std;
 
-const int MAXN = 5e6;
+const int MAXN = 1e5;
 //const mx[] = {0, 0, -1, 1};
 //const my[] = {1, -1, 0, 0};
 struct Snake {
 	int x, y;
-} snake[MAXN] = {2, 2}, head;
-int L = 0, R = 0, len = 1, dir = 4;
+} snake[MAXN] = {3, 3}, head;
+int L = 0, R = 0, len = 1, dir = 4, nowdir = 4;
 
 int Map[200][200];
 
@@ -26,13 +26,14 @@ struct Game{
 
 struct Pen {
 	int x, y, col;
-	char s;
-	Pen(int X, int Y, char S, int C) : x(X), y(Y), s(S), col(C){}
+	string s;
+	Pen(int X, int Y, string S, int C) : x(X), y(Y), s(S), col(C){}
 };
 queue<Pen> Print_task; 
 
-void Print(int x, int y, char s, int col = game.col)
+void Print(int x, int y, string s, int col = game.col)
 {
+	x *= 2; x++; 
 	Print_task.push(Pen(x, y, s, col));
 }
 
