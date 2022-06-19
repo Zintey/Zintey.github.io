@@ -1,3 +1,4 @@
+// 22.6.19 
 #include "head.h" 
 using namespace std;
 int N = 20, M = 20;
