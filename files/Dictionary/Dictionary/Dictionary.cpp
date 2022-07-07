@@ -1,7 +1,7 @@
 /*
 	Dictionary
 	2022.2.7
-	3.5 h + 1.5 h 
+	3.5 h 
 */
 #include <bits/stdc++.h>
 #include <windows.h>
@@ -50,7 +50,7 @@ void Color(int color)
 
 int mark, add, cnt, update;
 struct Trie {
-	int ch[MAXN][85], sz, val[MAXN];
+	int ch[MAXN][60], sz, val[MAXN];
 	Trie ()
 	{
 		sz = 0;
@@ -62,32 +62,32 @@ struct Trie {
 		if ('a' <= c && c <= 'z')
 			return c - 'a';
 		if ('A' <= c && c <= 'Z');
-			return c - 'A' + 26;
-		if (c == '_') return 52;
-		if (c == ' ') return 53;
-		if (c == '-') return 54;
-		if (c == '+') return 55;
-		if (c == '*') return 56;
-		if (c == '/') return 57;
-		if (c == '|') return 58;
-		if (c == '\\') return 59;
-		if (c == '@') return 60;
-		if (c == ':') return 61;
-		if (c == '?') return 62;
-		if (c == '.') return 63;
-		if (c == '=') return 64;
-		if (c == '%') return 65;
-		if (c == '#') return 66;
-		if (c == '<') return 67;
-		if (c == '>') return 68;
-		if (c == '&') return 69;
-		if (c == '(') return 70;
-		if (c == ')') return 71;
-		if (c == '[') return 72;
-		if (c == ']') return 73;
-		if (c == '~') return 74;
+			return c - 'A';
+		if (c == '_') return 26;
+		if (c == ' ') return 27;
+		if (c == '-') return 28;
+		if (c == '+') return 29;
+		if (c == '*') return 30;
+		if (c == '/') return 31;
+		if (c == '|') return 32;
+		if (c == '\\') return 33;
+		if (c == '@') return 34;
+		if (c == ':') return 35;
+		if (c == '?') return 36;
+		if (c == '.') return 37;
+		if (c == '=') return 38;
+		if (c == '%') return 39;
+		if (c == '#') return 40;
+		if (c == '<') return 41;
+		if (c == '>') return 42;
+		if (c == '&') return 43;
+		if (c == '(') return 44;
+		if (c == ')') return 45;
+		if (c == '[') return 46;
+		if (c == ']') return 47;
+		if (c == '~') return 48;
 		if ('0' <= c && c <= '9')
-			return c - '0' + 75;
+			return c - '0' + 49;
 	}
 	void insert (string s, int id)
 	{
@@ -107,7 +107,7 @@ struct Trie {
 	void findch (int u)
 	{
 		if (mark >= 10) return;
-		for (int i = 0; i < 85; i++)
+		for (int i = 0; i < 60; i++)
 		{
 			if (!ch[u][i]) continue;
 			int id = val[ch[u][i]];
@@ -119,7 +119,7 @@ struct Trie {
 				Color (7);
 			}
 		}
-		for (int i = 0; i < 85; i++)
+		for (int i = 0; i < 60; i++)
 		{
 			if (!ch[u][i]) continue;
 			findch (ch[u][i]);
