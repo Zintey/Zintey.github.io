@@ -1,7 +1,7 @@
 /*
 	Dictionary
 	2022.2.7
-	3.5 h 
+	3.5 h + 1.5 h 
 */
 #include <bits/stdc++.h>
 #include <windows.h>
@@ -277,7 +277,13 @@ void work ()
 				Color (7);
 				if (s == "open dic" || s == "opendic")
 				{
-					system("Dictionary.DIC");
+					if (system("Dictionary.DIC"))
+						system("notepad.exe Dictionary.DIC");
+				}
+				if (s == "open code" || s == "opencpp" || s == "opencode" || s == "open cpp")
+				{
+					if (system("Dictionary.cpp"))
+						MessageBox(NULL, TEXT("若要查看源代码 请安装.cpp编辑应用 如（DEV-C++）"), TEXT("提示"), MB_OK);
 				}
 				if (s == "quit dic" || s == "quitdic")
 				{

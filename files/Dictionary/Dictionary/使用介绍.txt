@@ -1,4 +1,13 @@
 这是一个词库
 需自行添加词及词义
 
+运行Dictionary.exe时
+当输入
+opendic 或 open dic 时：
+    打开词库
+quitdic 或 quit dic 时：
+    关闭该程序
+opencode 或 open code 时：
+    打开源代码文件
+
 解压运行 Dictionary.exe
