@@ -78,11 +78,11 @@ bool check()
 	if (head.y < 0) head.y = N - 1;
 	if (head.y >= N) head.y = 0; 
 	int x = head.x, y = head.y;
-	fstream log("log.txt", ios::app);
-		log << "<" << x << ", " << y << ", " << Map[y][x]; 
+//	fstream log("log.txt", ios::app);
+//		log << "<" << x << ", " << y << ", " << Map[y][x]; 
 	if (Map[y][x] > 0)
 		return 0;
-	log << ">\n";
+//	log << ">\n";
 	return 1;
 }
 
