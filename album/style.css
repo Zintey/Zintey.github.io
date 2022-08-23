@@ -1,0 +1,71 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: gray;
+    perspective: 5000px;
+}
+
+.album {
+    position: relative;
+    width: 450px;
+    height: 250px;
+    margin: 200px auto;
+    transform-style: preserve-3d;
+    animation: move 20s linear infinite forwards;
+}
+
+.album:hover {
+    animation-play-state: paused;
+}
+
+@keyframes move {
+    from {
+        transform: rotateX(0) rotateY(0) rotateZ(0);
+    }
+
+    to {
+        transform: rotateX(360deg) rotateY(360deg) rotateZ(30deg);
+    }
+}
+
+.album img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* transition: all .1s linear; */
+    opacity: 0.9;
+}
+
+.album img:nth-child(1) {
+    transform: rotateY(0deg) translateZ(500px);
+}
+
+.album img:nth-child(2) {
+    transform: rotateY(60deg) translateZ(500px);
+}
+
+.album img:nth-child(3) {
+    transform: rotateY(120deg) translateZ(500px);
+}
+
+.album img:nth-child(4) {
+    transform: rotateY(180deg) translateZ(500px);
+}
+
+.album img:nth-child(5) {
+    transform: rotateY(240deg) translateZ(500px);
+}
+
+.album img:nth-child(6) {
+    transform: rotateY(300deg) translateZ(500px);
+}
+
+.album img:hover {
+    opacity: 1;
+}

@@ -1,0 +1,3 @@
+这是一个辅助默写的工具
+
+解压后运行writingmaster/test.exe

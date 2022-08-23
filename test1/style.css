@@ -1,0 +1,35 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+div {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    width: 100px;
+    height: 100px;
+    background-color: pink;
+    /* transform: translate(0, 200px); */
+
+    transform-origin: top right;
+    transition: all .5s;
+}
+
+div:hover {
+    /* transform-origin: 0 0; */
+    background-color: black;
+    transform: rotate(360deg);
+    /* width: 50px;
+    height: 50px; */
+    /* transform: translate(calc(200%), calc(100%)); */
+
+}
+
+
+div:active {
+    /* transform-origin: 50% 50%; */
+    /* background-color: blue;
+    transform: rotate(0); */
+    transform: scale(-2, -2);
+}
