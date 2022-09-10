@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>留言板</title>
+    <style>
+        * {
+            padding: 0%;
+            margin: 0;
+        }
+
+        .lyb {
+            width: 500px;
+            margin: 100px auto;
+            /* border: 1px black solid;
+            border-radius: 5px; */
+        }
+
+        .lyb li {
+            position: relative;
+            list-style-type: none;
+            font-size: 16px;
+            border-bottom: 1px black solid;
+            padding: 10px 0;
+            margin: 5px 0;
+        }
+
+        .lyb li:hover {
+            background-color: #aaa;
+        }
+
+        .lyb .ly:hover {
+            background-color: inherit;
+            cursor: pointer;
+            color: orange;
+        }
+
+        .lyb .ly {
+            font-family: '黑体';
+            font-size: 20px;
+            text-align: center;
+            background: transparent;
+        }
+
+        .lyb li button {
+            position: absolute;
+            display: block;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            top: 0%;
+            right: 0%;
+            font-size: 28px;
+        }
+
+        .lyb li button:hover {
+            cursor: pointer;
+        }
+
+        textarea {
+            width: 100%;
+            resize: none;
+            border: 0;
+            border-bottom: 1px black solid;
+            color: #999;
+            border-bottom: 2px orange solid;
+            outline: none;
+            background-color: inherit;
+        }
+    </style>
+</head>
+
+<body>
+    <ul class="lyb">
+        <li class="ly">留言</li>
+        <textarea cols="35">请输入留言</textarea>
+        <span></span>
+    </ul>
+
+    <script>
+        function getDate() {
+            var date = new Date();
+            // 我们写一个 2019年 5月 1日 星期三
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var dates = date.getDate();
+            var day = date.getDay();
+            var h = date.getHours();
+            var m = date.getMinutes();
+            var s = date.getSeconds();
+            if (h < 10) h = '0' + h;
+            if (m < 10) m = '0' + m;
+            if (s < 10) s = '0' + s;
+
+            return '\n\n--------------------------------------------- ' + year + '.' + month + '.' + dates + ' ' + h + ':' + m + ':' + s;
+        }
+        var ul = document.querySelector('.lyb');
+        var bt = document.querySelector('.ly');
+        var text = document.querySelector('textarea');
+        text.onfocus = function () {
+            if (text.value == '请输入留言')
+                text.value = '';
+            text.style.color = 'black';
+        }
+        text.onblur = function () {
+            if (text.value == '') {
+                text.value = '请输入留言';
+            }
+            text.style.color = '#999';
+        }
+        bt.onclick = function () {
+            if (text.value == '请输入留言') {
+                alert('你还没有输入留言')
+                return;
+            }
+            var li = document.createElement('li');
+            var dl = document.createElement('button');
+            dl.innerText = '×';
+            li.innerText = text.value + getDate();
+            li.appendChild(dl);
+            text.value = '请输入留言';
+
+            ul.insertBefore(li, ul.children[2]);
+
+
+            bs = document.querySelectorAll('li button');
+            for (var i = 0; i < bs.length; i++) {
+                bs[i].onclick = function () {
+                    ul.removeChild(this.parentNode);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
