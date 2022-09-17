@@ -123,7 +123,7 @@ void print()
 		game.col = blue;
 	}
 	Map[y][x] = 3;
-	if (cnt >= min (len, 4))
+	if (cnt >= min (len, 2))
 	{
 		cnt = 0;
 		len++;
