@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="Hexo">
+  <title>行为型模式 | Hexo</title>
+  <meta name="keywords" content=" 编程思想 , 面向对象 ">
+  <meta name="description" content="行为型模式 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="1. 中介者模式 &amp; 观察者模式 &amp; 消息总线 相同点  均致力于减少对象间的直接依赖，通过间接通信降低耦合度都用于管理多个对象&#x2F;组件之间的交互逻辑。   区别 中介者模式：  对象↔中介者（双向依赖），中介者集中处理复杂交互逻辑，如聊天室 因为业务太大太复杂，对象间直接通信太过繁杂，这时对象都与统一的中介者通信，中介者接收对象的请求，根据请求组织指挥别的对象     观">
 <meta property="og:type" content="article">
@@ -58,7 +58,7 @@
 
 
 <body>
-<aside class="nav mobile">
+<aside class="nav">
     <div class="nav-left">
         <a href="/"
    class="avatar_target">
@@ -307,12 +307,54 @@
         </div>
     </div>
 </aside>
-<div id="post" class="index">
+<div id="post">
     <div class="pjax">
-        <article class="index">
-            <div class="toc-ref">
+        <article id="post-行为型模式" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-Blog"><span class="toc-text">Why Blog</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E5%8D%9A%E5%AE%A2%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-text">对博客的理解</span></a></li></ol></li></ol>
+        <h1 class="article-title">行为型模式</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color5">编程思想</a>
+            
+            <a class="color5">面向对象</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2025-07-19 19:57:51'>2025-07-19 18:59</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:1k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F-%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F-%E6%B6%88%E6%81%AF%E6%80%BB%E7%BA%BF"><span class="toc-text">1. 中介者模式 &amp; 观察者模式 &amp; 消息总线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F-%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F"><span class="toc-text">2.1 备忘录模式 &amp; 命令模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F-%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">2.2 备忘录模式 &amp; 原型模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F"><span class="toc-text">3.责任链模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">4.迭代器模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F"><span class="toc-text">5.状态模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F-%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F"><span class="toc-text">6.策略模式 &amp; 模板方法模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-text">7.访问者模式</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -325,28 +367,114 @@
     }
 </style>
 </div>
-            <h1 id="Why-Blog"><a href="#Why-Blog" class="headerlink" title="Why Blog"></a>Why Blog</h1><h2 id="对博客的理解"><a href="#对博客的理解" class="headerlink" title="对博客的理解"></a>对博客的理解</h2><p>喜欢写Blog的人，会经历三个阶段。</p>
-<blockquote>
-<p>第一阶段，刚接触Blog，觉得很新鲜，试着选择一个免费空间来写。</p>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-中介者模式-观察者模式-消息总线"><a href="#1-中介者模式-观察者模式-消息总线" class="headerlink" title="1. 中介者模式 &amp; 观察者模式 &amp; 消息总线"></a>1. 中介者模式 &amp; 观察者模式 &amp; 消息总线</h2><ul>
+<li><strong>相同点</strong> <blockquote>
+<p>均致力于减少对象间的直接依赖，通过间接通信降低耦合度<br>都用于管理多个对象&#x2F;组件之间的交互逻辑。</p>
+</blockquote>
+</li>
+<li><strong>区别</strong><ul>
+<li><em><strong>中介者模式：</strong></em> <ul>
+<li>对象↔中介者（双向依赖），中介者集中处理复杂交互逻辑，如聊天室<blockquote>
+<p>因为业务太大太复杂，对象间直接通信太过繁杂，这时对象都与统一的中介者通信，中介者接收对象的请求，根据请求组织指挥别的对象</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><em><strong>观察者模式：</strong></em> <ul>
+<li>主题→观察者（单向依赖），主题主动通知观察者，一对多通信，适用于事件监听 <blockquote>
+<p>up主更新视频时通知所有订阅者，订阅者获取到新视频</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><em><strong>消息总线：</strong></em> <ul>
+<li>组件通过总线通信，彼此无感知，多对多通信,支持异步、持久化、分布式消息传递。<blockquote>
+<p>消息队列就是一个提供 <em>信箱编号</em> 的 <em>中央邮局</em>，让 <em>互不见面</em> 的 <em>写信人</em> 和 <em>持钥匙的取信人</em> 通过 <em>塞纸条</em> 和 <em>开信箱</em> 来 彻底解耦 地 异步 传递信息，并自带 存信、缓冲、分信、扩容 能力的 关键基础设施。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-1-备忘录模式-命令模式"><a href="#2-1-备忘录模式-命令模式" class="headerlink" title="2.1 备忘录模式 &amp; 命令模式"></a>2.1 备忘录模式 &amp; 命令模式</h2><ul>
+<li><strong>备忘录模式</strong><ul>
+<li>把”对象的状态”封装成对象，在 <em><strong>不破坏对象封装性</strong></em> 的前提下捕获和恢复状态</li>
+</ul>
+</li>
+<li><strong>命令模式</strong><ul>
+<li>把”命令操作”封装成对象，解耦 请求者 与 执行者，且可以将命令保存下来，实现回放撤回操作</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-2-备忘录模式-原型模式"><a href="#2-2-备忘录模式-原型模式" class="headerlink" title="2.2 备忘录模式 &amp; 原型模式"></a>2.2 备忘录模式 &amp; 原型模式</h2><blockquote>
+<p>“我想把对象 A <strong>变回</strong> 它 1 小时前的样子。” -&gt; 备忘录模式 。 (操作对象：同一个 A)</p>
 </blockquote>
 <blockquote>
-<p>第二阶段，发现免费空间限制太多，就自己购买域名和空间，搭建独立博客。</p>
+<p>“我想快速 <strong>创建</strong> 一个和对象 A 一模一样 的新对象 B。” -&gt; 原型模式 。 (操作对象：创建新 B)</p>
 </blockquote>
-<blockquote>
-<p>第三阶段，觉得独立博客的管理太麻烦，最好在保留控制权的前提下，让别人来管，自己只负责写文章。</p>
-</blockquote>
-<p>我们每个人的在网络上产生的数据越来越多，这些信息是我们在互联网上存在过的痕迹，值得我们认真对待。但是它们被分散分布在各个网站上。很多时候我们很难将它们聚合在一起，而且各个网站的信息排布方式也没有办法自由控制，所以我们需要一个可以由自己主宰的空间——博客。</p>
-<p>通过博客，我们可以记录自己的生活和成长的轨迹。它不像 Twitter 那样碎片化，也不像 Facebook 那样关系化，它是私人的空间。</p>
-<p>到目前为止已经写了<code class="article_number"></code>篇文章， 共<code class="site_word_count"></code>字。</p>
-<p>本站访问人数：<code class="site_uv"></code>人次 ， 访问量：<code class="site_pv"></code>次</p>
+<hr>
+<h2 id="3-责任链模式"><a href="#3-责任链模式" class="headerlink" title="3.责任链模式"></a>3.责任链模式</h2><ul>
+<li><strong>目的：</strong> 让<em>处理者</em> 都有机会处理<em>同一个请求</em>，并将这些处理者连接成一条<strong>链条</strong>。请求<strong>沿着链条传递</strong>，直到<strong>有一个处理者处理它</strong>，或者<strong>链条结束</strong>。</li>
+<li><strong>核心解耦：</strong> <strong>将请求的发送者与接收者解耦</strong>。发送者<strong>无需知道</strong>具体哪个处理者会处理请求，甚至<strong>无需知道处理链条的存在</strong>。</li>
+<li><strong>扩展：</strong> <strong><a href="..\配置化任务检测系统（动态责任链模式）\index.html" target="_blank">动态责任链</a></strong></li>
+</ul>
+<hr>
+<h2 id="4-迭代器模式"><a href="#4-迭代器模式" class="headerlink" title="4.迭代器模式"></a>4.迭代器模式</h2><ul>
+<li><strong>目的：</strong> 提供了一种统一的方式遍历不同集合对象，而不暴露其底层结构</li>
+<li><strong>核心解耦：</strong> <ul>
+<li><strong>遍历算法</strong> 与 <strong>数据结构</strong> 彻底分离</li>
+<li><strong>客户端</strong> 与 <strong>集合实现</strong> 完全隔离</li>
+<li>符合「单一职责」和「开闭原则」</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="5-状态模式"><a href="#5-状态模式" class="headerlink" title="5.状态模式"></a>5.状态模式</h2><ul>
+<li><strong>核心思想</strong><ul>
+<li>状态对象化：将每个状态抽象为独立对象</li>
+<li>行为委托：上下文对象将行为委托给当前状态对象</li>
+<li>状态转换显式化：状态转换逻辑清晰可见</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="6-策略模式-模板方法模式"><a href="#6-策略模式-模板方法模式" class="headerlink" title="6.策略模式 &amp; 模板方法模式"></a>6.策略模式 &amp; 模板方法模式</h2><ul>
+<li><strong>策略模式：</strong> 策略模式定义了<strong>算法族</strong> ，分别封装起来，让它们可以互相替换，此模式让算法的变化独立于使用算法的客户端。</li>
+<li><strong>模板方法模式：</strong> 模板方法模式定义了一个操作中的<strong>算法骨架</strong> ，将某些步骤延迟到子类中实现，使得子类可以不改变算法结构即可重定义该算法的某些特定步骤。<strong>父类控制流程，子类实现细节</strong></li>
+<li><strong><a href="..\电商订单处理系统-策略-模板方法模式\index.html" target="_blank">策略模式 和 模板方法模式 组合使用示例</a></strong></li>
+</ul>
+<hr>
+<h2 id="7-访问者模式"><a href="#7-访问者模式" class="headerlink" title="7.访问者模式"></a>7.访问者模式</h2><ul>
+<li>访问者模式是一种将<strong>算法行为</strong>与<strong>对象结构</strong> <strong>分离</strong>的行为型设计模式。它允许你在不修改已有类的前提下，为对象结构添加新的操作。（且一般是给一系列的对象分别添加一种算法行为）</li>
+<li>将分散在多个类中的相似操作集中到访问者中，便于维护</li>
+<li><strong><a href="..\游戏交互实例：左右击物品系统（访问者模式）\index.html" target="_blank">访问者模式示例</a></strong></li>
+</ul>
 
-        </article>
-        
-        <p>
-            <a  class="dashang" onclick="dashangToggle()">赏</a>
-        </p>
-        
-        
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1687019603@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
     </div>
     <div class="copyright">
         <p class="footer-entry">
@@ -355,11 +483,11 @@
 <p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
 
     </div>
-</div>
-<div class="full-toc">
-    <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
 <a class="" id="rocket" ></a>
 
+    </div>
 </div>
 
 <div class="hide_box" onclick="dashangToggle()"></div>

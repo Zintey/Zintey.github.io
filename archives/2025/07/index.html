@@ -6,12 +6,18 @@
   <meta name="keywords" content="">
   <meta name="description" content="Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/index.html">
+<meta name="description" content="1. 中介者模式 &amp; 观察者模式 &amp; 消息总线 相同点  均致力于减少对象间的直接依赖，通过间接通信降低耦合度都用于管理多个对象&#x2F;组件之间的交互逻辑。   区别 中介者模式：  对象↔中介者（双向依赖），中介者集中处理复杂交互逻辑，如聊天室 因为业务太大太复杂，对象间直接通信太过繁杂，这时对象都与统一的中介者通信，中介者接收对象的请求，根据请求组织指挥别的对象     观">
+<meta property="og:type" content="article">
+<meta property="og:title" content="行为型模式">
+<meta property="og:url" content="http://example.com/2025/07/19/%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 中介者模式 &amp; 观察者模式 &amp; 消息总线 相同点  均致力于减少对象间的直接依赖，通过间接通信降低耦合度都用于管理多个对象&#x2F;组件之间的交互逻辑。   区别 中介者模式：  对象↔中介者（双向依赖），中介者集中处理复杂交互逻辑，如聊天室 因为业务太大太复杂，对象间直接通信太过繁杂，这时对象都与统一的中介者通信，中介者接收对象的请求，根据请求组织指挥别的对象     观">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-07-19T10:59:32.000Z">
+<meta property="article:modified_time" content="2025-07-19T11:57:51.456Z">
 <meta property="article:author" content="追">
+<meta property="article:tag" content="编程思想">
+<meta property="article:tag" content="面向对象">
 <meta name="twitter:card" content="summary">
 
 
@@ -143,25 +149,10 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(1)</small>
+                <small>(6)</small>
             
         </div>
     </li>
-    
-        
-            
-                
-    <li>
-        <div data-rel="设计模式">
-            
-            设计模式
-            <small>(1)</small>
-        </div>
-        
-    </li>
-
-            
-        
     
 </ul>
 <div class="left-bottom">
@@ -187,8 +178,8 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="1">
-
+<input type="hidden" id="yelog_site_posts_number" value="6">
+<input type="hidden" id="yelog_site_word_count" value="5.1k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -247,12 +238,57 @@
     <nav id="title-list-nav">
         
         
-        <a  class="全部文章 设计模式 "
-           href="/2025/07/18/%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
+        <a  class="全部文章 "
+           href="/2025/07/19/%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
            data-tag="编程思想,面向对象"
            data-author="" >
-            <span class="post-title" title="创建型模式">创建型模式</span>
-            <span class="post-date" title="2025-07-18 21:08:50">2025/07/18</span>
+            <span class="post-title" title="行为型模式">行为型模式</span>
+            <span class="post-date" title="2025-07-19 18:59:32">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E7%94%B5%E5%95%86%E8%AE%A2%E5%8D%95%E5%A4%84%E7%90%86%E7%B3%BB%E7%BB%9F-%E7%AD%96%E7%95%A5-%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="电商订单处理系统(策略&amp;模板方法模式)">电商订单处理系统(策略&amp;模板方法模式)</span>
+            <span class="post-date" title="2025-07-19 18:56:34">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E6%B8%B8%E6%88%8F%E4%BA%A4%E4%BA%92%E5%AE%9E%E4%BE%8B%EF%BC%9A%E5%B7%A6%E5%8F%B3%E5%87%BB%E7%89%A9%E5%93%81%E7%B3%BB%E7%BB%9F%EF%BC%88%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8F%EF%BC%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="游戏交互实例：左右击物品系统（访问者模式）">游戏交互实例：左右击物品系统（访问者模式）</span>
+            <span class="post-date" title="2025-07-19 18:56:06">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E9%85%8D%E7%BD%AE%E5%8C%96%E4%BB%BB%E5%8A%A1%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%EF%BC%88%E5%8A%A8%E6%80%81%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F%EF%BC%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="配置化任务检测系统（动态责任链模式）">配置化任务检测系统（动态责任链模式）</span>
+            <span class="post-date" title="2025-07-19 18:40:44">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E7%BB%93%E6%9E%84%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
+           data-tag="编程思想,面向对象"
+           data-author="" >
+            <span class="post-title" title="结构型模式">结构型模式</span>
+            <span class="post-date" title="2025-07-19 18:35:13">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E5%88%9B%E9%80%A0%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
+           data-tag="编程思想,面向对象"
+           data-author="" >
+            <span class="post-title" title="创造型模式">创造型模式</span>
+            <span class="post-date" title="2025-07-19 18:25:39">2025/07/19</span>
         </a>
         
         <div id="no-item-tips">
@@ -276,7 +312,7 @@
         <article class="index">
             <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-Blog"><span class="toc-text">Why Blog</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E5%8D%9A%E5%AE%A2%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-text">对博客的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%B6%E8%90%BD%E9%98%81"><span class="toc-text">关于叶落阁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E5%B9%B3%E5%8F%B0"><span class="toc-text">博客平台</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-Blog"><span class="toc-text">Why Blog</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E5%8D%9A%E5%AE%A2%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-text">对博客的理解</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -301,17 +337,8 @@
 </blockquote>
 <p>我们每个人的在网络上产生的数据越来越多，这些信息是我们在互联网上存在过的痕迹，值得我们认真对待。但是它们被分散分布在各个网站上。很多时候我们很难将它们聚合在一起，而且各个网站的信息排布方式也没有办法自由控制，所以我们需要一个可以由自己主宰的空间——博客。</p>
 <p>通过博客，我们可以记录自己的生活和成长的轨迹。它不像 Twitter 那样碎片化，也不像 Facebook 那样关系化，它是私人的空间。</p>
-<h2 id="关于叶落阁"><a href="#关于叶落阁" class="headerlink" title="关于叶落阁"></a>关于叶落阁</h2><p><strong>叶落阁</strong> 是阁主的个人站。</p>
 <p>到目前为止已经写了<code class="article_number"></code>篇文章， 共<code class="site_word_count"></code>字。</p>
 <p>本站访问人数：<code class="site_uv"></code>人次 ， 访问量：<code class="site_pv"></code>次</p>
-<h2 id="博客平台"><a href="#博客平台" class="headerlink" title="博客平台"></a>博客平台</h2><p>这个博客通过 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 生成，部署在 <a target="_blank" rel="noopener" href="https://pages.github.com/">GitHub Pages</a>主题 <a target="_blank" rel="noopener" href="https://github.com/yelog/hexo-theme-3-hexo">3-hexo</a> 已经在github上开源</p>
-<p><code>3-hexo</code> 主题使用交流可以加 Q群: <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=e8cf083cc097141eaf323396f1766809b8e90ff00c67bb441898f672892f6904"><img data-ignore border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="3-hexo使用交流" title="3-hexo使用交流"></a></p>
-<p>主要功能：</p>
-<ul>
-<li>搜索支持文章标题、标签(#标签)、作者(@作者)</li>
-<li>pad&#x2F;手机等移动端适配</li>
-<li>页面全局快捷键 <a target="_blank" rel="noopener" href='http://yelog.org/2017/03/24/3-hexo-shortcuts/'>3-hexo快捷键说明</a></li>
-</ul>
 
         </article>
         
@@ -389,6 +416,25 @@
 
         
         
+        /* 渲染*/
+        function HTMLDecode(text) {
+            var temp = document.createElement("div");
+            temp.innerHTML = text;
+            var output = temp.innerText || temp.textContent;
+            temp = null;
+            return output;
+        }
+        if (window.mermaid){
+            window.mermaid = null
+        }
+        $.getScript("//cdnjs.cloudflare.com/ajax/libs/mermaid/8.3.1/mermaid.min.js", function () {
+            var mermaidOptions = JSON.parse(HTMLDecode("{&#34;theme&#34;:&#34;default&#34;,&#34;startOnLoad&#34;:true,&#34;flowchart&#34;:{&#34;useMaxWidth&#34;:false,&#34;htmlLabels&#34;:true}}"))
+            if (window.mermaid) {
+                mermaid.initialize(mermaidOptions)
+                mermaid.contentLoaded()
+            }
+        })
+        
     }
 
     /*打赏页面隐藏与展示*/
@@ -408,33 +454,33 @@
     
     
     .nav {
-        width: 542px;
+        width: 572px;
     }
     .nav.fullscreen {
-        margin-left: -542px;
+        margin-left: -572px;
     }
     .nav-left {
-        width: 120px;
+        width: 150px;
     }
     
     
     @media screen and (max-width: 1468px) {
         .nav {
-            width: 492px;
+            width: 522px;
         }
         .nav.fullscreen {
-            margin-left: -492px;
+            margin-left: -522px;
         }
         .nav-left {
-            width: 100px;
+            width: 130px;
         }
     }
     
     
     @media screen and (max-width: 1024px) {
         .nav {
-            width: 492px;
-            margin-left: -492px
+            width: 522px;
+            margin-left: -522px
         }
         .nav.fullscreen {
             margin-left: 0;
@@ -481,6 +527,16 @@
     /*文章列表背景图*/
     
 
+    
+    #post .pjax article :not(pre) > code {
+        color: #24292e;
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+        background-color: rgba(27,31,35,.05);
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0;
+        padding: .2em .4em;
+    }
     
 </style>
 
