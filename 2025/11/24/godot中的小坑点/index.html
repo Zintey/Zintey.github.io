@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>电商订单处理系统(策略&amp;模板方法模式) | Hexo</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="电商订单处理系统(策略&amp;模板方法模式) | Hexo">
+  <title>godot中的小坑点 | Hexo</title>
+  <meta name="keywords" content=" godot ">
+  <meta name="description" content="godot中的小坑点 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="1、自己写的Resource子类，若是想用@export关键词导出，不要写带参数的_init()函数，负责会导致一直为null下面为错误示例">
 <meta property="og:type" content="article">
@@ -366,24 +366,31 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-电商订单处理系统-策略-模板方法模式" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-godot中的小坑点" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">电商订单处理系统(策略&amp;模板方法模式)</h1>
+        <h1 class="article-title">godot中的小坑点</h1>
     
     <div class="article-meta">
         
         
         
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">godot</a>
+            
+        </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2025-07-19 18:56:34'>2025-07-19 18:56</time>
+            发布时间 : <time class="date" title='最后更新: 2025-11-24 19:09:39'>2025-11-24 19:09</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:1.2k</span>
+        <span>字数:44</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -418,305 +425,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <pre><code class="language-cpp">#include &lt;iostream&gt;
-#include &lt;memory&gt;
-#include &lt;string&gt;
-#include &lt;vector&gt;
-
-// ================= 策略模式：折扣计算 =================
-class DiscountStrategy &#123;
-public:
-    virtual ~DiscountStrategy() = default;
-    virtual double applyDiscount(double originalPrice) = 0;
-    virtual std::string getStrategyName() const = 0;
-&#125;;
-
-// 满减策略
-class FullReductionStrategy : public DiscountStrategy &#123;
-public:
-    FullReductionStrategy(double threshold, double reduction) 
-        : threshold(threshold), reduction(reduction) &#123;&#125;
-    
-    double applyDiscount(double originalPrice) override &#123;
-        if (originalPrice &gt;= threshold) &#123;
-            return originalPrice - reduction;
-        &#125;
-        return originalPrice;
-    &#125;
-    
-    std::string getStrategyName() const override &#123;
-        return &quot;满减策略(&quot; + std::to_string(threshold) + 
-               &quot;-&quot; + std::to_string(reduction) + &quot;)&quot;;
-    &#125;
-
-private:
-    double threshold;
-    double reduction;
-&#125;;
-
-// 折扣率策略
-class DiscountRateStrategy : public DiscountStrategy &#123;
-public:
-    explicit DiscountRateStrategy(double rate) : rate(rate) &#123;&#125;
-    
-    double applyDiscount(double originalPrice) override &#123;
-        return originalPrice * rate;
-    &#125;
-    
-    std::string getStrategyName() const override &#123;
-        return &quot;折扣策略(&quot; + std::to_string(static_cast&lt;int&gt;(rate*100)) + &quot;%)&quot;;
-    &#125;
-
-private:
-    double rate;
-&#125;;
-
-// 会员价策略
-class MemberPriceStrategy : public DiscountStrategy &#123;
-public:
-    explicit MemberPriceStrategy(double memberPrice) 
-        : memberPrice(memberPrice) &#123;&#125;
-    
-    double applyDiscount(double originalPrice) override &#123;
-        return std::min(originalPrice, memberPrice);
-    &#125;
-    
-    std::string getStrategyName() const override &#123;
-        return &quot;会员价策略(&quot; + std::to_string(memberPrice) + &quot;)&quot;;
-    &#125;
-
-private:
-    double memberPrice;
-&#125;;
-
-// ================= 策略模式：支付处理 =================
-class PaymentStrategy &#123;
-public:
-    virtual ~PaymentStrategy() = default;
-    virtual bool processPayment(double amount) = 0;
-    virtual std::string getMethodName() const = 0;
-&#125;;
-
-// 支付宝支付
-class AlipayStrategy : public PaymentStrategy &#123;
-public:
-    bool processPayment(double amount) override &#123;
-        std::cout &lt;&lt; &quot;支付宝支付 ¥&quot; &lt;&lt; amount &lt;&lt; &quot; 成功\n&quot;;
-        return true;
-    &#125;
-    
-    std::string getMethodName() const override &#123;
-        return &quot;支付宝&quot;;
-    &#125;
-&#125;;
-
-// 微信支付
-class WechatPayStrategy : public PaymentStrategy &#123;
-public:
-    bool processPayment(double amount) override &#123;
-        std::cout &lt;&lt; &quot;微信支付 ¥&quot; &lt;&lt; amount &lt;&lt; &quot; 成功\n&quot;;
-        return true;
-    &#125;
-    
-    std::string getMethodName() const override &#123;
-        return &quot;微信支付&quot;;
-    &#125;
-&#125;;
-
-// 银行卡支付
-class BankCardStrategy : public PaymentStrategy &#123;
-public:
-    explicit BankCardStrategy(const std::string&amp; cardNo) 
-        : cardNo(cardNo) &#123;&#125;
-    
-    bool processPayment(double amount) override &#123;
-        std::cout &lt;&lt; &quot;银行卡(&quot; &lt;&lt; cardNo &lt;&lt; &quot;)支付 ¥&quot; 
-                  &lt;&lt; amount &lt;&lt; &quot; 成功\n&quot;;
-        return true;
-    &#125;
-    
-    std::string getMethodName() const override &#123;
-        return &quot;银行卡(&quot; + cardNo.substr(cardNo.size()-4) + &quot;)&quot;;
-    &#125;
-
-private:
-    std::string cardNo;
-&#125;;
-
-// ================= 模板方法模式：订单处理流程 =================
-class OrderProcessor &#123;
-public:
-    // 模板方法：定义处理流程
-    void processOrder() &#123;
-        if (!validateOrder()) &#123;
-            std::cerr &lt;&lt; &quot;订单验证失败!\n&quot;;
-            return;
-        &#125;
-        
-        double finalPrice = calculateFinalPrice();
-        
-        if (processPayment(finalPrice)) &#123;
-            sendNotification();
-            updateInventory();
-        &#125; else &#123;
-            std::cerr &lt;&lt; &quot;支付处理失败!\n&quot;;
-        &#125;
-    &#125;
-    
-    virtual ~OrderProcessor() = default;
-
-protected:
-    // 钩子方法：子类可重写
-    virtual bool validateOrder() &#123; 
-        std::cout &lt;&lt; &quot;基础订单验证...\n&quot;;
-        return true; 
-    &#125;
-    
-    virtual double calculateFinalPrice() = 0;
-    virtual bool processPayment(double amount) = 0;
-    
-    virtual void sendNotification() &#123;
-        std::cout &lt;&lt; &quot;发送默认订单通知...\n&quot;;
-    &#125;
-    
-    virtual void updateInventory() &#123;
-        std::cout &lt;&lt; &quot;更新库存...\n&quot;;
-    &#125;
-&#125;;
-
-// ================= 具体订单类型 =================
-class NormalOrderProcessor : public OrderProcessor &#123;
-public:
-    NormalOrderProcessor(
-        std::unique_ptr&lt;DiscountStrategy&gt; discountStrategy,
-        std::unique_ptr&lt;PaymentStrategy&gt; paymentStrategy,
-        double originalPrice
-    ) : discountStrategy(std::move(discountStrategy)),
-        paymentStrategy(std::move(paymentStrategy)),
-        originalPrice(originalPrice) &#123;&#125;
-    
-protected:
-    double calculateFinalPrice() override &#123;
-        double finalPrice = discountStrategy-&gt;applyDiscount(originalPrice);
-        std::cout &lt;&lt; &quot;原价: ¥&quot; &lt;&lt; originalPrice 
-                  &lt;&lt; &quot; | 折扣策略: &quot; &lt;&lt; discountStrategy-&gt;getStrategyName()
-                  &lt;&lt; &quot; | 最终价: ¥&quot; &lt;&lt; finalPrice &lt;&lt; &quot;\n&quot;;
-        return finalPrice;
-    &#125;
-    
-    bool processPayment(double amount) override &#123;
-        return paymentStrategy-&gt;processPayment(amount);
-    &#125;
-    
-    void sendNotification() override &#123;
-        std::cout &lt;&lt; &quot;发送普通订单通知...\n&quot;;
-    &#125;
-
-private:
-    std::unique_ptr&lt;DiscountStrategy&gt; discountStrategy;
-    std::unique_ptr&lt;PaymentStrategy&gt; paymentStrategy;
-    double originalPrice;
-&#125;;
-
-class MemberOrderProcessor : public OrderProcessor &#123;
-public:
-    MemberOrderProcessor(
-        std::unique_ptr&lt;DiscountStrategy&gt; discountStrategy,
-        std::unique_ptr&lt;PaymentStrategy&gt; paymentStrategy,
-        double originalPrice,
-        int memberLevel
-    ) : discountStrategy(std::move(discountStrategy)),
-        paymentStrategy(std::move(paymentStrategy)),
-        originalPrice(originalPrice),
-        memberLevel(memberLevel) &#123;&#125;
-    
-protected:
-    bool validateOrder() override &#123;
-        std::cout &lt;&lt; &quot;验证会员等级: &quot; &lt;&lt; memberLevel &lt;&lt; &quot;\n&quot;;
-        return memberLevel &gt; 0; // 简单验证
-    &#125;
-    
-    double calculateFinalPrice() override &#123;
-        double basePrice = discountStrategy-&gt;applyDiscount(originalPrice);
-        double finalPrice = applyMemberDiscount(basePrice);
-        
-        std::cout &lt;&lt; &quot;原价: ¥&quot; &lt;&lt; originalPrice 
-                  &lt;&lt; &quot; | 折扣策略: &quot; &lt;&lt; discountStrategy-&gt;getStrategyName()
-                  &lt;&lt; &quot; | 会员折扣后: ¥&quot; &lt;&lt; finalPrice &lt;&lt; &quot;\n&quot;;
-        return finalPrice;
-    &#125;
-    
-    bool processPayment(double amount) override &#123;
-        return paymentStrategy-&gt;processPayment(amount);
-    &#125;
-    
-    void sendNotification() override &#123;
-        std::cout &lt;&lt; &quot;发送会员专属通知...\n&quot;;
-        std::cout &lt;&lt; &quot;添加会员积分...\n&quot;;
-    &#125;
-
-private:
-    double applyMemberDiscount(double price) &#123;
-        // 根据会员等级额外折扣
-        switch(memberLevel) &#123;
-            case 1: return price * 0.98;
-            case 2: return price * 0.95;
-            case 3: return price * 0.90;
-            default: return price;
-        &#125;
-    &#125;
-
-    std::unique_ptr&lt;DiscountStrategy&gt; discountStrategy;
-    std::unique_ptr&lt;PaymentStrategy&gt; paymentStrategy;
-    double originalPrice;
-    int memberLevel;
-&#125;;
-
-// ================= 客户端代码 =================
-int main() &#123;
-    // 创建折扣策略
-    auto fullReduction = std::make_unique&lt;FullReductionStrategy&gt;(200, 50);
-    auto discountRate = std::make_unique&lt;DiscountRateStrategy&gt;(0.8);
-    auto memberPrice = std::make_unique&lt;MemberPriceStrategy&gt;(150);
-    
-    // 创建支付策略
-    auto alipay = std::make_unique&lt;AlipayStrategy&gt;();
-    auto wechatPay = std::make_unique&lt;WechatPayStrategy&gt;();
-    auto bankCard = std::make_unique&lt;BankCardStrategy&gt;(&quot;6225888888888888&quot;);
-    
-    std::cout &lt;&lt; &quot;===== 普通订单处理 =====\n&quot;;
-    NormalOrderProcessor normalOrder(
-        std::move(fullReduction),
-        std::move(alipay),
-        250.0
-    );
-    normalOrder.processOrder();
-    
-    std::cout &lt;&lt; &quot;\n===== 会员订单处理 =====\n&quot;;
-    MemberOrderProcessor memberOrder(
-        std::move(discountRate),
-        std::move(bankCard),
-        300.0,
-        2 // 黄金会员
-    );
-    memberOrder.processOrder();
-    
-    std::cout &lt;&lt; &quot;\n===== 运行时切换策略 =====\n&quot;;
-    // 动态创建新策略
-    auto dynamicDiscount = std::make_unique&lt;DiscountRateStrategy&gt;(0.7);
-    auto dynamicPayment = std::make_unique&lt;WechatPayStrategy&gt;();
-    
-    // 创建新订单处理器
-    NormalOrderProcessor dynamicOrder(
-        std::move(dynamicDiscount),
-        std::move(dynamicPayment),
-        500.0
-    );
-    dynamicOrder.processOrder();
-    
-    return 0;
-&#125;
-</code></pre>
+        <p>1、自己写的Resource子类，若是想用@export关键词导出，不要写带参数的_init()函数，负责会导致一直为null<br><strong>下面为错误示例</strong><br><img src="/images/2025/11/24/9cf93a19-f5d5-482f-82fb-a111137d8266.png" alt="image.png"></p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1687019603@qq.com </span>

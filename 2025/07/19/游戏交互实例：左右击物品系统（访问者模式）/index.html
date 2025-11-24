@@ -6,19 +6,20 @@
   <meta name="keywords" content="">
   <meta name="description" content="游戏交互实例：左右击物品系统（访问者模式） | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="1. 中介者模式 &amp; 观察者模式 &amp; 消息总线 相同点  均致力于减少对象间的直接依赖，通过间接通信降低耦合度都用于管理多个对象&#x2F;组件之间的交互逻辑。   区别 中介者模式：  对象↔中介者（双向依赖），中介者集中处理复杂交互逻辑，如聊天室 因为业务太大太复杂，对象间直接通信太过繁杂，这时对象都与统一的中介者通信，中介者接收对象的请求，根据请求组织指挥别的对象     观">
+<meta name="description" content="1、自己写的Resource子类，若是想用@export关键词导出，不要写带参数的_init()函数，负责会导致一直为null下面为错误示例">
 <meta property="og:type" content="article">
-<meta property="og:title" content="行为型模式">
-<meta property="og:url" content="http://example.com/2025/07/19/%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:title" content="godot中的小坑点">
+<meta property="og:url" content="http://example.com/2025/11/24/godot%E4%B8%AD%E7%9A%84%E5%B0%8F%E5%9D%91%E7%82%B9/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1. 中介者模式 &amp; 观察者模式 &amp; 消息总线 相同点  均致力于减少对象间的直接依赖，通过间接通信降低耦合度都用于管理多个对象&#x2F;组件之间的交互逻辑。   区别 中介者模式：  对象↔中介者（双向依赖），中介者集中处理复杂交互逻辑，如聊天室 因为业务太大太复杂，对象间直接通信太过繁杂，这时对象都与统一的中介者通信，中介者接收对象的请求，根据请求组织指挥别的对象     观">
+<meta property="og:description" content="1、自己写的Resource子类，若是想用@export关键词导出，不要写带参数的_init()函数，负责会导致一直为null下面为错误示例">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-07-19T10:59:32.000Z">
-<meta property="article:modified_time" content="2025-07-19T11:57:51.456Z">
+<meta property="og:image" content="http://example.com/images/2025/11/24/9cf93a19-f5d5-482f-82fb-a111137d8266.png">
+<meta property="article:published_time" content="2025-11-24T11:09:39.000Z">
+<meta property="article:modified_time" content="2025-11-24T11:09:39.175Z">
 <meta property="article:author" content="追">
-<meta property="article:tag" content="编程思想">
-<meta property="article:tag" content="面向对象">
+<meta property="article:tag" content="godot">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2025/11/24/9cf93a19-f5d5-482f-82fb-a111137d8266.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -149,7 +150,7 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(6)</small>
+                <small>(10)</small>
             
         </div>
     </li>
@@ -178,8 +179,8 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="6">
-<input type="hidden" id="yelog_site_word_count" value="5.1k">
+<input type="hidden" id="yelog_site_posts_number" value="10">
+<input type="hidden" id="yelog_site_word_count" value="5.6k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -227,7 +228,27 @@
             </li>
         
             <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>多线程</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>联机开发</a>
+            </li>
+        
+            <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>面向对象</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>学习笔记</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>godot</a>
             </li>
         
     </div>
@@ -236,6 +257,42 @@
 
     
     <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 "
+           href="/2025/11/24/godot%E4%B8%AD%E7%9A%84%E5%B0%8F%E5%9D%91%E7%82%B9/"
+           data-tag="godot"
+           data-author="" >
+            <span class="post-title" title="godot中的小坑点">godot中的小坑点</span>
+            <span class="post-date" title="2025-11-24 19:09:39">2025/11/24</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/11/12/%E5%9C%A8%E5%AE%89%E5%8D%93%E5%B9%B3%E6%9D%BF-%E6%89%8B%E6%9C%BA%E4%B8%8A%E4%B8%8E%E7%94%B5%E8%84%91%E5%8D%8F%E5%90%8C%E5%BC%80%E5%8F%91godot%E9%A1%B9%E7%9B%AE/"
+           data-tag="godot,git"
+           data-author="" >
+            <span class="post-title" title="在安卓平板/手机上与电脑协同开发godot项目">在安卓平板/手机上与电脑协同开发godot项目</span>
+            <span class="post-date" title="2025-11-12 21:44:41">2025/11/12</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/25/Godot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"
+           data-tag="学习笔记,godot"
+           data-author="" >
+            <span class="post-title" title="Godot学习笔记01">Godot学习笔记01</span>
+            <span class="post-date" title="2025-07-25 18:39:09">2025/07/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/21/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84%E5%93%88%E5%9F%BA%E7%B1%B3%E5%A4%A7%E5%86%92%E9%99%A9-%E5%8F%8C%E4%BA%BA%E8%81%94%E6%9C%BA%E6%B8%B8%E6%88%8F%E7%AC%94%E8%AE%B0/"
+           data-tag="学习笔记,多线程,联机开发"
+           data-author="" >
+            <span class="post-title" title="从零开始的哈基米大冒险:双人联机游戏笔记">从零开始的哈基米大冒险:双人联机游戏笔记</span>
+            <span class="post-date" title="2025-07-21 23:08:49">2025/07/21</span>
+        </a>
         
         
         <a  class="全部文章 "
