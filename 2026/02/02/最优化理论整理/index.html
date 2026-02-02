@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>最优化理论整理 | Hexo</title>
+  <meta name="keywords" content=" 最优化理论 ">
+  <meta name="description" content="最优化理论整理 | Hexo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="最优化理论知识整理开篇：优化问题到底在解决什么？想象你是一家工厂的老板，有限的原材料，有限的工人，有限的机器。你要决定生产多少A产品、多少B产品，才能让利润最大。这就是一个优化问题。 或者你是一个登山者，站在云雾缭绕的山上，想找到最低的谷底。你看不到全貌，只能感受脚下的坡度。这也是优化问题。 优化的本质：在约束条件下，找到让目标函数达到最优（最大或最小）的那组变量值。 数学语言翻译一下：$$\mi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最优化理论整理">
+<meta property="og:url" content="http://example.com/2026/02/02/%E6%9C%80%E4%BC%98%E5%8C%96%E7%90%86%E8%AE%BA%E6%95%B4%E7%90%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="最优化理论知识整理开篇：优化问题到底在解决什么？想象你是一家工厂的老板，有限的原材料，有限的工人，有限的机器。你要决定生产多少A产品、多少B产品，才能让利润最大。这就是一个优化问题。 或者你是一个登山者，站在云雾缭绕的山上，想找到最低的谷底。你看不到全貌，只能感受脚下的坡度。这也是优化问题。 优化的本质：在约束条件下，找到让目标函数达到最优（最大或最小）的那组变量值。 数学语言翻译一下：$$\mi">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-02-02T03:25:16.000Z">
+<meta property="article:modified_time" content="2026-02-02T04:50:17.605Z">
+<meta property="article:author" content="追">
+<meta property="article:tag" content="最优化理论">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-dark.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>追</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+            <a title="github"
+               href="https://github.com/Zintey"
+               target="_blank">
+                
+                    <i class="iconfont icon-github"></i>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1687019603@qq.com"
+               target="_blank">
+                
+                    <i class="iconfont icon-email"></i>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1687019603&site=qq&menu=yes"
+               target="_blank">
+                
+                    <i class="iconfont icon-qq"></i>
+                
+            </a>
+        
+    
+        
+    
+        
+            <a title="neteasemusic"
+               href="https://music.163.com/#/user/home?id=3276394979"
+               target="_blank">
+                
+                    <i class="iconfont icon-neteasemusic"></i>
+                
+            </a>
+        
+    
+</div>
+
+
+
+    <a class="more-menus">更多菜单</a>
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(12)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="整理">
+            
+            整理
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+                <a class="dynamic-menu "
+                   target="_blank"
+                        
+                   href="https://github.com/Zintey">github</a>
+        
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">关于</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">友链</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="12">
+<input type="hidden" id="yelog_site_word_count" value="16.9k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>编程思想</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>多线程</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>计算机网络</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>联机开发</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>面向对象</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>学习笔记</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>最优化理论</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>godot</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 整理 "
+           href="/2026/02/02/%E6%9C%80%E4%BC%98%E5%8C%96%E7%90%86%E8%AE%BA%E6%95%B4%E7%90%86/"
+           data-tag="最优化理论"
+           data-author="" >
+            <span class="post-title" title="最优化理论整理">最优化理论整理</span>
+            <span class="post-date" title="2026-02-02 11:25:16">2026/02/02</span>
+        </a>
+        
+        
+        <a  class="全部文章 整理 "
+           href="/2026/01/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%95%B4%E7%90%86/"
+           data-tag="计算机网络"
+           data-author="" >
+            <span class="post-title" title="计算机网络整理">计算机网络整理</span>
+            <span class="post-date" title="2026-01-26 14:25:22">2026/01/26</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/11/24/godot%E4%B8%AD%E7%9A%84%E5%B0%8F%E5%9D%91%E7%82%B9/"
+           data-tag="godot"
+           data-author="" >
+            <span class="post-title" title="godot中的小坑点">godot中的小坑点</span>
+            <span class="post-date" title="2025-11-24 19:09:39">2025/11/24</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/11/12/%E5%9C%A8%E5%AE%89%E5%8D%93%E5%B9%B3%E6%9D%BF-%E6%89%8B%E6%9C%BA%E4%B8%8A%E4%B8%8E%E7%94%B5%E8%84%91%E5%8D%8F%E5%90%8C%E5%BC%80%E5%8F%91godot%E9%A1%B9%E7%9B%AE/"
+           data-tag="godot,git"
+           data-author="" >
+            <span class="post-title" title="在安卓平板/手机上与电脑协同开发godot项目">在安卓平板/手机上与电脑协同开发godot项目</span>
+            <span class="post-date" title="2025-11-12 21:44:41">2025/11/12</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/25/Godot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"
+           data-tag="学习笔记,godot"
+           data-author="" >
+            <span class="post-title" title="Godot学习笔记01">Godot学习笔记01</span>
+            <span class="post-date" title="2025-07-25 18:39:09">2025/07/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/21/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84%E5%93%88%E5%9F%BA%E7%B1%B3%E5%A4%A7%E5%86%92%E9%99%A9-%E5%8F%8C%E4%BA%BA%E8%81%94%E6%9C%BA%E6%B8%B8%E6%88%8F%E7%AC%94%E8%AE%B0/"
+           data-tag="学习笔记,多线程,联机开发"
+           data-author="" >
+            <span class="post-title" title="从零开始的哈基米大冒险:双人联机游戏笔记">从零开始的哈基米大冒险:双人联机游戏笔记</span>
+            <span class="post-date" title="2025-07-21 23:08:49">2025/07/21</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
+           data-tag="编程思想,面向对象"
+           data-author="" >
+            <span class="post-title" title="行为型模式">行为型模式</span>
+            <span class="post-date" title="2025-07-19 18:59:32">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E7%94%B5%E5%95%86%E8%AE%A2%E5%8D%95%E5%A4%84%E7%90%86%E7%B3%BB%E7%BB%9F-%E7%AD%96%E7%95%A5-%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="电商订单处理系统(策略&amp;模板方法模式)">电商订单处理系统(策略&amp;模板方法模式)</span>
+            <span class="post-date" title="2025-07-19 18:56:34">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E6%B8%B8%E6%88%8F%E4%BA%A4%E4%BA%92%E5%AE%9E%E4%BE%8B%EF%BC%9A%E5%B7%A6%E5%8F%B3%E5%87%BB%E7%89%A9%E5%93%81%E7%B3%BB%E7%BB%9F%EF%BC%88%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8F%EF%BC%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="游戏交互实例：左右击物品系统（访问者模式）">游戏交互实例：左右击物品系统（访问者模式）</span>
+            <span class="post-date" title="2025-07-19 18:56:06">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E9%85%8D%E7%BD%AE%E5%8C%96%E4%BB%BB%E5%8A%A1%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%EF%BC%88%E5%8A%A8%E6%80%81%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F%EF%BC%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="配置化任务检测系统（动态责任链模式）">配置化任务检测系统（动态责任链模式）</span>
+            <span class="post-date" title="2025-07-19 18:40:44">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E7%BB%93%E6%9E%84%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
+           data-tag="编程思想,面向对象"
+           data-author="" >
+            <span class="post-title" title="结构型模式">结构型模式</span>
+            <span class="post-date" title="2025-07-19 18:35:13">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E5%88%9B%E9%80%A0%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
+           data-tag="编程思想,面向对象"
+           data-author="" >
+            <span class="post-title" title="创造型模式">创造型模式</span>
+            <span class="post-date" title="2025-07-19 18:25:39">2025/07/19</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-最优化理论整理" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">最优化理论整理</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="整理">整理</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">最优化理论</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2026-02-02 12:50:17'>2026-02-02 11:25</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:6.5k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E4%BC%98%E5%8C%96%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86"><span class="toc-text">最优化理论知识整理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E7%AF%87%EF%BC%9A%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98%E5%88%B0%E5%BA%95%E5%9C%A8%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">开篇：优化问题到底在解决什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%B9%95%EF%BC%9A%E7%BA%BF%E6%80%A7%E7%9A%84%E4%B8%96%E7%95%8C"><span class="toc-text">第一幕：线性的世界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%80%EF%BC%9A%E4%B8%A4%E4%B8%AA%E5%8F%98%E9%87%8F%EF%BC%8C%E4%B8%80%E5%BC%A0%E5%9B%BE%E7%BA%B8"><span class="toc-text">场景一：两个变量，一张图纸</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E4%BA%8C%EF%BC%9A%E5%8D%95%E7%BA%AF%E5%BD%A2%E6%B3%95%E2%80%94%E2%80%94%E6%B2%BF%E7%9D%80%E6%A3%B1%E8%BE%B9%E7%88%AC%E5%B1%B1"><span class="toc-text">场景二：单纯形法——沿着棱边爬山</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%89%EF%BC%9A%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA%E2%80%94%E2%80%94%E4%BB%8E%E5%8F%A6%E4%B8%80%E4%B8%AA%E8%A7%92%E5%BA%A6%E7%9C%8B%E4%B8%96%E7%95%8C"><span class="toc-text">场景三：对偶理论——从另一个角度看世界</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%B9%95%EF%BC%9A%E6%97%A0%E7%BA%A6%E6%9D%9F%E9%9D%9E%E7%BA%BF%E6%80%A7%E4%BC%98%E5%8C%96%E2%80%94%E2%80%94%E5%9C%A8%E5%B1%B1%E5%9C%B0%E9%87%8C%E6%89%BE%E8%B0%B7%E5%BA%95"><span class="toc-text">第二幕：无约束非线性优化——在山地里找谷底</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E6%9B%B2%EF%BC%9A%E4%B8%80%E7%BB%B4%E6%90%9C%E7%B4%A2%E2%80%94%E2%80%94%E5%9C%A8%E7%9B%B4%E7%BA%BF%E4%B8%8A%E6%89%BE%E6%9C%80%E4%BD%8E%E7%82%B9"><span class="toc-text">插曲：一维搜索——在直线上找最低点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A6%E5%99%A8%E4%B8%80%EF%BC%9A%E9%BB%84%E9%87%91%E5%88%86%E5%89%B2%E6%B3%95%E2%80%94%E2%80%94%E4%B8%8D%E7%94%A8%E5%AF%BC%E6%95%B0%E7%9A%84%E6%99%BA%E6%85%A7"><span class="toc-text">武器一：黄金分割法——不用导数的智慧</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A6%E5%99%A8%E4%BA%8C%EF%BC%9A%E7%89%9B%E9%A1%BF%E6%B3%95%EF%BC%88%E4%B8%80%E7%BB%B4%EF%BC%89%E2%80%94%E2%80%94%E4%BA%8C%E6%AC%A1%E8%BF%91%E4%BC%BC%E7%9A%84%E6%9A%B4%E5%8A%9B"><span class="toc-text">武器二：牛顿法（一维）——二次近似的暴力</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A6%E5%99%A8%E4%B8%89%EF%BC%9A%E5%89%B2%E7%BA%BF%E6%B3%95%E2%80%94%E2%80%94%E7%A9%B7%E4%BA%BA%E7%9A%84%E7%89%9B%E9%A1%BF%E6%B3%95"><span class="toc-text">武器三：割线法——穷人的牛顿法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A6%E5%99%A8%E5%9B%9B%EF%BC%9A%E6%8A%9B%E7%89%A9%E7%BA%BF%E6%B3%95%E2%80%94%E2%80%94%E4%B8%89%E7%82%B9%E5%AE%9A%E4%B8%80%E6%8A%9B%E7%89%A9%E7%BA%BF"><span class="toc-text">武器四：抛物线法——三点定一抛物线</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%96%E7%95%A5%E4%B8%80%EF%BC%9A%E6%9C%80%E9%80%9F%E4%B8%8B%E9%99%8D%E6%B3%95%E2%80%94%E2%80%94%E6%9C%80%E7%9B%B4%E6%8E%A5%E7%9A%84%E4%B8%8B%E5%9D%A1"><span class="toc-text">策略一：最速下降法——最直接的下坡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%96%E7%95%A5%E4%BA%8C%EF%BC%9A%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95%E2%80%94%E2%80%94%E4%B8%8D%E8%B5%B0%E5%9B%9E%E5%A4%B4%E8%B7%AF"><span class="toc-text">策略二：共轭梯度法——不走回头路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%96%E7%95%A5%E4%B8%89%EF%BC%9A%E7%89%9B%E9%A1%BF%E6%B3%95%E2%80%94%E2%80%94%E7%94%A8%E6%9B%B2%E7%8E%87%E4%BF%A1%E6%81%AF%E5%8A%A0%E9%80%9F"><span class="toc-text">策略三：牛顿法——用曲率信息加速</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%96%E7%95%A5%E5%9B%9B%EF%BC%9A%E6%8B%9F%E7%89%9B%E9%A1%BF%E6%B3%95%E2%80%94%E2%80%94%E7%A9%B7%E4%BA%BA%E7%9A%84%E7%89%9B%E9%A1%BF%E6%B3%95%EF%BC%88%E7%9C%9F%E6%AD%A3%E5%AE%9E%E7%94%A8%E7%89%88%EF%BC%89"><span class="toc-text">策略四：拟牛顿法——穷人的牛顿法（真正实用版）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E5%B9%95%EF%BC%9A%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96%E7%90%86%E8%AE%BA%E2%80%94%E2%80%94%E5%9C%A8%E5%A2%99%E5%86%85%E6%89%BE%E8%B0%B7%E5%BA%95"><span class="toc-text">第三幕：约束优化理论——在墙内找谷底</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%AE%BA%E5%9F%BA%E7%9F%B3%EF%BC%9AKuhn-Tucker-KT-%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6"><span class="toc-text">理论基石：Kuhn-Tucker (KT) 必要条件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E5%B9%95%EF%BC%9A%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94%E5%AE%9E%E6%88%98%E6%AD%A6%E5%99%A8%E5%BA%93"><span class="toc-text">第四幕：约束优化算法——实战武器库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A6%E5%99%A8%E4%B8%80%EF%BC%9A%E5%8F%AF%E8%A1%8C%E6%96%B9%E5%90%91%E6%B3%95%EF%BC%88Zoutendijk%EF%BC%89"><span class="toc-text">武器一：可行方向法（Zoutendijk）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A6%E5%99%A8%E4%BA%8C%EF%BC%9A%E6%A2%AF%E5%BA%A6%E6%8A%95%E5%BD%B1%E6%B3%95%EF%BC%88Rosen%EF%BC%89"><span class="toc-text">武器二：梯度投影法（Rosen）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A6%E5%99%A8%E4%B8%89%EF%BC%9A%E5%A4%96%E7%82%B9%E7%BD%9A%E5%87%BD%E6%95%B0%E6%B3%95%E2%80%94%E2%80%94%E5%85%81%E8%AE%B8%E8%B6%8A%E7%95%8C%EF%BC%8C%E4%BD%86%E8%A6%81%E4%BB%98%E5%87%BA%E4%BB%A3%E4%BB%B7"><span class="toc-text">武器三：外点罚函数法——允许越界，但要付出代价</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A6%E5%99%A8%E5%9B%9B%EF%BC%9A%E5%86%85%E7%82%B9%E9%9A%9C%E7%A2%8D%E5%87%BD%E6%95%B0%E6%B3%95%E2%80%94%E2%80%94%E5%86%85%E9%83%A8%E9%80%BC%E8%BF%91"><span class="toc-text">武器四：内点障碍函数法——内部逼近</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%BE%E5%A3%B0%EF%BC%9A%E7%9F%A5%E8%AF%86%E5%9C%B0%E5%9B%BE%E4%B8%8E%E5%A4%8D%E4%B9%A0%E9%94%A6%E5%9B%8A"><span class="toc-text">尾声：知识地图与复习锦囊</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E7%BA%BF%E6%80%A7%E5%88%B0%E9%9D%9E%E7%BA%BF%E6%80%A7%EF%BC%8C%E4%BB%8E%E6%97%A0%E7%BA%A6%E6%9D%9F%E5%88%B0%E7%BA%A6%E6%9D%9F"><span class="toc-text">从线性到非线性，从无约束到约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E4%B9%A0%E7%A7%98%E7%B1%8D%EF%BC%9A%E7%90%86%E8%A7%A3-%E5%85%AC%E5%BC%8F-%E4%BE%8B%E9%A2%98"><span class="toc-text">复习秘籍：理解 &gt; 公式 &gt; 例题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E9%80%89%E6%8B%A9%E9%80%9F%E6%9F%A5%E8%A1%A8"><span class="toc-text">算法选择速查表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%9A%84%E6%9C%80%E5%90%8E"><span class="toc-text">最后的最后</span></a></li></ol></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="最优化理论知识整理"><a href="#最优化理论知识整理" class="headerlink" title="最优化理论知识整理"></a>最优化理论知识整理</h1><h2 id="开篇：优化问题到底在解决什么？"><a href="#开篇：优化问题到底在解决什么？" class="headerlink" title="开篇：优化问题到底在解决什么？"></a>开篇：优化问题到底在解决什么？</h2><p>想象你是一家工厂的老板，有限的原材料，有限的工人，有限的机器。你要决定生产多少A产品、多少B产品，才能让利润最大。这就是一个优化问题。</p>
+<p>或者你是一个登山者，站在云雾缭绕的山上，想找到最低的谷底。你看不到全貌，只能感受脚下的坡度。这也是优化问题。</p>
+<p><strong>优化的本质</strong>：在约束条件下，找到让目标函数达到最优（最大或最小）的那组变量值。</p>
+<p>数学语言翻译一下：<br>$$\min f(x) \quad \text{subject to} \quad g_i(x) \le 0, , h_j(x) &#x3D; 0$$</p>
+<p>现在，让我们从最简单的情况开始，一层层揭开优化理论的面纱。</p>
+<hr>
+<h2 id="第一幕：线性的世界"><a href="#第一幕：线性的世界" class="headerlink" title="第一幕：线性的世界"></a>第一幕：线性的世界</h2><h3 id="场景一：两个变量，一张图纸"><a href="#场景一：两个变量，一张图纸" class="headerlink" title="场景一：两个变量，一张图纸"></a>场景一：两个变量，一张图纸</h3><p><strong>问题</strong>：某工厂生产桌子和椅子。一张桌子利润3元，一把椅子利润2元。车间限制：木料够做4套家具，工时够做5件大型家具（桌子算2件）。问怎么安排生产？</p>
+<p>数学化：<br>$$\max z &#x3D; 3x_1 + 2x_2$$<br>$$\text{s.t.} \begin{cases} x_1 + x_2 \le 4 \ 2x_1 + x_2 \le 5 \ x_1, x_2 \ge 0 \end{cases}$$</p>
+<p><strong>图解法</strong>：拿出方格纸。</p>
+<p>第一步：画出可行域</p>
+<ul>
+<li>$x_1 + x_2 &#x3D; 4$ 是一条直线，可行域在它下方</li>
+<li>$2x_1 + x_2 &#x3D; 5$ 是另一条直线，可行域在它下方</li>
+<li>再加上 $x_1 \ge 0, x_2 \ge 0$</li>
+</ul>
+<p>四条线围成一个四边形，顶点是：$(0,0)$，$(0,4)$，$(1,3)$，$(2.5,0)$</p>
+<p>第二步：目标函数 $z &#x3D; 3x_1 + 2x_2$ 改写成 $x_2 &#x3D; -\frac{3}{2}x_1 + \frac{z}{2}$</p>
+<p>这是一族平行线，斜率固定为 $-3&#x2F;2$，截距 $z&#x2F;2$ 越大越好。</p>
+<p>第三步：平移这条直线，让它尽量”往上顶”，同时还能碰到可行域。最后一个碰到的点就是最优解。</p>
+<p>画图可知：最后接触点是 $(1,3)$，利润 $z &#x3D; 3 \times 1 + 2 \times 3 &#x3D; 9$ 元。</p>
+<p><strong>核心洞察</strong>：线性规划的最优解一定在可行域的顶点上。因为目标函数是平面，可行域是多边形，平面在多边形上”滑动”，最后必定卡在某个角上。</p>
+<hr>
+<h3 id="场景二：单纯形法——沿着棱边爬山"><a href="#场景二：单纯形法——沿着棱边爬山" class="headerlink" title="场景二：单纯形法——沿着棱边爬山"></a>场景二：单纯形法——沿着棱边爬山</h3><p>图解法只能处理两个变量。三个变量呢？十个？一百个？</p>
+<p>这时候需要 <strong>单纯形法</strong>：一个顶点一个顶点地跳，每次跳到相邻的更优顶点，直到无路可跳。</p>
+<p><strong>标准形式</strong>（引入松弛变量把不等式变等式）：<br>$$\min c^T x \quad \text{s.t.} \quad Ax &#x3D; b, , x \ge 0$$</p>
+<p><strong>核心概念</strong>：</p>
+<ul>
+<li><strong>基变量</strong>：$m$ 个”主角”变量，对应单位矩阵的列</li>
+<li><strong>非基变量</strong>：其余”群众演员”，全设为 0</li>
+<li><strong>基可行解</strong>：一个顶点</li>
+</ul>
+<p><strong>单纯形表的故事</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>基变量</th>
+<th>$x_1$</th>
+<th>$x_2$</th>
+<th>$x_3$</th>
+<th>$x_4$</th>
+<th>RHS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$x_3$</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>6</td>
+</tr>
+<tr>
+<td>$x_4$</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>8</td>
+</tr>
+<tr>
+<td>$z$</td>
+<td>-1</td>
+<td>-2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p>最下面一行是”检验数”。负数意味着”这个方向还能下降”。</p>
+<p>检验数最负的是 $x_2$（$-2$），所以让 $x_2$ 进基。</p>
+<p>用最小比值规则：$\min{6&#x2F;1, 8&#x2F;1} &#x3D; 6$，所以 $x_3$ 出基。</p>
+<p>更新单纯形表，继续迭代，直到检验数全部 $\ge 0$，大功告成。</p>
+<p><strong>直观理解</strong>：你站在多面体的一个角上，环顾四周的边，选最陡的那条往下走。走到下一个角，再选，再走。直到四周都是上坡路，你就到了谷底。</p>
+<p><strong>例题快速过</strong>：</p>
+<p>$$\min -x_1 - 2x_2 \quad \text{s.t.} \quad x_1 + x_2 \le 6, , 2x_1 + x_2 \le 8, , x_1, x_2 \ge 0$$</p>
+<p>引入松弛变量 $x_3, x_4$。初始顶点 $(0,0)$，目标值 $0$。</p>
+<p>第一轮：$x_2$ 进基（检验数 $-2$），$x_3$ 出基，到达 $(0,6)$，$z &#x3D; -12$</p>
+<p>第二轮：$x_1$ 进基，$x_4$ 出基，到达 $(2,4)$，$z &#x3D; -10$</p>
+<p>检验数全非负，停止。最优解 $(2,4)$。</p>
+<hr>
+<h3 id="场景三：对偶理论——从另一个角度看世界"><a href="#场景三：对偶理论——从另一个角度看世界" class="headerlink" title="场景三：对偶理论——从另一个角度看世界"></a>场景三：对偶理论——从另一个角度看世界</h3><p>每个线性规划都有一个”镜像问题”，叫对偶问题。</p>
+<p><strong>原问题</strong>（Primal）：工厂老板视角，最小化成本<br>$$\min c^T x \quad \text{s.t.} \quad Ax \ge b, , x \ge 0$$</p>
+<p><strong>对偶问题</strong>（Dual）：原料商视角，最大化收益<br>$$\max b^T y \quad \text{s.t.} \quad A^T y \le c, , y \ge 0$$</p>
+<p><strong>弱对偶定理</strong>：对偶的任何可行解都是原问题最优值的界。</p>
+<p><strong>强对偶定理</strong>：如果原问题有最优解，对偶也有，且最优值相等。</p>
+<p><strong>互补松弛</strong>：在最优点，如果原问题某约束松弛（不紧），对偶变量为 0；反之，对偶变量为正，原约束必紧。</p>
+<p><strong>经济学解释</strong>：</p>
+<p>原问题：我有这些资源，怎么用最便宜？</p>
+<p>对偶问题：如果我把资源卖给你，定什么价你才愿意买（且我赚最多）？</p>
+<p>最优点：资源的影子价格。</p>
+<p><strong>例题</strong>：</p>
+<p>原：$\min 2x_1 + 3x_2$ s.t. $x_1 + x_2 \ge 4$, $2x_1 + x_2 \ge 5$, $x_1, x_2 \ge 0$</p>
+<p>对偶：$\max 4y_1 + 5y_2$ s.t. $y_1 + 2y_2 \le 2$, $y_1 + y_2 \le 3$, $y_1, y_2 \ge 0$</p>
+<p>求解原问题得 $x^* &#x3D; (1, 3)$，$z &#x3D; 11$</p>
+<p>求解对偶得 $y^* &#x3D; (2, 0)$（或其他组合），对偶最优值也是 $11$。验证强对偶定理成立。</p>
+<hr>
+<h2 id="第二幕：无约束非线性优化——在山地里找谷底"><a href="#第二幕：无约束非线性优化——在山地里找谷底" class="headerlink" title="第二幕：无约束非线性优化——在山地里找谷底"></a>第二幕：无约束非线性优化——在山地里找谷底</h2><p>离开线性的安全区，进入非线性的世界。现在没有”顶点必最优”的保证，我们需要新的武器。</p>
+<p><strong>问题形式</strong>：<br>$$\min f(x), \quad x \in \mathbb{R}^n$$</p>
+<p>没有约束，自由探索。但函数可能很复杂——有多个波峰波谷，有狭长山谷，有陡峭悬崖。</p>
+<p><strong>迭代框架</strong>：从某个初始点 $x_0$ 出发，重复以下步骤：</p>
+<ol>
+<li>选择一个搜索方向 $d_k$</li>
+<li>沿该方向确定步长 $\alpha_k$</li>
+<li>更新：$x_{k+1} &#x3D; x_k + \alpha_k d_k$</li>
+<li>检查是否收敛，否则回到步骤 1</li>
+</ol>
+<p>关键问题有两个：</p>
+<ul>
+<li><strong>如何选方向？</strong> → 这决定了算法的智能程度</li>
+<li><strong>如何定步长？</strong> → 这决定了每步走多远</li>
+</ul>
+<p>让我们先解决第二个问题。</p>
+<hr>
+<h3 id="插曲：一维搜索——在直线上找最低点"><a href="#插曲：一维搜索——在直线上找最低点" class="headerlink" title="插曲：一维搜索——在直线上找最低点"></a>插曲：一维搜索——在直线上找最低点</h3><p>确定了方向 $d_k$ 后，问题变成：沿着射线 $x_k + \alpha d_k$ 找最优的 $\alpha$。</p>
+<p>这是一维优化问题：<br>$$\min_{\alpha \ge 0} \phi(\alpha) &#x3D; f(x_k + \alpha d_k)$$</p>
+<p>虽然看起来简单，但这是所有迭代算法的”发动机”。我们需要一套工具箱。</p>
+<hr>
+<h4 id="武器一：黄金分割法——不用导数的智慧"><a href="#武器一：黄金分割法——不用导数的智慧" class="headerlink" title="武器一：黄金分割法——不用导数的智慧"></a>武器一：黄金分割法——不用导数的智慧</h4><p><strong>思路</strong>：在区间里插两个点，比较函数值，舍弃较大的那半，缩小区间。</p>
+<p><strong>黄金比例</strong>：$\tau &#x3D; 0.618$</p>
+<p>每次在 $[a, b]$ 中取 $\lambda &#x3D; a + 0.382(b-a)$，$\mu &#x3D; a + 0.618(b-a)$</p>
+<p>比较 $\phi(\lambda)$ 和 $\phi(\mu)$：</p>
+<ul>
+<li>若 $\phi(\lambda) &lt; \phi(\mu)$，新区间 $[a, \mu]$</li>
+<li>否则 $[\lambda, b]$</li>
+</ul>
+<p>妙处在于：新区间的边界点可以复用旧区间的内点，只需算一个新函数值。</p>
+<p><strong>例题</strong>：求 $\phi(\alpha) &#x3D; (\alpha - 2)^2$ 在 $[0, 4]$ 上的最小值</p>
+<p>初始 $[0, 4]$：$\lambda &#x3D; 1.528$，$\mu &#x3D; 2.472$</p>
+<p>$\phi(1.528) &#x3D; 0.223$，$\phi(2.472) &#x3D; 0.223$（接近）</p>
+<p>缩小区间继续，几轮后收敛到 $\alpha &#x3D; 2$，$\phi &#x3D; 0$。</p>
+<p><strong>适用场景</strong>：不可导函数，或导数难算。收敛慢但稳健。</p>
+<hr>
+<h4 id="武器二：牛顿法（一维）——二次近似的暴力"><a href="#武器二：牛顿法（一维）——二次近似的暴力" class="headerlink" title="武器二：牛顿法（一维）——二次近似的暴力"></a>武器二：牛顿法（一维）——二次近似的暴力</h4><p><strong>思路</strong>：用二次函数 $q(\alpha) &#x3D; \phi(\alpha_k) + \phi’(\alpha_k)(\alpha - \alpha_k) + \frac{1}{2}\phi’’(\alpha_k)(\alpha - \alpha_k)^2$ 近似 $\phi$</p>
+<p>二次函数的极值点：$\alpha^* &#x3D; \alpha_k - \frac{\phi’(\alpha_k)}{\phi’’(\alpha_k)}$</p>
+<p>如果 $\phi$ 真是二次的，一步到位。否则迭代几次。</p>
+<p><strong>例题</strong>：$\phi(\alpha) &#x3D; \alpha^3 - 3\alpha$，初始 $\alpha_0 &#x3D; 2$</p>
+<p>$\phi’(\alpha) &#x3D; 3\alpha^2 - 3$，$\phi’’(\alpha) &#x3D; 6\alpha$</p>
+<p>$\alpha_1 &#x3D; 2 - \frac{3 \times 4 - 3}{6 \times 2} &#x3D; 2 - \frac{9}{12} &#x3D; 1.25$</p>
+<p>$\alpha_2 &#x3D; 1.25 - \frac{3 \times 1.5625 - 3}{6 \times 1.25} &#x3D; 1.04$</p>
+<p>几步收敛到 $\alpha^* &#x3D; 1$，$\phi(1) &#x3D; -2$</p>
+<p><strong>优点</strong>：收敛超快（二次收敛）</p>
+<p><strong>缺点</strong>：需要二阶导，初值不好可能飞</p>
+<hr>
+<h4 id="武器三：割线法——穷人的牛顿法"><a href="#武器三：割线法——穷人的牛顿法" class="headerlink" title="武器三：割线法——穷人的牛顿法"></a>武器三：割线法——穷人的牛顿法</h4><p><strong>思路</strong>：没有二阶导？用差分近似！</p>
+<p>$$\alpha_{k+1} &#x3D; \alpha_k - \phi’(\alpha_k) \frac{\alpha_k - \alpha_{k-1}}{\phi’(\alpha_k) - \phi’(\alpha_{k-1})}$$</p>
+<p>用前两点的导数值构造割线，割线与横轴交点就是新的估计。</p>
+<p><strong>例题</strong>：$\phi(\alpha) &#x3D; \alpha^2 - 4\alpha + 3$，初始 $\alpha_0 &#x3D; 0, \alpha_1 &#x3D; 1$</p>
+<p>$\phi’(\alpha) &#x3D; 2\alpha - 4$</p>
+<p>$\phi’(0) &#x3D; -4$，$\phi’(1) &#x3D; -2$</p>
+<p>$\alpha_2 &#x3D; 1 - (-2) \frac{1 - 0}{-2 - (-4)} &#x3D; 1 + 1 &#x3D; 2$</p>
+<p>$\phi’(2) &#x3D; 0$，找到极值点！</p>
+<p><strong>优点</strong>：不需要二阶导，收敛也不错</p>
+<p><strong>缺点</strong>：需要两个初始点</p>
+<hr>
+<h4 id="武器四：抛物线法——三点定一抛物线"><a href="#武器四：抛物线法——三点定一抛物线" class="headerlink" title="武器四：抛物线法——三点定一抛物线"></a>武器四：抛物线法——三点定一抛物线</h4><p><strong>思路</strong>：用三个点 $(α_1, \phi_1), (α_2, \phi_2), (α_3, \phi_3)$ 拟合抛物线，抛物线的顶点就是新估计。</p>
+<p>拟合公式复杂，但思路简单：三点确定二次曲线，二次曲线的极值点显式可解。</p>
+<p><strong>例题</strong>：$\phi(\alpha) &#x3D; \alpha^2 - 4\alpha + 5$，三点 $(0,5), (2,1), (4,5)$</p>
+<p>显然对称，顶点在中间 $\alpha &#x3D; 2$。</p>
+<p>实际用公式算也是 $\alpha^* &#x3D; 2$。</p>
+<p><strong>适用</strong>：光滑函数，不想算导数。</p>
+<hr>
+<p><strong>小结</strong>：一维搜索工具箱准备好了。黄金分割最稳，牛顿法最快，割线法折中，抛物线法简便。接下来，我们要用它们来为多维优化”定步长”。</p>
+<hr>
+<h3 id="策略一：最速下降法——最直接的下坡"><a href="#策略一：最速下降法——最直接的下坡" class="headerlink" title="策略一：最速下降法——最直接的下坡"></a>策略一：最速下降法——最直接的下坡</h3><p><strong>核心</strong>：梯度的负方向是函数下降最快的方向，那就沿着它走。</p>
+<p>$$x_{k+1} &#x3D; x_k - \alpha_k \nabla f(x_k)$$</p>
+<p>$\alpha_k$ 用一维搜索确定（精确线搜索）或固定步长。</p>
+<p><strong>例题</strong>：$f(x_1, x_2) &#x3D; x_1^2 + 4x_2^2$，初始 $(2, 2)$</p>
+<p>$\nabla f &#x3D; (2x_1, 8x_2)$</p>
+<p>第 1 步：$\nabla f(2, 2) &#x3D; (4, 16)$，方向 $d_0 &#x3D; -(4, 16)$</p>
+<p>沿方向最小化：$\phi(\alpha) &#x3D; (2 - 4\alpha)^2 + 4(2 - 16\alpha)^2$</p>
+<p>用牛顿法或直接求导：$\phi’(\alpha) &#x3D; -8(2-4\alpha) - 128(2-16\alpha) &#x3D; 0$</p>
+<p>解得 $\alpha \approx 0.265$</p>
+<p>$x_1 &#x3D; (2,2) - 0.265(4,16) &#x3D; (0.94, -2.24)$</p>
+<p>第 2 步：$\nabla f(0.94, -2.24) &#x3D; (1.88, -17.92)$，方向 $d_1 &#x3D; -(1.88, -17.92)$</p>
+<p>用黄金分割或牛顿法定步长，继续…</p>
+<p>轨迹呈现”之字形”，因为每次新方向和上次方向正交，在椭圆等高线上反复横跳。</p>
+<p><strong>问题</strong>：收敛慢，尤其是细长椭圆（Hessian 条件数大）时，可能需要上千步。</p>
+<p><strong>适用</strong>：简单问题，或作为其他算法的备选方向。</p>
+<hr>
+<h3 id="策略二：共轭梯度法——不走回头路"><a href="#策略二：共轭梯度法——不走回头路" class="headerlink" title="策略二：共轭梯度法——不走回头路"></a>策略二：共轭梯度法——不走回头路</h3><p><strong>核心思想</strong>：最速下降的问题是”破坏旧成果”。共轭梯度法构造一组特殊方向，在这些方向上的搜索相互不干扰。</p>
+<p><strong>共轭性</strong>：对于二次函数 $f(x) &#x3D; \frac{1}{2}x^T A x - b^T x$，方向 $d_i$ 和 $d_j$ 共轭是指 $d_i^T A d_j &#x3D; 0$。</p>
+<p><strong>Fletcher-Reeves 公式</strong>：<br>$$d_0 &#x3D; -\nabla f(x_0)$$<br>$$d_{k+1} &#x3D; -\nabla f(x_{k+1}) + \beta_k d_k$$<br>$$\beta_k &#x3D; \frac{|\nabla f(x_{k+1})|^2}{|\nabla f(x_k)|^2}$$</p>
+<p>$\beta_k$ 是”记忆系数”，让新方向带上旧方向的信息。</p>
+<p><strong>理论保证</strong>：对于 $n$ 维二次函数，最多 $n$ 步精确收敛。</p>
+<p><strong>例题</strong>：$f(x_1, x_2) &#x3D; x_1^2 + 4x_2^2$，初始 $(2, 2)$</p>
+<p>第 1 步：同最速下降，沿 $d_0 &#x3D; -(4, 16)$ 精确线搜索到达 $(0.94, -2.24)$</p>
+<p>第 2 步：$\nabla f_1 &#x3D; (1.88, -17.28)$</p>
+<p>$\beta_0 &#x3D; \frac{1.88^2 + 17.28^2}{4^2 + 16^2} &#x3D; \frac{302.2}{272} &#x3D; 1.11$</p>
+<p>$d_1 &#x3D; -(1.88, -17.28) + 1.11 \times -(4, 16) &#x3D; (-6.32, 0.52)$（方向改变！）</p>
+<p>沿 $d_1$ 精确线搜索（用牛顿法或黄金分割），直接到达 $(0, 0)$！</p>
+<p>两步收敛，比最速下降的上千步快太多。</p>
+<p><strong>适用</strong>：中大规模二次或近似二次问题。非二次函数需要周期重启。</p>
+<hr>
+<h3 id="策略三：牛顿法——用曲率信息加速"><a href="#策略三：牛顿法——用曲率信息加速" class="headerlink" title="策略三：牛顿法——用曲率信息加速"></a>策略三：牛顿法——用曲率信息加速</h3><p><strong>核心</strong>：不仅用一阶信息（梯度），还用二阶信息（Hessian）。在当前点做二次近似，直接跳到近似函数的极值点。</p>
+<p><strong>迭代公式</strong>：<br>$$x_{k+1} &#x3D; x_k - H_k^{-1} \nabla f(x_k)$$</p>
+<p>其中 $H_k &#x3D; \nabla^2 f(x_k)$ 是 Hessian 矩阵。</p>
+<p>注意这里的步长隐含为 1（纯牛顿方向），也可以结合一维搜索：$x_{k+1} &#x3D; x_k - \alpha_k H_k^{-1} \nabla f(x_k)$。</p>
+<p><strong>直观理解</strong>：梯度告诉你”坡度”，Hessian 告诉你”坡度的变化率”（曲率）。如果知道曲率，可以更准确地估计谷底位置。</p>
+<p><strong>例题</strong>：$f(x_1, x_2) &#x3D; x_1^2 + 2x_2^2 - 2x_1 - 4x_2 + 3$</p>
+<p>$\nabla f &#x3D; (2x_1 - 2, 4x_2 - 4)$</p>
+<p>$H &#x3D; \begin{pmatrix} 2 &amp; 0 \ 0 &amp; 4 \end{pmatrix}$</p>
+<p>初始 $(0, 0)$：</p>
+<p>$\nabla f(0,0) &#x3D; (-2, -4)$</p>
+<p>$x_1 &#x3D; (0,0) - \begin{pmatrix} 2 &amp; 0 \ 0 &amp; 4 \end{pmatrix}^{-1} \begin{pmatrix} -2 \ -4 \end{pmatrix} &#x3D; (0,0) + \begin{pmatrix} 1 \ 1 \end{pmatrix} &#x3D; (1, 1)$</p>
+<p>检验：$\nabla f(1,1) &#x3D; (0, 0)$。一步到位！</p>
+<p><strong>对于非二次函数</strong>，比如 Rosenbrock 函数 $f &#x3D; 100(x_2 - x_1^2)^2 + (1-x_1)^2$：</p>
+<p>初始 $(-1.2, 1)$，计算 Hessian，每步可能需要用黄金分割或回溯线搜索确定步长，迭代几步即可收敛到 $(1, 1)$。</p>
+<p><strong>优点</strong>：收敛极快（二次收敛），对二次函数一步到位</p>
+<p><strong>缺点</strong>：</p>
+<ol>
+<li>计算 Hessian 代价高（$O(n^2)$ 存储，$O(n^3)$ 求逆）</li>
+<li>Hessian 可能不正定，导致方向不是下降方向</li>
+<li>初始点不好可能发散</li>
+</ol>
+<hr>
+<h3 id="策略四：拟牛顿法——穷人的牛顿法（真正实用版）"><a href="#策略四：拟牛顿法——穷人的牛顿法（真正实用版）" class="headerlink" title="策略四：拟牛顿法——穷人的牛顿法（真正实用版）"></a>策略四：拟牛顿法——穷人的牛顿法（真正实用版）</h3><p><strong>核心</strong>：牛顿法太贵，能不能用一阶信息（梯度）逐步”猜”出 Hessian 的逆？</p>
+<p>答案是可以。这就是拟牛顿法。</p>
+<p><strong>BFGS 算法</strong>（最流行的拟牛顿法）：</p>
+<p>维护一个矩阵 $B_k \approx H_k^{-1}$，每步更新：</p>
+<p>$$s_k &#x3D; x_{k+1} - x_k \quad (\text{位置变化})$$<br>$$y_k &#x3D; \nabla f(x_{k+1}) - \nabla f(x_k) \quad (\text{梯度变化})$$</p>
+<p>$$B_{k+1} &#x3D; B_k + \frac{y_k y_k^T}{y_k^T s_k} - \frac{B_k s_k s_k^T B_k}{s_k^T B_k s_k}$$</p>
+<p>初始 $B_0 &#x3D; I$（单位矩阵）。</p>
+<p>搜索方向：$d_k &#x3D; -B_k \nabla f(x_k)$</p>
+<p>步长：用回溯线搜索或 Wolfe 条件确定 $\alpha_k$（这里就用到一维搜索工具箱）。</p>
+<p><strong>直观理解</strong>：每走一步，观察”走了多远”（$s_k$）和”坡度变了多少”（$y_k$），用这个信息调整对”地形曲率”的估计。就像盲人摸象，摸的信息越多，对大象的轮廓理解越准。</p>
+<p><strong>例题</strong>：Rosenbrock 函数（香蕉函数）</p>
+<p>$$f(x_1, x_2) &#x3D; 100(x_2 - x_1^2)^2 + (1-x_1)^2$$</p>
+<p>这是个非常”难缠”的函数，等高线像香蕉，狭长弯曲。</p>
+<p>初始点 $(-1.2, 1)$，$B_0 &#x3D; I$</p>
+<p>第 1 步：$d_0 &#x3D; -B_0 \nabla f &#x3D; -\nabla f &#x3D; (215.6, 88)^T$（方向）</p>
+<p>用黄金分割或 Wolfe 线搜索得 $\alpha_0 \approx 0.001$（很小，因为函数陡峭）</p>
+<p>$x_1 &#x3D; (-1.2, 1) + 0.001(215.6, 88) &#x3D; (-0.984, 1.088)$</p>
+<p>计算 $s_0 &#x3D; x_1 - x_0$，$y_0 &#x3D; \nabla f(x_1) - \nabla f(x_0)$</p>
+<p>用 BFGS 公式更新 $B_1$</p>
+<p>第 2 步：用新的 $B_1$ 计算方向 $d_1 &#x3D; -B_1 \nabla f(x_1)$（方向已经不是纯梯度了）</p>
+<p>继续线搜索，更新…</p>
+<p>重复 10-30 步，收敛到 $(1, 1)$（全局最优点）</p>
+<p>对比：最速下降需要几千步，甚至不收敛；牛顿法可能因 Hessian 病态失败；BFGS 稳健且快速。</p>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>不需要 Hessian，只需梯度</li>
+<li>收敛快（超线性收敛）</li>
+<li>实践中非常可靠</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>需要存储 $n \times n$ 矩阵（但有 L-BFGS 等低内存版本）</li>
+</ul>
+<p><strong>工业界地位</strong>：BFGS 和 L-BFGS 是无约束优化的”默认选择”，几乎所有优化库都实现了它们。</p>
+<hr>
+<p><strong>第二幕小结</strong>：</p>
+<p>无约束优化的迭代框架是：<strong>选方向 + 定步长</strong>。</p>
+<ul>
+<li><strong>方向策略</strong>：从简单的梯度，到聪明的共轭方向，到利用曲率的牛顿方向，到近似曲率的拟牛顿方向</li>
+<li><strong>步长策略</strong>：一维搜索工具箱（黄金分割、牛顿法、割线法、抛物线法）</li>
+</ul>
+<p>两者结合，就能在复杂地形中找到谷底。</p>
+<hr>
+<h2 id="第三幕：约束优化理论——在墙内找谷底"><a href="#第三幕：约束优化理论——在墙内找谷底" class="headerlink" title="第三幕：约束优化理论——在墙内找谷底"></a>第三幕：约束优化理论——在墙内找谷底</h2><p>前面假设你可以自由行走。现在加上限制：不能越界，必须在某个区域内。</p>
+<h3 id="理论基石：Kuhn-Tucker-KT-必要条件"><a href="#理论基石：Kuhn-Tucker-KT-必要条件" class="headerlink" title="理论基石：Kuhn-Tucker (KT) 必要条件"></a>理论基石：Kuhn-Tucker (KT) 必要条件</h3><p><strong>问题</strong>：<br>$$\min f(x) \quad \text{s.t.} \quad g_i(x) \le 0 , (i&#x3D;1,\dots,m), \quad h_j(x) &#x3D; 0 , (j&#x3D;1,\dots,p)$$</p>
+<p><strong>在最优点 $x^*$ 必须满足</strong>：</p>
+<ol>
+<li><p><strong>梯度平衡</strong>：<br>$$\nabla f(x^<em>) + \sum_{i&#x3D;1}^m \lambda_i^</em> \nabla g_i(x^<em>) + \sum_{j&#x3D;1}^p \mu_j^</em> \nabla h_j(x^*) &#x3D; 0$$</p>
+</li>
+<li><p><strong>互补松弛</strong>：<br>$$\lambda_i^* g_i(x^*) &#x3D; 0, \quad i&#x3D;1,\dots,m$$</p>
+</li>
+<li><p><strong>原始可行</strong>：<br>$$g_i(x^<em>) \le 0, \quad h_j(x^</em>) &#x3D; 0$$</p>
+</li>
+<li><p><strong>对偶可行</strong>：<br>$$\lambda_i^* \ge 0$$</p>
+</li>
+</ol>
+<p><strong>物理直觉</strong>：</p>
+<p>想象你在山谷里，但周围有几堵墙（约束）。</p>
+<ul>
+<li>如果你在空地中间，那就是无约束问题，梯度为零即可</li>
+<li>如果你被某堵墙挡住了，你想下山（$\nabla f$），但墙的”推力”（$\lambda \nabla g$）正好抵消你的”下山冲动”</li>
+<li>互补松弛：如果墙离你很远（$g_i &lt; 0$），它不影响你（$\lambda_i &#x3D; 0$）；只有紧贴墙时（$g_i &#x3D; 0$），墙才有推力（$\lambda_i &gt; 0$）</li>
+</ul>
+<p><strong>例题</strong>：<br>$$\min f(x_1, x_2) &#x3D; x_1^2 + x_2^2 \quad \text{s.t.} \quad x_1 + x_2 \ge 1$$</p>
+<p>标准化：$g(x) &#x3D; 1 - x_1 - x_2 \le 0$</p>
+<p>拉格朗日函数：$L &#x3D; x_1^2 + x_2^2 + \lambda(1 - x_1 - x_2)$</p>
+<p>KT 条件：<br>$$\frac{\partial L}{\partial x_1} &#x3D; 2x_1 - \lambda &#x3D; 0 \Rightarrow x_1 &#x3D; \lambda&#x2F;2$$<br>$$\frac{\partial L}{\partial x_2} &#x3D; 2x_2 - \lambda &#x3D; 0 \Rightarrow x_2 &#x3D; \lambda&#x2F;2$$<br>$$\lambda(1 - x_1 - x_2) &#x3D; 0$$<br>$$1 - x_1 - x_2 \le 0, \quad \lambda \ge 0$$</p>
+<p><strong>情况 1</strong>：$\lambda &#x3D; 0$</p>
+<p>则 $x_1 &#x3D; x_2 &#x3D; 0$，但 $1 - 0 - 0 &#x3D; 1 &gt; 0$，违反约束。舍弃。</p>
+<p><strong>情况 2</strong>：$1 - x_1 - x_2 &#x3D; 0$（约束紧）</p>
+<p>代入：$x_1 &#x3D; x_2 &#x3D; \lambda&#x2F;2$，则 $1 - \lambda&#x2F;2 - \lambda&#x2F;2 &#x3D; 0 \Rightarrow \lambda &#x3D; 1$</p>
+<p>所以 $x_1 &#x3D; x_2 &#x3D; 0.5$</p>
+<p>检验：$f(0.5, 0.5) &#x3D; 0.5$</p>
+<p>几何意义：原点到直线 $x_1 + x_2 &#x3D; 1$ 的最短距离，投影点就是 $(0.5, 0.5)$。</p>
+<p>梯度 $\nabla f &#x3D; (1, 1)$ 指向远离原点，约束梯度 $\nabla g &#x3D; (-1, -1)$ 指向可行域内，两者反向，用乘子 $\lambda &#x3D; 1$ 平衡。</p>
+<hr>
+<h2 id="第四幕：约束优化算法——实战武器库"><a href="#第四幕：约束优化算法——实战武器库" class="headerlink" title="第四幕：约束优化算法——实战武器库"></a>第四幕：约束优化算法——实战武器库</h2><p>有了 KT 条件的理论指导，我们需要算法来实际求解。这些算法同样需要在每步确定方向和步长，但要考虑约束的影响。</p>
+<hr>
+<h3 id="武器一：可行方向法（Zoutendijk）"><a href="#武器一：可行方向法（Zoutendijk）" class="headerlink" title="武器一：可行方向法（Zoutendijk）"></a>武器一：可行方向法（Zoutendijk）</h3><p><strong>思路</strong>：从可行域内部出发，每次找一个既下降又可行的方向。</p>
+<p><strong>可行下降方向 $d$ 满足</strong>：</p>
+<ol>
+<li>$\nabla f(x_k)^T d &lt; 0$（下降）</li>
+<li>$\nabla g_i(x_k)^T d &lt; 0$（离开约束边界，保持可行，对于紧约束 $i \in I$）</li>
+</ol>
+<p><strong>Zoutendijk 方向子问题</strong>：<br>$$\max \theta \quad \text{s.t.} \quad \nabla f^T d \le -\theta, , \nabla g_i^T d \le -\theta , (i \in I), , |d| \le 1$$</p>
+<p>其中 $I$ 是紧约束集合（$g_i(x_k) &#x3D; 0$）。</p>
+<p>确定方向后，用一维搜索（黄金分割或回溯）确定步长，但要保证不越界。</p>
+<p><strong>直观</strong>：在所有”不撞墙”的方向里，选下降最陡的。</p>
+<p><strong>例题</strong>：<br>$$\min x_1^2 + x_2^2 \quad \text{s.t.} \quad x_1 + x_2 \ge 2$$</p>
+<p>当前点 $x_k &#x3D; (1.5, 0.4)$，约束 $g &#x3D; 2 - x_1 - x_2 &#x3D; 0.1 &gt; 0$，内部点，约束不紧。</p>
+<p>直接用 $d &#x3D; -\nabla f &#x3D; -(3, 0.8)$（归一化后）</p>
+<p>用黄金分割沿此方向搜索，直到触及边界或到达最优。</p>
+<p>当前点 $(1, 1)$（边界上），$\nabla f &#x3D; (2, 2)$，$\nabla g &#x3D; (-1, -1)$</p>
+<p>子问题：$\max \theta$ s.t. $(2,2)^T d \le -\theta$, $(-1,-1)^T d \le -\theta$, $|d| \le 1$</p>
+<p>注意到 $(2,2)$ 和 $(-1,-1)$ 方向相反，解得 $\theta \to 0$，说明已到最优点附近。</p>
+<hr>
+<h3 id="武器二：梯度投影法（Rosen）"><a href="#武器二：梯度投影法（Rosen）" class="headerlink" title="武器二：梯度投影法（Rosen）"></a>武器二：梯度投影法（Rosen）</h3><p><strong>思路</strong>：把负梯度投影到约束的切空间上，得到既下降又不穿墙的方向。</p>
+<p><strong>投影公式</strong>（线性等式约束 $Ax &#x3D; b$）：<br>$$d &#x3D; P(-\nabla f)$$<br>$$P &#x3D; I - A^T(AA^T)^{-1}A$$</p>
+<p>确定方向后，用抛物线法或牛顿法做一维搜索。</p>
+<p><strong>直观</strong>：你想下山（$-\nabla f$），但前方是悬崖（约束边界）。投影就是把”下山向量”分解成”沿着悬崖走”和”跳下悬崖”，我们只取”沿悬崖走”的分量。</p>
+<p><strong>例题</strong>：<br>$$\min (x_1 - 2)^2 + (x_2 - 1)^2 \quad \text{s.t.} \quad x_1 + x_2 &#x3D; 2$$</p>
+<p>当前点 $(1, 1)$，$\nabla f &#x3D; (-2, 0)$</p>
+<p>约束法向量 $A &#x3D; (1, 1)$</p>
+<p>投影矩阵：<br>$$P &#x3D; I - \frac{1}{2} \begin{pmatrix} 1 \ 1 \end{pmatrix} (1, 1) &#x3D; \begin{pmatrix} 0.5 &amp; -0.5 \ -0.5 &amp; 0.5 \end{pmatrix}$$</p>
+<p>投影梯度：<br>$$d &#x3D; P \begin{pmatrix} 2 \ 0 \end{pmatrix} &#x3D; \begin{pmatrix} 1 \ -1 \end{pmatrix}$$</p>
+<p>沿 $(1, -1)$ 方向，用割线法或黄金分割确定步长，保持 $x_1 + x_2 &#x3D; 2$，到达 $(1.5, 0.5)$</p>
+<p>继续迭代到 $(2, 0)$（真正的最优点）</p>
+<hr>
+<h3 id="武器三：外点罚函数法——允许越界，但要付出代价"><a href="#武器三：外点罚函数法——允许越界，但要付出代价" class="headerlink" title="武器三：外点罚函数法——允许越界，但要付出代价"></a>武器三：外点罚函数法——允许越界，但要付出代价</h3><p><strong>思路</strong>：把约束项加到目标函数里，违反约束就罚你。罚得越重，越不敢违反。</p>
+<p><strong>罚函数</strong>：<br>$$P(x, \rho) &#x3D; f(x) + \rho \sum_{i&#x3D;1}^m [\max(0, g_i(x))]^2 + \rho \sum_{j&#x3D;1}^p [h_j(x)]^2$$</p>
+<p><strong>算法</strong>：</p>
+<ol>
+<li>初始点 $x_0$（可以不可行），$\rho_0$ 较小</li>
+<li>用 BFGS 或共轭梯度无约束最小化 $P(x, \rho_k)$ 得 $x_k$（内层用一维搜索）</li>
+<li>增大 $\rho_{k+1} &#x3D; 10 \rho_k$</li>
+<li>重复直到收敛</li>
+</ol>
+<p><strong>直观</strong>：可行域外围设电网，一开始电压低，可以越界探索；后来电压升高，被电回可行域。</p>
+<p><strong>例题</strong>：<br>$$\min x^2 \quad \text{s.t.} \quad x \ge 1$$</p>
+<p>$g(x) &#x3D; 1 - x \le 0$</p>
+<p>罚函数：$P(x, \rho) &#x3D; x^2 + \rho [\max(0, 1-x)]^2$</p>
+<p><strong>$\rho &#x3D; 1$</strong>：<br>$$P(x,1) &#x3D; x^2 + (1-x)^2 \quad (x &lt; 1)$$</p>
+<p>用牛顿法或求导：$P’(x) &#x3D; 2x - 2(1-x) &#x3D; 4x - 2 &#x3D; 0 \Rightarrow x &#x3D; 0.5$</p>
+<p>违反约束，但罚得轻。</p>
+<p><strong>$\rho &#x3D; 10$</strong>：<br>$$P(x,10) &#x3D; x^2 + 10(1-x)^2$$<br>$$P’(x) &#x3D; 2x - 20(1-x) &#x3D; 22x - 20 &#x3D; 0 \Rightarrow x &#x3D; 0.909$$</p>
+<p>接近边界。</p>
+<p><strong>$\rho &#x3D; 100$</strong>：用割线法或黄金分割优化，得 $x \approx 0.99$</p>
+<p><strong>$\rho \to \infty$</strong>：$x \to 1$（最优解）</p>
+<p><strong>优缺点</strong>：</p>
+<ul>
+<li>优点：简单，易实现，不需要可行初始点</li>
+<li>缺点：$\rho$ 太大导致 Hessian 病态，一维搜索困难；收敛慢</li>
+</ul>
+<hr>
+<h3 id="武器四：内点障碍函数法——内部逼近"><a href="#武器四：内点障碍函数法——内部逼近" class="headerlink" title="武器四：内点障碍函数法——内部逼近"></a>武器四：内点障碍函数法——内部逼近</h3><p><strong>思路</strong>：在可行域内部构造”势垒”，越靠近边界推力越大，随着势垒降低逼近边界。</p>
+<p><strong>障碍函数</strong>（对数障碍）：<br>$$B(x, \mu) &#x3D; f(x) - \mu \sum_{i&#x3D;1}^m \ln(-g_i(x))$$</p>
+<p>注意：$g_i(x) &lt; 0$（严格可行），否则对数无定义。</p>
+<p><strong>算法</strong>：</p>
+<ol>
+<li>严格可行初始点 $x_0$，$\mu_0$ 较大</li>
+<li>用牛顿法或 BFGS 无约束优化 $\min B(x, \mu_k)$ 得 $x_k$（内层用抛物线法或牛顿法做一维搜索）</li>
+<li>减小 $\mu_{k+1} &#x3D; \mu_k &#x2F; 10$</li>
+<li>重复直到收敛</li>
+</ol>
+<p><strong>直观</strong>：可行域边界是”软墙”，靠近时有无形的反推力。一开始墙很硬，被挡在中间；后来墙变软，可以贴近边界。</p>
+<p><strong>例题</strong>：<br>$$\min (x-3)^2 \quad \text{s.t.} \quad x \le 2$$</p>
+<p>$g(x) &#x3D; x - 2 \le 0$</p>
+<p>障碍函数：$B(x, \mu) &#x3D; (x-3)^2 - \mu \ln(2-x)$（要求 $x &lt; 2$）</p>
+<p><strong>$\mu &#x3D; 1$</strong>：<br>$$B’(x) &#x3D; 2(x-3) + \frac{1}{2-x} &#x3D; 0$$</p>
+<p>用牛顿法迭代：$(x-3)(2-x) &#x3D; -0.5$ → $x \approx 1.634$</p>
+<p><strong>$\mu &#x3D; 0.1$</strong>：<br>$$(x-3)(2-x) &#x3D; -0.05$$</p>
+<p>用割线法：$x \approx 1.926$</p>
+<p><strong>$\mu \to 0$</strong>：用黄金分割精细搜索，$x \to 2$（最优解）</p>
+<p><strong>优缺点</strong>：</p>
+<ul>
+<li>优点：迭代点始终可行，适合必须保持可行的问题</li>
+<li>缺点：需要严格可行初始点（有时难找）；靠近边界时一维搜索数值不稳定</li>
+</ul>
+<hr>
+<h2 id="尾声：知识地图与复习锦囊"><a href="#尾声：知识地图与复习锦囊" class="headerlink" title="尾声：知识地图与复习锦囊"></a>尾声：知识地图与复习锦囊</h2><h3 id="从线性到非线性，从无约束到约束"><a href="#从线性到非线性，从无约束到约束" class="headerlink" title="从线性到非线性，从无约束到约束"></a>从线性到非线性，从无约束到约束</h3><pre><code>线性规划
+├─ 图解法（几何直觉：顶点最优）
+├─ 单纯形法（沿棱边跳顶点）
+└─ 对偶理论（影子价格，经济学视角）
+
+无约束非线性优化
+├─ 迭代框架：选方向 + 定步长
+├─ 一维搜索工具箱（为步长服务）
+│  ├─ 黄金分割（不用导数，稳健）
+│  ├─ 牛顿法（二次收敛，需二阶导）
+│  ├─ 割线法（近似牛顿，只需一阶导）
+│  └─ 抛物线法（三点拟合）
+├─ 方向策略
+│  ├─ 最速下降（简单但慢，之字形震荡）
+│  ├─ 共轭梯度（利用历史，n 步收敛）
+│  ├─ 牛顿法（二次收敛，计算贵）
+│  └─ 拟牛顿（BFGS 实用之王）
+
+约束非线性优化
+├─ 理论：KT 条件（梯度平衡 + 互补松弛）
+├─ 可行方向法（Zoutendijk 选方向 + 一维搜索定步长）
+├─ 梯度投影法（Rosen 投影到切空间 + 一维搜索）
+├─ 罚函数法（外部逼近，内层无约束优化 + 一维搜索）
+└─ 障碍函数法（内部逼近，内层无约束优化 + 一维搜索）
+</code></pre>
+<p><strong>关键洞察</strong>：一维搜索是所有迭代算法的”发动机”，无论无约束还是约束，都需要它来确定步长。</p>
+<hr>
+<h3 id="复习秘籍：理解-公式-例题"><a href="#复习秘籍：理解-公式-例题" class="headerlink" title="复习秘籍：理解 &gt; 公式 &gt; 例题"></a>复习秘籍：理解 &gt; 公式 &gt; 例题</h3><p><strong>第一遍：只看”直观理解”</strong></p>
+<ul>
+<li>凸函数：碗，局部&#x3D;全局</li>
+<li>单纯形：走顶点，选最陡边</li>
+<li>对偶：原料商与工厂老板的博弈</li>
+<li>黄金分割：舍弃较高那半</li>
+<li>最速下降：贪心下坡，但会震荡</li>
+<li>共轭梯度：不破坏旧成果</li>
+<li>牛顿法：用曲率信息，抛物线顶点</li>
+<li>BFGS：盲人摸象，逐步猜 Hessian</li>
+<li>KT 条件：下山冲动被墙挡住</li>
+<li>罚函数：电网，罚越重越不敢越界</li>
+<li>障碍函数：软墙，靠近时反推</li>
+</ul>
+<p><strong>第二遍：看”例题”</strong></p>
+<ul>
+<li>跟着例题手算一遍，感受算法的运作</li>
+<li>不需要记住每个数字，记住”步骤”和”为什么这么做”</li>
+</ul>
+<p><strong>第三遍：查”公式”</strong></p>
+<ul>
+<li>需要实现或深入理解时，才看详细公式</li>
+<li>公式是”代码”，理解是”注释”</li>
+</ul>
+<hr>
+<h3 id="算法选择速查表"><a href="#算法选择速查表" class="headerlink" title="算法选择速查表"></a>算法选择速查表</h3><table>
+<thead>
+<tr>
+<th>问题类型</th>
+<th>推荐算法</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>线性规划</td>
+<td>单纯形法 &#x2F; 内点法</td>
+<td>多项式时间，工业标准</td>
+</tr>
+<tr>
+<td>小规模光滑无约束</td>
+<td>牛顿法 &#x2F; BFGS</td>
+<td>收敛快，几十步搞定</td>
+</tr>
+<tr>
+<td>大规模无约束</td>
+<td>L-BFGS &#x2F; 共轭梯度</td>
+<td>低内存，可扩展</td>
+</tr>
+<tr>
+<td>二次规划</td>
+<td>共轭梯度 &#x2F; 内点法</td>
+<td>利用结构，n 步收敛</td>
+</tr>
+<tr>
+<td>Box 约束（$l \le x \le u$）</td>
+<td>投影梯度</td>
+<td>投影简单</td>
+</tr>
+<tr>
+<td>等式约束</td>
+<td>梯度投影 &#x2F; 拉格朗日乘子法</td>
+<td>降维或投影</td>
+</tr>
+<tr>
+<td>一般非线性约束</td>
+<td>SQP &#x2F; 增广拉格朗日</td>
+<td>工业级求解器</td>
+</tr>
+<tr>
+<td>不可导 &#x2F; 非凸</td>
+<td>启发式（遗传、模拟退火）</td>
+<td>全局搜索</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="最后的最后"><a href="#最后的最后" class="headerlink" title="最后的最后"></a>最后的最后</h3><p>优化理论的美在于：</p>
+<ol>
+<li><strong>统一性</strong>：KT 条件统一了所有约束优化问题</li>
+<li><strong>层次性</strong>：从简单到复杂，每层都在前层基础上</li>
+<li><strong>实用性</strong>：支撑着机器学习、控制论、运筹学的核心算法</li>
+</ol>
+<p>记住：<strong>没有完美算法，只有合适的算法</strong>。</p>
+<p>理解原理，选对工具，调好参数，问题自然迎刃而解。</p>
+<p>祝你在优化的世界里，找到属于自己的”最优解”！</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1687019603@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2025
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+        /* 渲染*/
+        function HTMLDecode(text) {
+            var temp = document.createElement("div");
+            temp.innerHTML = text;
+            var output = temp.innerText || temp.textContent;
+            temp = null;
+            return output;
+        }
+        if (window.mermaid){
+            window.mermaid = null
+        }
+        $.getScript("//cdnjs.cloudflare.com/ajax/libs/mermaid/8.3.1/mermaid.min.js", function () {
+            var mermaidOptions = JSON.parse(HTMLDecode("{&#34;theme&#34;:&#34;default&#34;,&#34;startOnLoad&#34;:true,&#34;flowchart&#34;:{&#34;useMaxWidth&#34;:false,&#34;htmlLabels&#34;:true}}"))
+            if (window.mermaid) {
+                mermaid.initialize(mermaidOptions)
+                mermaid.contentLoaded()
+            }
+        })
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 572px;
+    }
+    .nav.fullscreen {
+        margin-left: -572px;
+    }
+    .nav-left {
+        width: 150px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 522px;
+        }
+        .nav.fullscreen {
+            margin-left: -522px;
+        }
+        .nav-left {
+            width: 130px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 522px;
+            margin-left: -522px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+    #post .pjax article :not(pre) > code {
+        color: #24292e;
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+        background-color: rgba(27,31,35,.05);
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0;
+        padding: .2em .4em;
+    }
+    
+</style>
+
+
+
+
+
+
+<div class="mobile-menus-out" >
+
+</div>
+<div class="mobile-menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_blank"  href="https://github.com/Zintey">github</a>
+    
+</div>
+
+
+</html>
