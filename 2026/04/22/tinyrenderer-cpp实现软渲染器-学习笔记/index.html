@@ -6,19 +6,23 @@
   <meta name="keywords" content=" 计算机图形学 , 学习笔记 ">
   <meta name="description" content="tinyrenderer cpp实现软渲染器 学习笔记 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="tinyrenderer官方教学链接 目录  Home Bresenham’s line drawing algorithm     Home这一章主要讲了这门课程 的目标，尽可能少的用第三方库，用cpp实现一个软渲染器。（仅提供了一个简单处理.tga图片格式的库）.tag 文件可以用ps打开，但ps打开比较慢，可以用 xnview 打开。最初的代码文件可从github上下载最后大概代码量为500">
+<meta name="description" content="tinyrenderer官方教学链接 目录  一、简介 Home 二、画线 Bresenham’s line drawing algorithm 三、画三角形,光栅化 Triangle rasterization    一、简介 Home这一章主要讲了这门课程 的目标，尽可能少的用第三方库，用cpp实现一个软渲染器。（仅提供了一个简单处理.tga图片格式的库）.tag 文件可以用ps打开，但ps打">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tinyrenderer cpp实现软渲染器 学习笔记">
 <meta property="og:url" content="http://example.com/2026/04/22/tinyrenderer-cpp%E5%AE%9E%E7%8E%B0%E8%BD%AF%E6%B8%B2%E6%9F%93%E5%99%A8-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="tinyrenderer官方教学链接 目录  Home Bresenham’s line drawing algorithm     Home这一章主要讲了这门课程 的目标，尽可能少的用第三方库，用cpp实现一个软渲染器。（仅提供了一个简单处理.tga图片格式的库）.tag 文件可以用ps打开，但ps打开比较慢，可以用 xnview 打开。最初的代码文件可从github上下载最后大概代码量为500">
+<meta property="og:description" content="tinyrenderer官方教学链接 目录  一、简介 Home 二、画线 Bresenham’s line drawing algorithm 三、画三角形,光栅化 Triangle rasterization    一、简介 Home这一章主要讲了这门课程 的目标，尽可能少的用第三方库，用cpp实现一个软渲染器。（仅提供了一个简单处理.tga图片格式的库）.tag 文件可以用ps打开，但ps打">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/wirerenderer.png">
+<meta property="og:image" content="http://example.com/scanline_rasterization.png">
+<meta property="og:image" content="http://example.com/rasterization_bad.png">
 <meta property="article:published_time" content="2026-04-22T06:39:39.694Z">
-<meta property="article:modified_time" content="2026-04-22T07:08:34.503Z">
+<meta property="article:modified_time" content="2026-04-22T13:09:02.564Z">
 <meta property="article:author" content="追">
 <meta property="article:tag" content="计算机图形学">
 <meta property="article:tag" content="学习笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/wirerenderer.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -209,7 +213,7 @@
     </div>
 </div>
 <input type="hidden" id="yelog_site_posts_number" value="13">
-<input type="hidden" id="yelog_site_word_count" value="18.9k">
+<input type="hidden" id="yelog_site_word_count" value="19.6k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -463,12 +467,12 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2026-04-22 15:08:34'>2026-04-22 14:39</time>
+            发布时间 : <time class="date" title='最后更新: 2026-04-22 21:09:02'>2026-04-22 14:39</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:2k</span>
+        <span>字数:2.7k</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -487,7 +491,7 @@
     
     <div class="toc-ref">
     
-        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%AE%80%E4%BB%8B-Home"><span class="toc-text">一、简介 Home</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%94%BB%E7%BA%BF-Bresenham%E2%80%99s-line-drawing-algorithm"><span class="toc-text">二、画线 Bresenham’s line drawing algorithm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E7%94%BB%E4%B8%89%E8%A7%92%E5%BD%A2-%E5%85%89%E6%A0%85%E5%8C%96-Triangle-rasterization"><span class="toc-text">三、画三角形,光栅化 Triangle rasterization</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -506,15 +510,15 @@
         <p><a target="_blank" rel="noopener" href="https://haqr.eu/tinyrenderer/">tinyrenderer官方教学链接</a></p>
 <p>目录</p>
 <ul>
-<li><a href="#Home">Home</a></li>
-<li><a href="#Bresenham">Bresenham’s line drawing algorithm</a></li>
+<li><a href="#%E4%B8%80%E7%AE%80%E4%BB%8B-home">一、简介 Home</a></li>
+<li><a href="#%E4%BA%8C%E7%94%BB%E7%BA%BF-bresenhams-line-drawing-algorithm">二、画线 Bresenham’s line drawing algorithm</a></li>
+<li><a href="#%E4%B8%89%E7%94%BB%E4%B8%89%E8%A7%92%E5%BD%A2%E5%85%89%E6%A0%85%E5%8C%96-triangle-rasterization">三、画三角形,光栅化 Triangle rasterization</a></li>
 </ul>
 <hr>
 <p><a id="Home"></a></p>
-<ol>
-<li><strong>Home</strong><br>这一章主要讲了这门课程 的目标，尽可能少的用第三方库，用cpp实现一个软渲染器。（仅提供了一个简单处理.tga图片格式的库）<br>.tag 文件可以用ps打开，但ps打开比较慢，可以用 <a target="_blank" rel="noopener" href="https://www.xnview.com/en/xnview-mp/">xnview</a> 打开。<br>最初的代码文件可从<a target="_blank" rel="noopener" href="https://github.com/ssloy/tinyrenderer/tree/706b2dfecff65daeb93de568ee2c2bd87f277860">github</a>上下载<br>最后大概代码量为500行。</li>
-</ol>
-<p><a id="Bresenham"></a><br>2. <strong>Bresenham’s line drawing algorithm</strong><br>这一章实现了一个线渲染器。<br>如何画一条线？<br>现在有点 $A(xa,ya)$ 和点 $B(xb,yb)$，要在屏幕上画出线段AB，需要知道除AB之外的在线段上的点。</p>
+<h2 id="一、简介-Home"><a href="#一、简介-Home" class="headerlink" title="一、简介 Home"></a>一、简介 Home</h2><p>这一章主要讲了这门课程 的目标，尽可能少的用第三方库，用cpp实现一个软渲染器。（仅提供了一个简单处理.tga图片格式的库）<br>.tag 文件可以用ps打开，但ps打开比较慢，可以用 <a target="_blank" rel="noopener" href="https://www.xnview.com/en/xnview-mp/">xnview</a> 打开。<br>最初的代码文件可从<a target="_blank" rel="noopener" href="https://github.com/ssloy/tinyrenderer/tree/706b2dfecff65daeb93de568ee2c2bd87f277860">github</a>上下载<br>最后大概代码量为500行。</p>
+<p><a id="Bresenham"></a></p>
+<h2 id="二、画线-Bresenham’s-line-drawing-algorithm"><a href="#二、画线-Bresenham’s-line-drawing-algorithm" class="headerlink" title="二、画线 Bresenham’s line drawing algorithm"></a>二、画线 Bresenham’s line drawing algorithm</h2><p>这一章实现了一个线渲染器。<br>如何画一条线？<br>现在有点 $A(xa,ya)$ 和点 $B(xb,yb)$，要在屏幕上画出线段AB，需要知道除AB之外的在线段上的点。</p>
 <ul>
 <li>思路1<br>我们假设线段AB 由屏幕上的 $n$ 个点组成，<br>那么第$i$个点$P_i$的坐标就是 $(xa + (xb - xa) * (\frac in), yb + (yb - ya) * (\frac in))$<br>这也就是插值的思想<br>然后我们只要把这 $n$ 个点画出来就行了。</li>
 </ul>
@@ -571,7 +575,8 @@ void line(TGAImage&amp; framebuffer, Point a, Point b, TGAColor color,int n = 10
     &#125;
 &#125;
 </code></pre>
-<p>现在的写法还有优化空间，可以优化成下面代码</p>
+<p>现在的写法还有优化空间</p>
+<p>可以优化成下面代码</p>
 <pre><code class="language-cpp">void line(TGAImage&amp; framebuffer, Point a, Point b, TGAColor color)
 &#123;
     bool steep = (std::abs(a.x - b.x) &lt; std::abs(a.y - b.y));
@@ -626,13 +631,7 @@ f 2/2/3 3/3/4 5/2/1
 </code></pre>
 <p>v 开头的是顶点数据，后面的三个数代表这个顶点的 xyz 的值<br>vt 开头的是顶点的纹理数据，后面三个数的前两个数代表 uv 的值<br>vn 开头的是顶点法线的数据<br>f 开头的是三角面的数据，后面由三个顶点组成<br>比如 f 6&#x2F;1&#x2F;6 1&#x2F;2&#x2F;1 2&#x2F;3&#x2F;4<br>表示这个面由顶点6、1、2组成（每组的第一个代表顶点的索引号，按上面 v 数据的顺序来，从1开始）</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/Zintey/tinyrenderer-learning/tree/main/Bresenham%E2%80%99s%20line%20drawing%20algorithm">源代码</a><br>为了更好的处理.obj文件，创建一个Model类来管理<br>model.h	定义Model类</p>
-<pre><code class="language-cpp">#pragma once
-#include &lt;vector&gt;
-#include &lt;string&gt;
-#include &lt;tuple&gt;
-#include &quot;geometry.h&quot;
-
-class Model &#123;
+<pre><code class="language-cpp">class Model &#123;
     std::vector&lt;vec3&gt; verts;
     std::vector&lt;vec3&gt; triangles;
 public:
@@ -645,23 +644,16 @@ public:
 &#125;;
 </code></pre>
 <p>geometry.h 定义vec3</p>
-<pre><code class="language-cpp">#pragma once
-#include &lt;cmath&gt;
-#include &lt;cassert&gt;
-#include &lt;iostream&gt;
-
-template&lt;int n&gt; struct vec &#123;
+<pre><code class="language-cpp">template&lt;int n&gt; struct vec &#123;
     double data[n] = &#123;&#125;;
     double&amp; operator[] (const int i) &#123; assert(i &gt;= 0 &amp; i &lt; n); return data[i];&#125;
     const double&amp; operator[] (const int i) const &#123; assert(i &gt;= 0 &amp; i &lt; n); return data[i];&#125;
 &#125;;
-
 template&lt;int n&gt; std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const vec&lt;n&gt;&amp; vec)
 &#123;
     for (int i = 0; i &lt; n; i++) out &lt;&lt; vec[i] &lt;&lt; &#39; &#39;;
     return out;
 &#125;
-
 template&lt;&gt; struct vec&lt;3&gt; &#123;
     static constexpr int n = 3; 
     union &#123;
@@ -671,14 +663,10 @@ template&lt;&gt; struct vec&lt;3&gt; &#123;
     double&amp; operator[] (const int i) &#123; assert(i &gt;= 0 &amp; i &lt; n); return data[i];&#125;
     const double&amp; operator[] (const int i) const &#123; assert(i &gt;= 0 &amp; i &lt; n); return data[i];&#125;
 &#125;;
-
 typedef vec&lt;3&gt; vec3;
 </code></pre>
-<p>model.cpp</p>
-<pre><code class="language-cpp">#include &quot;model.h&quot;
-#include &lt;fstream&gt;
-#include &lt;sstream&gt;
-Model::Model(const std::string filename)
+<p>model.cpp 读取.obj文件</p>
+<pre><code class="language-cpp">Model::Model(const std::string filename)
 &#123;
     std::ifstream file;
     file.open(filename);
@@ -720,67 +708,11 @@ Model::Model(const std::string filename)
 &#125;
 </code></pre>
 <p>main.cpp</p>
-<pre><code class="language-cpp">#include &lt;cmath&gt;
-#include &lt;cstdlib&gt;
-#include &lt;ctime&gt;
-#include &lt;chrono&gt;
-#include &lt;iostream&gt;
-#include &quot;tgaimage.h&quot;
-#include &quot;model.h&quot;
-
-constexpr int width  = 800;
-constexpr int height = 800;
-
-constexpr TGAColor white   = &#123;255, 255, 255, 255&#125;; // attention, BGRA order
-constexpr TGAColor green   = &#123;  0, 255,   0, 255&#125;;
-constexpr TGAColor red     = &#123;  0,   0, 255, 255&#125;;
-constexpr TGAColor blue    = &#123;255, 128,  64, 255&#125;;
-constexpr TGAColor yellow  = &#123;  0, 200, 255, 255&#125;;
-
-struct Point &#123;
-    int x, y;
-    Point operator* (float f) const &#123;
-        return &#123;(int) std::round(x * f), (int) std::round(y * f)&#125;;
-    &#125;
-    Point operator+ (const Point&amp; p) const &#123;
-        return &#123;x + p.x, y + p.y&#125;;
-    &#125;
-    Point operator- (const Point&amp; p) const &#123;
-        return &#123;x - p.x, y - p.y&#125;;
-    &#125;
-&#125;;
-
-void line(TGAImage&amp; framebuffer, Point a, Point b, TGAColor color,int seg = 100)
-&#123;
-    bool steep = (std::abs(a.x - b.x) &lt; std::abs(a.y - b.y));
-    if (steep)
-    &#123;
-        std::swap(a.x, a.y);
-        std::swap(b.x, b.y);
-    &#125;
-    if (a.x &gt; b.x)
-        std::swap(a, b);
-    float y = a.y;
-    float x_len = static_cast&lt;float&gt;(b.x - a.x);
-    for (int x = a.x; x &lt;= b.x; x++)
-    &#123;
-        
-        Point P &#123;x, y&#125;;
-        if (steep)
-            framebuffer.set(P.y, P.x, color);
-        else
-            framebuffer.set(P.x, P.y, color);
-
-        y += (b.y - a.y) / x_len;
-    &#125;
-&#125;
-
-Point project(vec3 v)
+<pre><code class="language-cpp">Point project(vec3 v)
 &#123;
     return &#123;static_cast&lt;int&gt;((v.x + 1) * width / 2.0), 
         static_cast&lt;int&gt;((v.y + 1) * height / 2.0)&#125;;
 &#125;
-
 int main(int argc, char** argv) &#123;
     TGAImage framebuffer(width, height, TGAImage::RGB);
     Model model(argv[1]);
@@ -794,10 +726,6 @@ int main(int argc, char** argv) &#123;
         line(framebuffer, project(v1), project(v2), red);
         line(framebuffer, project(v1), project(v3), red);
         line(framebuffer, project(v2), project(v3), red);
-        // std::cout &lt;&lt; &quot;triangle &quot; &lt;&lt; i &lt;&lt; &quot;:\n&quot;;
-        // std::cout &lt;&lt; v1 &lt;&lt; std::endl;
-        // std::cout &lt;&lt; v2 &lt;&lt; std::endl;
-        // std::cout &lt;&lt; v3 &lt;&lt; std::endl; 
     &#125;
 
     auto end = std::chrono::steady_clock::now();
@@ -808,6 +736,55 @@ int main(int argc, char** argv) &#123;
     return 0;
 &#125;
 </code></pre>
+<p><img src="/wirerenderer.png" alt="wirerenderer"><br><a id="Rasterization"></a></p>
+<h2 id="三、画三角形-光栅化-Triangle-rasterization"><a href="#三、画三角形-光栅化-Triangle-rasterization" class="headerlink" title="三、画三角形,光栅化 Triangle rasterization"></a>三、画三角形,光栅化 Triangle rasterization</h2><ul>
+<li><strong>扫描线光栅化 Scanline rasterization</strong><br>已经可以画线框三角形了,现在我们要把三角形填色<br>前面给线填色,我们其实是找到对应的点,然后填色<br>给三角形填色,则是找到对应的线,然后填色<br>一个三角形由三个点组成,我们假设为点$a,b,c$<br>找到 $a,b,c$ 中 $y$ 值最高的和最低的 $y_{max},y_{min}$<br>我们需要找到 $n$ 条线, $n &#x3D; y_{max} - y_{min}$ , 即三角形每覆盖的一个 $y$ 值,对应一条线,这条线从三角形当前 $y$ 值的左边到右边</li>
+</ul>
+<pre><code class="language-cpp">void triangle(int ax, int ay, int bx, int by, int cx, int cy, TGAImage &amp;framebuffer, TGAColor color) &#123;
+    // 按y值排序
+    if (ay&gt;by) &#123; std::swap(ax, bx); std::swap(ay, by); &#125;
+    if (ay&gt;cy) &#123; std::swap(ax, cx); std::swap(ay, cy); &#125;
+    if (by&gt;cy) &#123; std::swap(bx, cx); std::swap(by, cy); &#125;
+    int total_height = cy-ay;
+
+    if (ay != by) &#123;
+        int segment_height = by - ay;
+        for (int y=ay; y&lt;=by; y++) &#123; // 遍历n条线 找到左右边界
+            int x1 = ax + ((cx - ax)*(y - ay)) / total_height; 
+            int x2 = ax + ((bx - ax)*(y - ay)) / segment_height;
+            for (int x=std::min(x1,x2); x&lt;std::max(x1,x2); x++)  // draw a horizontal line
+                framebuffer.set(x, y, color);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p><img src="/scanline_rasterization.png" alt="scanline_rasterization"></p>
+<ul>
+<li><strong>现代光栅化方法</strong><br>扫描线的方法,已经可以实现光栅化了<br>但只能按顺序执行,所以不能放到GPU上运行<br>所以设计了另一种方法,用伪代码可以表示成这样</li>
+</ul>
+<pre><code class="language-cpp">triangle(vec2 points[3]) &#123;
+    vec2 bbox[2] = find_bounding_box(points);
+    for (each pixel in the bounding box) &#123;
+        if (inside(points, pixel)) &#123;
+            put_pixel(pixel);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>每个像素都可以单独着色,所以这部分计算可以交给GPU并行运算<br>对于这个方法,我们要实现 find_bounding_box 和 inside 两个函数<br>对于 find_bounding_box, 我们可以计算三角形的AABB盒(axis-aligned bounding box),简单来说就是刚好包围三角形的一个正方形,这很好算,只要知道这个正方形的左上角和右下角的坐标就行.<br>左上角的x值是三角形三个点x值的最小值,y值是三个点y值的最大值.<br>右下角的点同理</p>
+<p>inside 函数需要判断一个点是否在一个三角形内<br>有好几种方法<br>1.叉积法<br>三角形三个点为ABC,需要判定的点为P<br>三维向量<br>两个向量叉积可以得到垂直与这两个向量的向量,方向符合右手螺旋.<br>方向的正负可以来判断两个向量的相对位置(左右)<br>所以我们分别让AB叉乘AP,BC叉乘BP,CA叉乘CP,若是得到的三个向量方向相同,那么说明P在三角形ABC内<br>2.面积法<br>若是点P在三角形ABC内,那么 $S_{ABC} &#x3D; S_{ABP} + S_{ACP} + S_{BCP}$,因为P点仅仅是把三角形分成了三个区域<br>若是点P在三角形ABC外,那么 $S_{ABC} &lt; S_{ABP} + S_{ACP} + S_{BCP}$</p>
+<p>怎么求三角形的面积呢<br>二维向量的叉乘是一个标量，其绝对值表示两个向量构成的平行四边形面积，符号表示旋转方向<br>三角形面积即为这个平行四边形的一半</p>
+<pre><code class="language-cpp">struct Triangle &#123;
+    Point a, b, c;
+    bool contains(const Point&amp; p) const &#123;
+        int w0 = (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x);
+        int w1 = (c.x - b.x) * (p.y - b.y) - (c.y - b.y) * (p.x - b.x);
+        int w2 = (a.x - c.x) * (p.y - c.y) - (a.y - c.y) * (p.x - c.x);
+        return (w0 &gt;= 0 &amp;&amp; w1 &gt;= 0 &amp;&amp; w2 &gt;= 0) || (w0 &lt;= 0 &amp;&amp; w1 &lt;= 0 &amp;&amp; w2 &lt;= 0);
+    &#125;
+&#125;;
+</code></pre>
+<p>我们把前面用线渲染器渲染的模型用现在的来填色,把每个三角形随机填色<br><img src="/rasterization_bad.png" alt="rasterization_bad"><br>发现脸部似乎不太对劲<br>这是因为现在我们没有从后往前画,也没有剔除在背面的面,所以有些后面的面覆盖了前面的面</p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1687019603@qq.com </span>
