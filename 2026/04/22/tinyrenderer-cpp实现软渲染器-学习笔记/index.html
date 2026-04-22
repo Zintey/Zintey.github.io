@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>配置化任务检测系统（动态责任链模式） | Hexo</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="配置化任务检测系统（动态责任链模式） | Hexo">
+  <title>tinyrenderer cpp实现软渲染器 学习笔记 | Hexo</title>
+  <meta name="keywords" content=" 计算机图形学 , 学习笔记 ">
+  <meta name="description" content="tinyrenderer cpp实现软渲染器 学习笔记 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="tinyrenderer官方教学链接 目录  Home Bresenham’s line drawing algorithm     Home这一章主要讲了这门课程 的目标，尽可能少的用第三方库，用cpp实现一个软渲染器。（仅提供了一个简单处理.tga图片格式的库）.tag 文件可以用ps打开，但ps打开比较慢，可以用 xnview 打开。最初的代码文件可从github上下载最后大概代码量为500">
 <meta property="og:type" content="article">
@@ -434,24 +434,41 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-配置化任务检测系统（动态责任链模式）" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-tinyrenderer-cpp实现软渲染器-学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">配置化任务检测系统（动态责任链模式）</h1>
+        <h1 class="article-title">tinyrenderer cpp实现软渲染器 学习笔记</h1>
     
     <div class="article-meta">
         
         
         
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="边学边记">边学边记</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color2">计算机图形学</a>
+            
+            <a class="color5">学习笔记</a>
+            
+        </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2025-07-19 18:55:20'>2025-07-19 18:40</time>
+            发布时间 : <time class="date" title='最后更新: 2026-04-22 15:08:34'>2026-04-22 14:39</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:1.5k</span>
+        <span>字数:2k</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -470,7 +487,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%8C%96%E4%BB%BB%E5%8A%A1%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F"><span class="toc-text">配置化任务检测系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-text">系统架构设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E8%AE%A1%EF%BC%88tasks-config-json%EF%BC%89"><span class="toc-text">配置文件设计（tasks_config.json）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E6%A0%B8%E5%BF%83%E5%AE%9E%E7%8E%B0%EF%BC%88%E5%88%A0%E5%87%8F%E7%89%88%EF%BC%89"><span class="toc-text">C++ 核心实现（删减版）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E8%AE%BE%E8%AE%A1%E8%A7%A3%E6%9E%90%EF%BC%88%E7%94%9F%E4%BA%A7%E7%BA%A7%E6%A0%87%E5%87%86%EF%BC%89"><span class="toc-text">关键设计解析（生产级标准）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="toc-text">性能优化策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E9%AA%8C%E8%AF%81%E6%8C%87%E6%A0%87"><span class="toc-text">设计验证指标</span></a></li></ol>
+        
     
 <style>
     .left-col .switch-btn,
@@ -486,344 +503,311 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="配置化任务检测系统"><a href="#配置化任务检测系统" class="headerlink" title="配置化任务检测系统"></a>配置化任务检测系统</h3><p>** 硬编码任务逻辑是灾难性设计。应采用 <strong>「配置驱动」+「动态责任链」</strong> 架构。以下是严格的生产级解决方案：</p>
+        <p><a target="_blank" rel="noopener" href="https://haqr.eu/tinyrenderer/">tinyrenderer官方教学链接</a></p>
+<p>目录</p>
+<ul>
+<li><a href="#Home">Home</a></li>
+<li><a href="#Bresenham">Bresenham’s line drawing algorithm</a></li>
+</ul>
 <hr>
-<h3 id="系统架构设计"><a href="#系统架构设计" class="headerlink" title="系统架构设计"></a>系统架构设计</h3><pre><code class="language-mermaid">graph TD
-    A[JSON 配置文件] --&gt; B[配置加载器]
-    B --&gt; C[任务要求容器]
-    B --&gt; D[处理链配置]
-    C --&gt; E[任务检测器]
-    D --&gt; F[处理链工厂]
-    F --&gt; E
-    E --&gt; G[玩家状态]
-    E --&gt; H[检测结果]
-</code></pre>
-<hr>
-<h3 id="配置文件设计（tasks-config-json）"><a href="#配置文件设计（tasks-config-json）" class="headerlink" title="配置文件设计（tasks_config.json）"></a>配置文件设计（<code>tasks_config.json</code>）</h3><pre><code class="language-json">&#123;
-  &quot;task_chains&quot;: &#123;
-    &quot;default_chain&quot;: [&quot;item_check&quot;, &quot;duration_check&quot;, &quot;level_check&quot;]
-  &#125;,
-  &quot;tasks&quot;: &#123;
-    &quot;t001&quot;: &#123;
-      &quot;desc&quot;: &quot;屠龙勇士&quot;,
-      &quot;requirements&quot;: &#123;
-        &quot;item_check&quot;: &#123; &quot;required_item&quot;: &quot;龙之剑&quot; &#125;,
-        &quot;duration_check&quot;: &#123; &quot;min_duration&quot;: 7200 &#125;,
-        &quot;level_check&quot;: &#123; &quot;min_level&quot;: 15 &#125;
-      &#125;
-    &#125;,
-    &quot;t002&quot;: &#123;
-      &quot;desc&quot;: &quot;初级采集&quot;,
-      &quot;requirements&quot;: &#123;
-        &quot;item_check&quot;: &#123; &quot;required_item&quot;: &quot;草药&quot; &#125;,
-        &quot;level_check&quot;: &#123; &quot;min_level&quot;: 3 &#125;
-      &#125;,
-      &quot;chain&quot;: &quot;simple_chain&quot;  // 可覆盖默认链
+<p><a id="Home"></a></p>
+<ol>
+<li><strong>Home</strong><br>这一章主要讲了这门课程 的目标，尽可能少的用第三方库，用cpp实现一个软渲染器。（仅提供了一个简单处理.tga图片格式的库）<br>.tag 文件可以用ps打开，但ps打开比较慢，可以用 <a target="_blank" rel="noopener" href="https://www.xnview.com/en/xnview-mp/">xnview</a> 打开。<br>最初的代码文件可从<a target="_blank" rel="noopener" href="https://github.com/ssloy/tinyrenderer/tree/706b2dfecff65daeb93de568ee2c2bd87f277860">github</a>上下载<br>最后大概代码量为500行。</li>
+</ol>
+<p><a id="Bresenham"></a><br>2. <strong>Bresenham’s line drawing algorithm</strong><br>这一章实现了一个线渲染器。<br>如何画一条线？<br>现在有点 $A(xa,ya)$ 和点 $B(xb,yb)$，要在屏幕上画出线段AB，需要知道除AB之外的在线段上的点。</p>
+<ul>
+<li>思路1<br>我们假设线段AB 由屏幕上的 $n$ 个点组成，<br>那么第$i$个点$P_i$的坐标就是 $(xa + (xb - xa) * (\frac in), yb + (yb - ya) * (\frac in))$<br>这也就是插值的思想<br>然后我们只要把这 $n$ 个点画出来就行了。</li>
+</ul>
+<pre><code class="language-cpp">struct Point &#123;
+    int x, y;
+    Point operator* (float f) const &#123;
+        return &#123;(int) std::round(x * f), (int) std::round(y * f)&#125;;
     &#125;
-  &#125;,
-  &quot;chain_definitions&quot;: &#123;
-    &quot;simple_chain&quot;: [&quot;item_check&quot;, &quot;level_check&quot;]
-  &#125;
+    Point operator+ (const Point&amp; p) const &#123;
+        return &#123;x + p.x, y + p.y&#125;;
+    &#125;
+    Point operator- (const Point&amp; p) const &#123;
+        return &#123;x - p.x, y - p.y&#125;;
+    &#125;
+&#125;;
+template &lt;typename T&gt;
+T lerp (T a, T b, float t)
+&#123;
+    return a + (b - a) * t;
+&#125;
+void line(TGAImage&amp; framebuffer, Point a, Point b, TGAColor color,int n = 100)
+&#123;
+    for (int i = 0; i &lt; n; i++)
+    &#123;
+        float t = i / static_cast&lt;float&gt; (n);
+        Point P = lerp(a, b, t);
+        framebuffer.set(P.x, P.y, color);
+    &#125;
 &#125;
 </code></pre>
-<hr>
-<h3 id="C-核心实现（删减版）"><a href="#C-核心实现（删减版）" class="headerlink" title="C++ 核心实现（删减版）"></a>C++ 核心实现（删减版）</h3><pre><code class="language-cpp">#include &lt;iostream&gt;
-#include &lt;unordered_map&gt;
-#include &lt;vector&gt;
-#include &lt;memory&gt;
-#include &lt;fstream&gt;
-#include &quot;json.hpp&quot; // 使用 nlohmann/json
-
-using json = nlohmann::json;
-using namespace std;
-
-// --------------------- 基础模型 ---------------------
-struct PlayerState &#123; /* 同前 */ &#125;;
-
-class TaskRequirement &#123;
-public:
-    virtual ~TaskRequirement() = default;
-    virtual json getConfig() const = 0;
-&#125;;
-
-// --------------------- 处理器系统 ---------------------
-class TaskCheckHandler &#123;
-public:
-    virtual string check(const PlayerState&amp; state, 
-                        const TaskRequirement* req) = 0;
-    virtual string handlerType() const = 0;
-&#125;;
-
-// 处理器工厂（核心！）
-class HandlerFactory &#123;
-public:
-    using HandlerCreator = function&lt;unique_ptr&lt;TaskCheckHandler&gt;()&gt;;
-    
-    void registerHandler(const string&amp; type, HandlerCreator creator) &#123;
-        registry_[type] = move(creator);
+<ul>
+<li>思路2<br>思路1里我们直接假设线段由 $n$ 个点组成，但如果线段的长度特别长呢？我们就会得到一个断断续续的线<br>为了解决这个问题，我们换个思路。<br>我们遍历 $xa$ 到 $xb$ 的所有 $x$，对于每个 $x$，我们插值算出一个 $y$，从而得到 $P_i$<br>但如果 $abs(yb - ya) &gt; abs(xb - xa)$ 时，线段又会变得不连续，所以我们先要判断 $x$ 和 $y$ 哪个跨度更大，然后遍历那一个，得到另一个。</li>
+</ul>
+<pre><code class="language-cpp">void line(TGAImage&amp; framebuffer, Point a, Point b, TGAColor color)
+&#123;
+    bool steep = (std::abs(a.x - b.x) &lt; std::abs(a.y - b.y));
+    if (steep)
+    &#123;
+        std::swap(a.x, a.y);
+        std::swap(b.x, b.y);
     &#125;
-    
-    unique_ptr&lt;TaskCheckHandler&gt; create(const string&amp; type) &#123;
-        if (auto it = registry_.find(type); it != registry_.end()) &#123;
-            return it-&gt;second();
-        &#125;
-        throw runtime_error(&quot;Unknown handler type: &quot; + type);
-    &#125;
-
-    static HandlerFactory&amp; instance() &#123;
-        static HandlerFactory factory;
-        return factory;
-    &#125;
-
-private:
-    unordered_map&lt;string, HandlerCreator&gt; registry_;
-&#125;;
-
-// 自动注册模板（避免手动注册）
-template &lt;typename T&gt;
-class HandlerRegistrar &#123;
-public:
-    explicit HandlerRegistrar(const string&amp; type) &#123;
-        HandlerFactory::instance().registerHandler(type, [] &#123;
-            return make_unique&lt;T&gt;();
-        &#125;);
-    &#125;
-&#125;;
-
-// --------------------- 具体处理器 ---------------------
-class ItemCheckHandler : public TaskCheckHandler &#123;
-public:
-    string handlerType() const override &#123; return &quot;item_check&quot;; &#125;
-    
-    string check(const PlayerState&amp; state, 
-                const TaskRequirement* req) override &#123;
-        // 从JSON动态获取配置
-        auto config = req-&gt;getConfig();
-        const string required = config[&quot;required_item&quot;];
+    if (a.x &gt; b.x)
+        std::swap(a, b);
+    for (int x = a.x; x &lt;= b.x; x++)
+    &#123;
+        float t = (x - a.x) / static_cast&lt;float&gt; (b.x - a.x);
+        int y = std::round(a.y + (b.y - a.y) * t);
         
-        // ...检测逻辑...
-        return &quot;&quot;;
+        Point P &#123;x, y&#125;;
+        if (steep)
+            framebuffer.set(P.y, P.x, color);
+        else
+            framebuffer.set(P.x, P.y, color);
+    &#125;
+&#125;
+</code></pre>
+<p>现在的写法还有优化空间，可以优化成下面代码</p>
+<pre><code class="language-cpp">void line(TGAImage&amp; framebuffer, Point a, Point b, TGAColor color)
+&#123;
+    bool steep = (std::abs(a.x - b.x) &lt; std::abs(a.y - b.y));
+    if (steep)
+    &#123;
+        std::swap(a.x, a.y);
+        std::swap(b.x, b.y);
+    &#125;
+    if (a.x &gt; b.x)
+        std::swap(a, b);
+    float y = a.y;
+    float x_len = static_cast&lt;float&gt;(b.x - a.x);
+    for (int x = a.x; x &lt;= b.x; x++)
+    &#123;
+        Point P &#123;x, y&#125;;
+        if (steep)
+            framebuffer.set(P.y, P.x, color);
+        else
+            framebuffer.set(P.x, P.y, color);
+
+        y += (b.y - a.y) / x_len;
+    &#125;
+&#125;
+</code></pre>
+<p>若是要去除浮点数运算，可以<a target="_blank" rel="noopener" href="https://haqr.eu/tinyrenderer/bresenham/#round-2">参考</a></p>
+<ul>
+<li>作业<br>读取.obj文件里的顶点和面的数据，渲染出每个面的线框。<br>.obj 文件一般是这样的结构</li>
+</ul>
+<pre><code class="language-obj">
+v 0.11526 0.700717 0.0677257
+v 0.114223 0.654606 0.0821706
+v 0.119952 0.67202 0.101202
+vt  0.711 0.753 -0.884
+vt  0.725 0.749 -0.889
+vt  0.736 0.760 -0.893
+# 6 vertices
+
+vt  0.644 0.154 0.599
+vt  0.632 0.188 0.600
+vt  0.640 0.183 0.600
+# 3 texture vertices
+
+vn  -0.771 0.070 0.633
+vn  0.343 0.015 0.939
+vn  0.313 0.538 0.783
+# 3 vertex normals
+
+f 6/1/6 1/2/1 2/3/4
+f 6/1/6 3/3/4 4/4/2
+f 2/2/3 3/3/4 5/2/1
+# 3 faces
+</code></pre>
+<p>v 开头的是顶点数据，后面的三个数代表这个顶点的 xyz 的值<br>vt 开头的是顶点的纹理数据，后面三个数的前两个数代表 uv 的值<br>vn 开头的是顶点法线的数据<br>f 开头的是三角面的数据，后面由三个顶点组成<br>比如 f 6&#x2F;1&#x2F;6 1&#x2F;2&#x2F;1 2&#x2F;3&#x2F;4<br>表示这个面由顶点6、1、2组成（每组的第一个代表顶点的索引号，按上面 v 数据的顺序来，从1开始）</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Zintey/tinyrenderer-learning/tree/main/Bresenham%E2%80%99s%20line%20drawing%20algorithm">源代码</a><br>为了更好的处理.obj文件，创建一个Model类来管理<br>model.h	定义Model类</p>
+<pre><code class="language-cpp">#pragma once
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;tuple&gt;
+#include &quot;geometry.h&quot;
+
+class Model &#123;
+    std::vector&lt;vec3&gt; verts;
+    std::vector&lt;vec3&gt; triangles;
+public:
+    Model(const std::string filename);
+    const int get_triangles_size() &#123;return triangles.size();&#125;
+    std::tuple&lt;const vec3&amp;, const vec3&amp;, const vec3&amp;&gt; get_triangle(int i) 
+    &#123;
+        return &#123;verts[triangles[i].data[0] - 1], verts[triangles[i].data[1] - 1], verts[triangles[i].data[2] - 1]&#125;;
     &#125;
 &#125;;
-// 注册处理器
-HandlerRegistrar&lt;ItemCheckHandler&gt; reg_item(&quot;item_check&quot;);
+</code></pre>
+<p>geometry.h 定义vec3</p>
+<pre><code class="language-cpp">#pragma once
+#include &lt;cmath&gt;
+#include &lt;cassert&gt;
+#include &lt;iostream&gt;
 
-// 其他处理器类似注册...
-
-// --------------------- 配置加载器 ---------------------
-class TaskConfigLoader &#123;
-public:
-    void load(const string&amp; filePath) &#123;
-        ifstream f(filePath);
-        config_ = json::parse(f);
-    &#125;
-
-    json getTaskConfig(const string&amp; taskId) const &#123;
-        return config_[&quot;tasks&quot;][taskId];
-    &#125;
-
-    vector&lt;string&gt; getChain(const string&amp; chainName) const &#123;
-        const string chainKey = chainName.empty() ? &quot;default_chain&quot; : chainName;
-        return config_[&quot;task_chains&quot;][chainKey].get&lt;vector&lt;string&gt;&gt;();
-    &#125;
-
-private:
-    json config_;
+template&lt;int n&gt; struct vec &#123;
+    double data[n] = &#123;&#125;;
+    double&amp; operator[] (const int i) &#123; assert(i &gt;= 0 &amp; i &lt; n); return data[i];&#125;
+    const double&amp; operator[] (const int i) const &#123; assert(i &gt;= 0 &amp; i &lt; n); return data[i];&#125;
 &#125;;
 
-// --------------------- 动态责任链 ---------------------
-class DynamicTaskChain &#123;
-public:
-    DynamicTaskChain(const vector&lt;string&gt;&amp; handlerTypes, 
-                    const json&amp; taskConfig) &#123;
-        for (const auto&amp; type : handlerTypes) &#123;
-            auto handler = HandlerFactory::instance().create(type);
-            // 动态绑定任务配置
-            dynamic_cast&lt;RequirementHolder*&gt;(handler.get())-&gt;setConfig(taskConfig[type]);
-            chain_.push_back(move(handler));
-        &#125;
-    &#125;
+template&lt;int n&gt; std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const vec&lt;n&gt;&amp; vec)
+&#123;
+    for (int i = 0; i &lt; n; i++) out &lt;&lt; vec[i] &lt;&lt; &#39; &#39;;
+    return out;
+&#125;
 
-    string execute(const PlayerState&amp; state) &#123;
-        for (auto&amp; handler : chain_) &#123;
-            if (string result = handler-&gt;check(state, nullptr); !result.empty()) &#123;
-                return result;
+template&lt;&gt; struct vec&lt;3&gt; &#123;
+    static constexpr int n = 3; 
+    union &#123;
+        double data[3] = &#123;&#125;;
+        struct &#123;double x, y, z;&#125;;
+    &#125;;
+    double&amp; operator[] (const int i) &#123; assert(i &gt;= 0 &amp; i &lt; n); return data[i];&#125;
+    const double&amp; operator[] (const int i) const &#123; assert(i &gt;= 0 &amp; i &lt; n); return data[i];&#125;
+&#125;;
+
+typedef vec&lt;3&gt; vec3;
+</code></pre>
+<p>model.cpp</p>
+<pre><code class="language-cpp">#include &quot;model.h&quot;
+#include &lt;fstream&gt;
+#include &lt;sstream&gt;
+Model::Model(const std::string filename)
+&#123;
+    std::ifstream file;
+    file.open(filename);
+    if (file.is_open())
+    &#123;
+        std::string line;
+        while(std::getline(file, line))
+        &#123;
+            if (line.empty()) continue;
+            std::istringstream iss(line);
+            char type;
+            iss &gt;&gt; type;
+            switch (type)
+            &#123;
+                case &#39;v&#39;:
+                &#123;
+                    vec3 vert;
+                    iss &gt;&gt; vert.x &gt;&gt; vert.y &gt;&gt; vert.z;
+                    verts.push_back(vert);
+                    break;
+                &#125;
+                case &#39;f&#39;:
+                &#123;
+                    vec3 triangle;
+                    char dummy_c;
+                    int dummy;
+                    iss &gt;&gt; triangle.data[0] &gt;&gt; dummy_c &gt;&gt; dummy &gt;&gt; dummy_c &gt;&gt; dummy;
+                    iss &gt;&gt; triangle.data[1] &gt;&gt; dummy_c &gt;&gt; dummy &gt;&gt; dummy_c &gt;&gt; dummy;
+                    iss &gt;&gt; triangle.data[2] &gt;&gt; dummy_c &gt;&gt; dummy &gt;&gt; dummy_c &gt;&gt; dummy;
+                    triangles.push_back(triangle);
+                    break;
+                &#125;
+                default:
+                    break;
             &#125;
         &#125;
-        return &quot;&quot;;
+        file.close();
+    &#125;   
+&#125;
+</code></pre>
+<p>main.cpp</p>
+<pre><code class="language-cpp">#include &lt;cmath&gt;
+#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+#include &lt;chrono&gt;
+#include &lt;iostream&gt;
+#include &quot;tgaimage.h&quot;
+#include &quot;model.h&quot;
+
+constexpr int width  = 800;
+constexpr int height = 800;
+
+constexpr TGAColor white   = &#123;255, 255, 255, 255&#125;; // attention, BGRA order
+constexpr TGAColor green   = &#123;  0, 255,   0, 255&#125;;
+constexpr TGAColor red     = &#123;  0,   0, 255, 255&#125;;
+constexpr TGAColor blue    = &#123;255, 128,  64, 255&#125;;
+constexpr TGAColor yellow  = &#123;  0, 200, 255, 255&#125;;
+
+struct Point &#123;
+    int x, y;
+    Point operator* (float f) const &#123;
+        return &#123;(int) std::round(x * f), (int) std::round(y * f)&#125;;
     &#125;
-
-private:
-    vector&lt;unique_ptr&lt;TaskCheckHandler&gt;&gt; chain_;
-    
-    // 配置绑定器
-    class RequirementHolder : public TaskRequirement &#123;
-    public:
-        void setConfig(const json&amp; config) &#123; config_ = config; &#125;
-        json getConfig() const override &#123; return config_; &#125;
-    private:
-        json config_;
-    &#125;;
-&#125;;
-
-// --------------------- 客户端接口 ---------------------
-class TaskSystem &#123;
-public:
-    TaskSystem() &#123;
-        loader_.load(&quot;tasks_config.json&quot;);
+    Point operator+ (const Point&amp; p) const &#123;
+        return &#123;x + p.x, y + p.y&#125;;
     &#125;
-
-    bool validateTask(const string&amp; taskId, const PlayerState&amp; state) &#123;
-        auto taskConfig = loader_.getTaskConfig(taskId);
-        auto chainName = taskConfig.value(&quot;chain&quot;, &quot;&quot;);
-        auto chainDef = loader_.getChain(chainName);
-        
-        DynamicTaskChain chain(chainDef, taskConfig[&quot;requirements&quot;]);
-        string result = chain.execute(state);
-        
-        if (!result.empty()) &#123;
-            logFailure(taskId, result);
-            return false;
-        &#125;
-        return true;
-    &#125;
-
-private:
-    TaskConfigLoader loader_;
-    
-    void logFailure(const string&amp; taskId, const string&amp; reason) &#123;
-        cout &lt;&lt; &quot;[TASK FAIL] &quot; &lt;&lt; taskId &lt;&lt; &quot; - &quot; &lt;&lt; reason &lt;&lt; endl;
+    Point operator- (const Point&amp; p) const &#123;
+        return &#123;x - p.x, y - p.y&#125;;
     &#125;
 &#125;;
 
-// --------------------- 使用示例 ---------------------
-int main() &#123;
-    TaskSystem system;
-    PlayerState player;
-    
-    // 验证任务
-    bool success = system.validateTask(&quot;t001&quot;, player);
-    if (success) &#123;
-        cout &lt;&lt; &quot;屠龙任务完成！&quot; &lt;&lt; endl;
+void line(TGAImage&amp; framebuffer, Point a, Point b, TGAColor color,int seg = 100)
+&#123;
+    bool steep = (std::abs(a.x - b.x) &lt; std::abs(a.y - b.y));
+    if (steep)
+    &#123;
+        std::swap(a.x, a.y);
+        std::swap(b.x, b.y);
     &#125;
+    if (a.x &gt; b.x)
+        std::swap(a, b);
+    float y = a.y;
+    float x_len = static_cast&lt;float&gt;(b.x - a.x);
+    for (int x = a.x; x &lt;= b.x; x++)
+    &#123;
+        
+        Point P &#123;x, y&#125;;
+        if (steep)
+            framebuffer.set(P.y, P.x, color);
+        else
+            framebuffer.set(P.x, P.y, color);
+
+        y += (b.y - a.y) / x_len;
+    &#125;
+&#125;
+
+Point project(vec3 v)
+&#123;
+    return &#123;static_cast&lt;int&gt;((v.x + 1) * width / 2.0), 
+        static_cast&lt;int&gt;((v.y + 1) * height / 2.0)&#125;;
+&#125;
+
+int main(int argc, char** argv) &#123;
+    TGAImage framebuffer(width, height, TGAImage::RGB);
+    Model model(argv[1]);
     
+    std::srand(std::time(&#123;&#125;));
+    auto start = std::chrono::steady_clock::now();
+
+    for (int i = 0; i &lt; model.get_triangles_size(); i++)
+    &#123;
+        auto [v1, v2, v3] = model.get_triangle(i);
+        line(framebuffer, project(v1), project(v2), red);
+        line(framebuffer, project(v1), project(v3), red);
+        line(framebuffer, project(v2), project(v3), red);
+        // std::cout &lt;&lt; &quot;triangle &quot; &lt;&lt; i &lt;&lt; &quot;:\n&quot;;
+        // std::cout &lt;&lt; v1 &lt;&lt; std::endl;
+        // std::cout &lt;&lt; v2 &lt;&lt; std::endl;
+        // std::cout &lt;&lt; v3 &lt;&lt; std::endl; 
+    &#125;
+
+    auto end = std::chrono::steady_clock::now();
+    framebuffer.write_tga_file(&quot;framebuffer.tga&quot;);
+    auto duration = std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(end - start);
+    std::cout &lt;&lt; std::chrono::duration_cast&lt;std::chrono::milliseconds&gt;(duration).count() &lt;&lt; &quot; ms&quot; &lt;&lt; std::endl;
+    system(&quot;start framebuffer.tga&quot;);
     return 0;
 &#125;
 </code></pre>
-<hr>
-<h3 id="关键设计解析（生产级标准）"><a href="#关键设计解析（生产级标准）" class="headerlink" title="关键设计解析（生产级标准）"></a>关键设计解析（生产级标准）</h3><ol>
-<li><p><strong>三重解耦架构</strong>  </p>
-<ul>
-<li><strong>数据层</strong>：JSON 配置文件（完全独立）  </li>
-<li><strong>逻辑层</strong>：处理器注册机制（新增处理器无需修改工厂）  </li>
-<li><strong>执行层</strong>：动态责任链构建（运行时按需组装）</li>
-</ul>
-</li>
-<li><p><strong>自动处理器注册</strong>  </p>
-<pre><code class="language-cpp">template &lt;typename T&gt;
-class HandlerRegistrar &#123;
-  explicit HandlerRegistrar(const string&amp; type) &#123;
-    HandlerFactory::instance().registerHandler(type, [] &#123;
-      return make_unique&lt;T&gt;();
-    &#125;);
-  &#125;
-&#125;;
-</code></pre>
-<ul>
-<li>通过模板静态注册，避免 <code>if-else</code> 工厂分支  </li>
-<li>新增处理器只需添加一行注册代码</li>
-</ul>
-</li>
-<li><p><strong>动态配置绑定</strong>  </p>
-<pre><code class="language-cpp">class RequirementHolder : public TaskRequirement &#123;
-  json getConfig() const override &#123; return config_; &#125;
-&#125;;
-</code></pre>
-<ul>
-<li>通过中间层将 JSON 配置注入处理器  </li>
-<li>处理器无需知道配置来源，只需调用 <code>getConfig()</code></li>
-</ul>
-</li>
-<li><p><strong>链式配置继承</strong>  </p>
-<pre><code class="language-json">&quot;t002&quot;: &#123;
-  &quot;chain&quot;: &quot;simple_chain&quot;  // 覆盖默认链
-&#125;
-</code></pre>
-<ul>
-<li>支持任务级自定义处理链  </li>
-<li>未指定时回退到默认链</li>
-</ul>
-</li>
-<li><p><strong>防御性编程</strong>  </p>
-<pre><code class="language-cpp">auto chainName = taskConfig.value(&quot;chain&quot;, &quot;&quot;);
-</code></pre>
-<ul>
-<li>安全访问 JSON 字段（避免崩溃）  </li>
-<li>提供默认值保障健壮性</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h3 id="性能优化策略"><a href="#性能优化策略" class="headerlink" title="性能优化策略"></a>性能优化策略</h3><ol>
-<li><p><strong>链缓存机制</strong>  </p>
-<pre><code class="language-cpp">unordered_map&lt;string, unique_ptr&lt;DynamicTaskChain&gt;&gt; chainCache_;
-
-DynamicTaskChain* getChain(const string&amp; chainId) &#123;
-  if (auto it = chainCache_.find(chainId); it != chainCache_.end()) &#123;
-    return it-&gt;second.get();
-  &#125;
-  // ...创建并缓存新链...
-&#125;
-</code></pre>
-</li>
-<li><p><strong>处理器无状态化</strong>  </p>
-<ul>
-<li>所有处理器设计为无状态（<code>stateless</code>）  </li>
-<li>可全局单例复用，减少内存开销</li>
-</ul>
-</li>
-<li><p><strong>条件短路优化</strong>  </p>
-<pre><code class="language-json">&quot;task_chains&quot;: &#123;
-  &quot;optimized_chain&quot;: [
-    &#123;&quot;handler&quot;: &quot;item_check&quot;, &quot;short_circuit&quot;: true&#125;,
-    &quot;duration_check&quot;,
-    &quot;level_check&quot;
-  ]
-&#125;
-</code></pre>
-<ul>
-<li>配置支持短路标记（快速失败）  </li>
-<li>优先级高的检测前置</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h3 id="设计验证指标"><a href="#设计验证指标" class="headerlink" title="设计验证指标"></a>设计验证指标</h3><ol>
-<li><p><strong>扩展性测试</strong>  </p>
-<ul>
-<li>新增任务：仅需修改 JSON 文件  </li>
-<li>新增处理器：  <pre><code class="language-cpp">class NewHandler : public TaskCheckHandler &#123;...&#125;;
-HandlerRegistrar&lt;NewHandler&gt; reg_new(&quot;new_check&quot;);
-</code></pre>
-</li>
-</ul>
-</li>
-<li><p><strong>性能压测</strong>  </p>
-<pre><code class="language-bash"># 千任务万次检测
-./task_system --benchmark --task-count=1000 --iterations=10000
-</code></pre>
-</li>
-<li><p><strong>热重载能力</strong>  </p>
-<pre><code class="language-cpp">void reloadConfig() &#123;
-  loader_.reload(&quot;tasks_config.json&quot;);
-  chainCache_.clear(); // 清除旧链缓存
-&#125;
-</code></pre>
-</li>
-</ol>
-<blockquote>
-<p><strong>严苛警告</strong>：任何绕过此配置系统的硬编码都是架构犯罪！本设计通过 ISO C++ Core Guidelines 认证，符合 AUTOSAR C++14 规范。</p>
-</blockquote>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1687019603@qq.com </span>
