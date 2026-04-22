@@ -17,7 +17,7 @@
 <meta property="og:image" content="http://example.com/images/2026/04/22/scanline_rasterization.png">
 <meta property="og:image" content="http://example.com/images/2026/04/22/rasterization_bad.png">
 <meta property="article:published_time" content="2026-04-22T06:39:39.694Z">
-<meta property="article:modified_time" content="2026-04-22T13:11:20.788Z">
+<meta property="article:modified_time" content="2026-04-22T13:19:36.515Z">
 <meta property="article:author" content="追">
 <meta property="article:tag" content="学习笔记">
 <meta property="article:tag" content="计算机图形学">
@@ -467,7 +467,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2026-04-22 21:11:20'>2026-04-22 14:39</time>
+            发布时间 : <time class="date" title='最后更新: 2026-04-22 21:19:36'>2026-04-22 14:39</time>
         
     </div>
     <div class="article-meta">
@@ -515,9 +515,9 @@
 <li><a href="#%E4%B8%89%E7%94%BB%E4%B8%89%E8%A7%92%E5%BD%A2%E5%85%89%E6%A0%85%E5%8C%96-triangle-rasterization">三、画三角形,光栅化 Triangle rasterization</a></li>
 </ul>
 <hr>
-<p><a id="Home"></a></p>
+<p><a id="一简介-home"></a></p>
 <h2 id="一、简介-Home"><a href="#一、简介-Home" class="headerlink" title="一、简介 Home"></a>一、简介 Home</h2><p>这一章主要讲了这门课程 的目标，尽可能少的用第三方库，用cpp实现一个软渲染器。（仅提供了一个简单处理.tga图片格式的库）<br>.tag 文件可以用ps打开，但ps打开比较慢，可以用 <a target="_blank" rel="noopener" href="https://www.xnview.com/en/xnview-mp/">xnview</a> 打开。<br>最初的代码文件可从<a target="_blank" rel="noopener" href="https://github.com/ssloy/tinyrenderer/tree/706b2dfecff65daeb93de568ee2c2bd87f277860">github</a>上下载<br>最后大概代码量为500行。</p>
-<p><a id="Bresenham"></a></p>
+<p><a id="二画线-bresenhams-line-drawing-algorithm"></a></p>
 <h2 id="二、画线-Bresenham’s-line-drawing-algorithm"><a href="#二、画线-Bresenham’s-line-drawing-algorithm" class="headerlink" title="二、画线 Bresenham’s line drawing algorithm"></a>二、画线 Bresenham’s line drawing algorithm</h2><p>这一章实现了一个线渲染器。<br>如何画一条线？<br>现在有点 $A(xa,ya)$ 和点 $B(xb,yb)$，要在屏幕上画出线段AB，需要知道除AB之外的在线段上的点。</p>
 <ul>
 <li>思路1<br>我们假设线段AB 由屏幕上的 $n$ 个点组成，<br>那么第$i$个点$P_i$的坐标就是 $(xa + (xb - xa) * (\frac in), yb + (yb - ya) * (\frac in))$<br>这也就是插值的思想<br>然后我们只要把这 $n$ 个点画出来就行了。</li>
@@ -736,7 +736,8 @@ int main(int argc, char** argv) &#123;
     return 0;
 &#125;
 </code></pre>
-<p><img src="/images/2026/04/22/wirerenderer.png" alt="wirerenderer"><br><a id="Rasterization"></a></p>
+<p><img src="/images/2026/04/22/wirerenderer.png" alt="wirerenderer"></p>
+<p><a id="三画三角形光栅化-triangle-rasterization"></a></p>
 <h2 id="三、画三角形-光栅化-Triangle-rasterization"><a href="#三、画三角形-光栅化-Triangle-rasterization" class="headerlink" title="三、画三角形,光栅化 Triangle rasterization"></a>三、画三角形,光栅化 Triangle rasterization</h2><ul>
 <li><strong>扫描线光栅化 Scanline rasterization</strong><br>已经可以画线框三角形了,现在我们要把三角形填色<br>前面给线填色,我们其实是找到对应的点,然后填色<br>给三角形填色,则是找到对应的线,然后填色<br>一个三角形由三个点组成,我们假设为点$a,b,c$<br>找到 $a,b,c$ 中 $y$ 值最高的和最低的 $y_{max},y_{min}$<br>我们需要找到 $n$ 条线, $n &#x3D; y_{max} - y_{min}$ , 即三角形每覆盖的一个 $y$ 值,对应一条线,这条线从三角形当前 $y$ 值的左边到右边</li>
 </ul>
