@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>tinyrenderer cpp实现软渲染器 学习笔记 | Hexo</title>
-  <meta name="keywords" content=" 计算机图形学 , 学习笔记 ">
+  <meta name="keywords" content=" 学习笔记 , 计算机图形学 ">
   <meta name="description" content="tinyrenderer cpp实现软渲染器 学习笔记 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="tinyrenderer官方教学链接 目录  一、简介 Home 二、画线 Bresenham’s line drawing algorithm 三、画三角形,光栅化 Triangle rasterization    一、简介 Home这一章主要讲了这门课程 的目标，尽可能少的用第三方库，用cpp实现一个软渲染器。（仅提供了一个简单处理.tga图片格式的库）.tag 文件可以用ps打开，但ps打">
@@ -13,16 +13,16 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="tinyrenderer官方教学链接 目录  一、简介 Home 二、画线 Bresenham’s line drawing algorithm 三、画三角形,光栅化 Triangle rasterization    一、简介 Home这一章主要讲了这门课程 的目标，尽可能少的用第三方库，用cpp实现一个软渲染器。（仅提供了一个简单处理.tga图片格式的库）.tag 文件可以用ps打开，但ps打">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/wirerenderer.png">
-<meta property="og:image" content="http://example.com/scanline_rasterization.png">
-<meta property="og:image" content="http://example.com/rasterization_bad.png">
+<meta property="og:image" content="http://example.com/images/2026/04/22/wirerenderer.png">
+<meta property="og:image" content="http://example.com/images/2026/04/22/scanline_rasterization.png">
+<meta property="og:image" content="http://example.com/images/2026/04/22/rasterization_bad.png">
 <meta property="article:published_time" content="2026-04-22T06:39:39.694Z">
-<meta property="article:modified_time" content="2026-04-22T13:09:02.564Z">
+<meta property="article:modified_time" content="2026-04-22T13:11:20.788Z">
 <meta property="article:author" content="追">
-<meta property="article:tag" content="计算机图形学">
 <meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="计算机图形学">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/wirerenderer.png">
+<meta name="twitter:image" content="http://example.com/images/2026/04/22/wirerenderer.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -306,7 +306,7 @@
         
         <a  class="全部文章 边学边记 "
            href="/2026/04/22/tinyrenderer-cpp%E5%AE%9E%E7%8E%B0%E8%BD%AF%E6%B8%B2%E6%9F%93%E5%99%A8-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"
-           data-tag="计算机图形学,学习笔记"
+           data-tag="学习笔记,计算机图形学"
            data-author="" >
             <span class="post-title" title="tinyrenderer cpp实现软渲染器 学习笔记">tinyrenderer cpp实现软渲染器 学习笔记</span>
             <span class="post-date" title="2026-04-22 14:39:39">2026/04/22</span>
@@ -351,7 +351,7 @@
         
         <a  class="全部文章 "
            href="/2025/07/25/Godot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"
-           data-tag="学习笔记,godot"
+           data-tag="godot,学习笔记"
            data-author="" >
             <span class="post-title" title="Godot学习笔记01">Godot学习笔记01</span>
             <span class="post-date" title="2025-07-25 18:39:09">2025/07/25</span>
@@ -458,16 +458,16 @@
         <span class="tag">
             <i class="iconfont icon-tag"></i>
             
-            <a class="color2">计算机图形学</a>
-            
             <a class="color5">学习笔记</a>
+            
+            <a class="color2">计算机图形学</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2026-04-22 21:09:02'>2026-04-22 14:39</time>
+            发布时间 : <time class="date" title='最后更新: 2026-04-22 21:11:20'>2026-04-22 14:39</time>
         
     </div>
     <div class="article-meta">
@@ -736,7 +736,7 @@ int main(int argc, char** argv) &#123;
     return 0;
 &#125;
 </code></pre>
-<p><img src="/wirerenderer.png" alt="wirerenderer"><br><a id="Rasterization"></a></p>
+<p><img src="/images/2026/04/22/wirerenderer.png" alt="wirerenderer"><br><a id="Rasterization"></a></p>
 <h2 id="三、画三角形-光栅化-Triangle-rasterization"><a href="#三、画三角形-光栅化-Triangle-rasterization" class="headerlink" title="三、画三角形,光栅化 Triangle rasterization"></a>三、画三角形,光栅化 Triangle rasterization</h2><ul>
 <li><strong>扫描线光栅化 Scanline rasterization</strong><br>已经可以画线框三角形了,现在我们要把三角形填色<br>前面给线填色,我们其实是找到对应的点,然后填色<br>给三角形填色,则是找到对应的线,然后填色<br>一个三角形由三个点组成,我们假设为点$a,b,c$<br>找到 $a,b,c$ 中 $y$ 值最高的和最低的 $y_{max},y_{min}$<br>我们需要找到 $n$ 条线, $n &#x3D; y_{max} - y_{min}$ , 即三角形每覆盖的一个 $y$ 值,对应一条线,这条线从三角形当前 $y$ 值的左边到右边</li>
 </ul>
@@ -758,7 +758,7 @@ int main(int argc, char** argv) &#123;
     &#125;
 &#125;
 </code></pre>
-<p><img src="/scanline_rasterization.png" alt="scanline_rasterization"></p>
+<p><img src="/images/2026/04/22/scanline_rasterization.png" alt="scanline_rasterization"></p>
 <ul>
 <li><strong>现代光栅化方法</strong><br>扫描线的方法,已经可以实现光栅化了<br>但只能按顺序执行,所以不能放到GPU上运行<br>所以设计了另一种方法,用伪代码可以表示成这样</li>
 </ul>
@@ -784,7 +784,7 @@ int main(int argc, char** argv) &#123;
     &#125;
 &#125;;
 </code></pre>
-<p>我们把前面用线渲染器渲染的模型用现在的来填色,把每个三角形随机填色<br><img src="/rasterization_bad.png" alt="rasterization_bad"><br>发现脸部似乎不太对劲<br>这是因为现在我们没有从后往前画,也没有剔除在背面的面,所以有些后面的面覆盖了前面的面</p>
+<p>我们把前面用线渲染器渲染的模型用现在的来填色,把每个三角形随机填色<br><img src="/images/2026/04/22/rasterization_bad.png" alt="rasterization_bad"><br>发现脸部似乎不太对劲<br>这是因为现在我们没有从后往前画,也没有剔除在背面的面,所以有些后面的面覆盖了前面的面</p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1687019603@qq.com </span>
