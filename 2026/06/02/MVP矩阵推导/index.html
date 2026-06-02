@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>结构型模式 | Hexo</title>
-  <meta name="keywords" content=" 编程思想 , 面向对象 ">
-  <meta name="description" content="结构型模式 | Hexo">
+  <title>MVP矩阵推导 | Hexo</title>
+  <meta name="keywords" content=" 学习笔记 , 计算机图形学 ">
+  <meta name="description" content="MVP矩阵推导 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="tinyrenderer官方教学链接 目录  一、简介 Home 二、画线 Bresenham’s line drawing algorithm 三、画三角形,光栅化 Triangle rasterization    一、简介 Home这一章主要讲了这门课程 的目标，尽可能少的用第三方库，用cpp实现一个软渲染器。（仅提供了一个简单处理.tga图片格式的库）.tga 文件可以用ps打开，但ps打">
 <meta property="og:type" content="article">
@@ -447,9 +447,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-结构型模式" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-MVP矩阵推导" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">结构型模式</h1>
+        <h1 class="article-title">MVP矩阵推导</h1>
     
     <div class="article-meta">
         
@@ -459,21 +459,21 @@
         <span class="tag">
             <i class="iconfont icon-tag"></i>
             
-            <a class="color5">编程思想</a>
+            <a class="color5">学习笔记</a>
             
-            <a class="color5">面向对象</a>
+            <a class="color2">计算机图形学</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2025-07-19 19:57:41'>2025-07-19 18:35</time>
+            发布时间 : <time class="date" title='最后更新: 2026-06-02 16:07:16'>2026-06-02 16:04</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:267</span>
+        <span>字数:2.6k</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -492,7 +492,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F-%E5%92%8C-%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F"><span class="toc-text">1. 适配器模式 和 桥接模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F"><span class="toc-text">2. 组合模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">适用场景</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">3. 装饰器模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F-%E5%92%8C-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-text">4.外观模式 和 代理模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F"><span class="toc-text">5. 享元模式</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81-%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E4%BB%8E%E5%B1%80%E9%83%A8%E7%A9%BA%E9%97%B4%E5%88%B0%E4%B8%96%E7%95%8C%E7%A9%BA%E9%97%B4-Model-Matrix"><span class="toc-text">一、 第一步：从局部空间到世界空间 (Model Matrix)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E4%BB%8E%E4%B8%96%E7%95%8C%E7%A9%BA%E9%97%B4%E5%88%B0%E6%91%84%E5%83%8F%E6%9C%BA%E7%A9%BA%E9%97%B4-View-Matrix"><span class="toc-text">二、 第二步：从世界空间到摄像机空间 (View Matrix)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81-%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E4%BB%8E%E6%91%84%E5%83%8F%E6%9C%BA%E7%A9%BA%E9%97%B4%E5%88%B0%E6%A0%87%E5%87%86%E8%AE%BE%E5%A4%87%E5%9D%90%E6%A0%87%E7%B3%BB-Projection-Matrix"><span class="toc-text">三、 第三步：从摄像机空间到标准设备坐标系 (Projection Matrix)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81-%E9%80%8F%E8%A7%86%E9%99%A4%E6%B3%95%E4%B8%8E%E8%A7%86%E5%8F%A3%E8%BD%AC%E6%8D%A2-Viewport"><span class="toc-text">四、 透视除法与视口转换 (Viewport)</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -508,31 +508,166 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="1-适配器模式-和-桥接模式"><a href="#1-适配器模式-和-桥接模式" class="headerlink" title="1. 适配器模式 和 桥接模式"></a>1. 适配器模式 和 桥接模式</h2><p><img src="/images/2025/07/19/11a07d7e-e3d0-4bd9-8917-64d6c061390d.png" alt="适配器模式与桥接模式的区别.png"></p>
+        <p>如何将一个3d模型，渲染到一个2d屏幕上？</p>
+<p>3d模型由一堆顶点数据组成，所以要做的就是把一堆顶点数据（x,y,z）映射到2d屏幕对应的像素上。可以把这个降维的过程拆成三步核心矩阵变换（也就是MVP矩阵），再加上最后的透视除法与视口变换来实现：</p>
+<ol>
+<li><strong>模型变换 (Model Matrix)</strong>：局部空间 -&gt; 世界空间</li>
+<li><strong>观察变换 (View Matrix)</strong>：世界空间 -&gt; 摄像机空间</li>
+<li><strong>投影变换 (Projection Matrix)</strong>：摄像机空间 -&gt; 裁剪空间</li>
+</ol>
+<p>下面是具体的矩阵推导与实现过程。</p>
+<hr>
+<h3 id="一、-第一步：从局部空间到世界空间-Model-Matrix"><a href="#一、-第一步：从局部空间到世界空间-Model-Matrix" class="headerlink" title="一、 第一步：从局部空间到世界空间 (Model Matrix)"></a>一、 第一步：从局部空间到世界空间 (Model Matrix)</h3><p>3d模型的原数据，一般从建模软件中导出，所以它的顶点数据都是按照原本的坐标系（模型中心为原点）定义的。先要把它们转换到我们要渲染的场景坐标系（世界空间）中。</p>
+<p>这需要<strong>缩放（Scale）</strong>、<strong>旋转（Rotation）</strong> 和 <strong>平移（Translation）</strong>。因为矩阵乘法不满足交换律，应用顺序必须是：<strong>先缩放，再旋转，最后平移</strong>。</p>
+<p><strong>为什么要引入齐次坐标？</strong><br>缩放和旋转都可以用 $3 \times 3$ 的矩阵乘法完成，但平移不行。假设要把点 $(x, y, z)$ 平移 $(T_x, T_y, T_z)$，单纯的 $3 \times 3$ 矩阵只能做 $x,y,z$ 的线性组合，变不出一个常数项加法。<br>为了把平移也融合进统一的矩阵乘法中，我们给坐标加上第四个维度 $w&#x3D;1$（齐次坐标），并升级为 $4 \times 4$ 矩阵。举个平移的例子：</p>
+<p>$$\begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; T_x \ 0 &amp; 1 &amp; 0 &amp; T_y \ 0 &amp; 0 &amp; 1 &amp; T_z \ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} \begin{bmatrix} x \ y \ z \ 1 \end{bmatrix} &#x3D; \begin{bmatrix} x + T_x \ y + T_y \ z + T_z \ 1 \end{bmatrix}$$</p>
+<p>这样，平移就被完美融入到了矩阵乘法中。</p>
+<p><strong>旋转矩阵推导</strong>：<br>以二维平面绕原点旋转 $\theta$ 角为例，原坐标 $x &#x3D; r \cos\alpha, y &#x3D; r \sin\alpha$。旋转后 $x’ &#x3D; r \cos(\alpha+\theta) &#x3D; x \cos\theta - y \sin\theta$，同理 $y’ &#x3D; x \sin\theta + y \cos\theta$。放到三维中绕Z轴旋转，Z坐标不变，补全为 $4 \times 4$ 齐次矩阵即可。X、Y轴同理。</p>
+<pre><code class="language-cpp">mat&lt;4, 4, double&gt; gl::get_pitch_matrix(double pitch) &#123;
+    return &#123;
+        &#123;1,               0,                0, 0&#125;,
+        &#123;0, std::cos(pitch), -std::sin(pitch), 0&#125;,
+        &#123;0, std::sin(pitch),  std::cos(pitch), 0&#125;,
+        &#123;0,               0,                0, 1&#125;
+    &#125;;
+&#125;
+mat&lt;4, 4, double&gt; gl::get_yaw_matrix(double yaw) &#123;
+    return &#123;
+        &#123; std::cos(yaw), 0, std::sin(yaw), 0&#125;,
+        &#123;             0, 1,             0, 0&#125;,
+        &#123;-std::sin(yaw), 0, std::cos(yaw), 0&#125;,
+        &#123;             0, 0,             0, 1&#125;
+    &#125;;
+&#125;
+mat&lt;4, 4, double&gt; gl::get_roll_matrix(double roll) &#123;
+    return &#123;
+        &#123;std::cos(roll), -std::sin(roll), 0, 0&#125;,
+        &#123;std::sin(roll),  std::cos(roll), 0, 0&#125;,
+        &#123;             0,               0, 1, 0&#125;,
+        &#123;             0,               0, 0, 1&#125;
+    &#125;;
+&#125;
+
+// 得到Model矩阵，从模型空间到世界空间
+mat&lt;4, 4, double&gt; gl::get_model_matrix(Transform transform) &#123;
+    mat&lt;4, 4&gt; P, R, S; // 平移 旋转 缩放矩阵
+    P = mat&lt;4, 4, double&gt;::identity();
+    R = mat&lt;4, 4, double&gt;::identity();
+    S = mat&lt;4, 4, double&gt;::identity();
+    
+    P.set_col(3, embed4(transform.position));
+    S[0][0] = transform.scale.x;
+    S[1][1] = transform.scale.y;
+    S[2][2] = transform.scale.z;
+    
+    R = get_pitch_matrix(transform.rotation[0]) // 旋转矩阵 由 pitch yaw roll x/y/z三个轴的旋转组成
+      * get_yaw_matrix(transform.rotation[1])
+      * get_roll_matrix(transform.rotation[2]);
+      
+    return P * R * S;
+&#125;
+</code></pre>
+<hr>
+<h3 id="二、-第二步：从世界空间到摄像机空间-View-Matrix"><a href="#二、-第二步：从世界空间到摄像机空间-View-Matrix" class="headerlink" title="二、 第二步：从世界空间到摄像机空间 (View Matrix)"></a>二、 第二步：从世界空间到摄像机空间 (View Matrix)</h3><p>渲染画面需要一个观察视角。观察矩阵的核心逻辑不是移动摄像机，而是<strong>保持摄像机在原点不动，将整个世界反向移动和旋转，使目标出现在摄像机的正前方</strong>。</p>
+<p>在摄像机空间中，我们规定摄像机位于原点 $(0,0,0)$，且看向 $-Z$ 轴方向。</p>
+<ol>
+<li><strong>确定摄像机坐标轴（世界空间下）：</strong></li>
+</ol>
 <ul>
-<li>适配器模式是“翻译官”：让不兼容的旧系统能在新接口下工作。</li>
-<li>桥接模式是“桥梁结构”：让抽象和实现可以独立扩展，互不影响。</li>
+<li>需要：摄像机位置 <code>eye</code>，观察目标 <code>target</code>，上方向 <code>up</code>。</li>
+<li><strong>Z轴</strong>：摄像机看向 <code>-Z</code>，所以正Z轴应该指向摄像机背后：$Z &#x3D; \text{normalize}(eye - target)$。</li>
+<li><strong>X轴</strong>：右方向，通过叉乘得到：$X &#x3D; \text{normalize}(up \times Z)$。</li>
+<li><strong>Y轴</strong>：正上方向，确保三个轴正交：$Y &#x3D; \text{normalize}(Z \times X)$。</li>
 </ul>
-<hr>
-<h2 id="2-组合模式"><a href="#2-组合模式" class="headerlink" title="2. 组合模式"></a>2. 组合模式</h2><ul>
-<li><h4 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h4><ul>
-<li>表示树状结构的数据（如文件系统、UI 树、组织结构、菜单栏等）</li>
-<li>希望客户代码可以一致地处理叶子对象和容器对象</li>
-<li>希望组合对象能够递归地包含子对象</li>
+<ol start="2">
+<li><strong>构建View矩阵：</strong><br>我们要将世界坐标转换到摄像机坐标系。这等于求“将摄像机放到世界中”的逆变换。<br>摄像机在世界中的矩阵 $M &#x3D; T \cdot R$。<br>所以观察矩阵 $V &#x3D; M^{-1} &#x3D; (T \cdot R)^{-1} &#x3D; R^{-1} \cdot T^{-1}$。</li>
+</ol>
+<ul>
+<li>$T^{-1}$ 是将世界平移 $-eye$ 的距离。</li>
+<li>$R^{-1}$ 是将世界旋转以对齐坐标轴。因为摄像机的旋转矩阵是由三个互相垂直的单位向量 $X, Y, Z$ 构成的正交矩阵，<strong>正交矩阵的逆矩阵等于其转置</strong>，所以求逆极其简单。</li>
 </ul>
-</li>
+<p>最后 <code>View = rotation * transform</code>。这里是先平移再旋转，因为旋转是沿原点旋转的，先旋转再平移是错的。</p>
+<pre><code class="language-cpp">// 得到View矩阵，从世界空间到摄像机空间，摄像机将对准target点，且target与摄像机的连线为新的z轴
+// 摄像机空间里，摄像机位于原点，朝向z的负半轴
+void gl::lookat(const vec3f eye, const vec3f target, const vec3f up) &#123;
+    vec3f z = (eye - target).normalize(); // 指向摄像机背后
+    vec3f x = up.cross(z).normalize();
+    vec3f y = z.cross(x).normalize();     // 得到摄像机坐标系的x/y/z轴
+
+    /*
+    View矩阵是将摄像机放到原点，且朝向target，把朝向设为负z轴
+    上面已经得到了摄像机的xyz轴
+    下面要计算把摄像机移到原点的矩阵transform 和 旋转到正确朝向的矩阵 rotation
+    transform 很简单，其平移项就等于 -eye的坐标
+    rotation 不好求，但rotation的逆矩阵，也就是从原坐标系到摄像机坐标系的旋转矩阵好求
+    我们求出后只要求其转置就行了
+    最后View = rotation * transform 这里是先平移再旋转，因为旋转是沿原点旋转的，先旋转再平移是错的
+    */
+    mat&lt;4, 4&gt; transform = mat&lt;4, 4&gt;::identity();
+    mat&lt;4, 4&gt; rotation = mat&lt;4, 4&gt;::identity();
+    
+    transform.set_col(3, embed4(-eye, 1.0));
+    
+    rotation.set_col(0, embed4(x, 0.0));
+    rotation.set_col(1, embed4(y, 0.0));
+    rotation.set_col(2, embed4(z, 0.0)); // 先得到原坐标系旋转到摄像机坐标系的旋转矩阵
+    
+    rotation = transpose(rotation); // 正交矩阵的逆矩阵等于其转置
+    
+    View = rotation * transform;
+&#125;
+</code></pre>
+<hr>
+<h3 id="三、-第三步：从摄像机空间到标准设备坐标系-Projection-Matrix"><a href="#三、-第三步：从摄像机空间到标准设备坐标系-Projection-Matrix" class="headerlink" title="三、 第三步：从摄像机空间到标准设备坐标系 (Projection Matrix)"></a>三、 第三步：从摄像机空间到标准设备坐标系 (Projection Matrix)</h3><p>在现实生活中，我们看东西是近大远小的，这是透视。为了实现透视效果，我们定义摄像机看到的东西的范围是一个视锥体（Frustum）。在这个视锥体内的所有三维坐标，最终会被压缩映射到一个 $[-1, 1]$ 的标准立方体（NDC）中。</p>
+<p><img src="/images/2026/06/02/c19382cb-5592-48df-a740-7565f54bd432.png" alt="左视锥，右为NDC，图片引用自https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_52133989&#x2F;article&#x2F;details&#x2F;134118249"></p>
+<p><strong>通过相似三角形推导X和Y的变换：</strong><br>从侧面看Y-Z平面，摄像机在原点看向负Z轴。假设近平面距离为 $n$（即 $z &#x3D; -n$）。<br>视锥内有一顶点，其y坐标为 $y$，它投影在近平面上的高度设为 $y’$。由相似三角形可得：</p>
+<p>$$\frac{y’}{-n} &#x3D; \frac{y}{z} \Rightarrow y’ &#x3D; \frac{-n \cdot y}{z}$$</p>
+<p>近平面的总可视高度 $H &#x3D; 2 \cdot n \cdot \tan(\frac{fov_y}{2})$。为了把坐标映射到 $[-1, 1]$，我们要把 $y’$ 除以半高：</p>
+<p>$$y_{ndc} &#x3D; \frac{y’}{n \cdot \tan(fov_y &#x2F; 2)} &#x3D; \frac{-n \cdot y &#x2F; z}{n \cdot \tan(fov_y &#x2F; 2)} &#x3D; \frac{y}{-z \cdot \tan(fov_y &#x2F; 2)}$$</p>
+<p>这时我们发现，最后都要除以一个 $-z$。为了利用硬件管线，我们<strong>把 $-z$ 存到齐次坐标的 $w$ 分量里</strong>，这也就是矩阵第4行 <code>[0, 0, -1, 0]</code> 的作用。硬件后续会自动把 $x,y,z$ 除以 $w$。<br>所以投影矩阵只需算出除以 $-z$ 之前的值 $y_{clip}$ 即可：</p>
+<p>$$y_{clip} &#x3D; \frac{y}{\tan(fov_y &#x2F; 2)}$$</p>
+<p>X方向同理，只是要多除一个宽高比 $aspect_ratio$。</p>
+<p><strong>Z方向的映射：</strong><br>深度信息保留为 $z_{clip} &#x3D; A \cdot z + B$，解方程让 $z&#x3D;-near$ 时 NDC为 $-1$，$z&#x3D;-far$ 时 NDC为 $1$，求出 $A$ 和 $B$。</p>
+<pre><code class="language-cpp">// 得到Projection矩阵 从摄像机空间到标准设备坐标NDC   
+// 把近平面为z=-near，远平面为z=-far，视角为fov_y，宽高比为aspect_ratio的视锥全部映射到[-1,1]的立方体
+void gl::init_perspective(double near, double far, double fov_y, double aspect_ratio) &#123;
+    Projection = &#123;
+        // x方向: x_clip = x / (aspect_ratio * tan(fov_y / 2))
+        // 最终 x_ndc = x_clip / -z (由第4行触发)，实现了随深度变远的透视缩小
+        &#123;1.0 / (aspect_ratio * std::tan(fov_y / 2.0)), 0, 0, 0&#125;,    
+
+        // y方向: 与x同理，但不需要除以宽高比
+        &#123;0, 1.0 / std::tan(fov_y / 2.0), 0, 0&#125;, 
+
+        // z方向: z_clip = A*z + B。因为最终 z_ndc = (A*z + B) / -z = -A - B/z
+        // 为了满足 z=-near 时 z_ndc=-1, z=-far 时 z_ndc=1 的非线性映射关系
+        // 即要满足 -1 = -A - B/near;          1 = -A - B/far
+        // 解方程得出此处的 A 为 -(far+near)/(far-near)，B 为 -(2.0*near*far)/(far-near)
+        &#123;0, 0, -(far + near) / (far - near), -(2.0 * near * far) / (far - near)&#125;, 
+
+        // -1 使转换后的坐标的w值乘上了-z
+        // 按照齐次坐标的定义，就是把x/y/z轴统一除了-z
+        &#123;0, 0, -1, 0&#125; 
+    &#125;;
+&#125;
+</code></pre>
+<hr>
+<h3 id="四、-透视除法与视口转换-Viewport"><a href="#四、-透视除法与视口转换-Viewport" class="headerlink" title="四、 透视除法与视口转换 (Viewport)"></a>四、 透视除法与视口转换 (Viewport)</h3><p>当我们算出了MVP矩阵，对于任意一个原顶点 $v_{local}$，最终计算它屏幕坐标的完整公式为：</p>
+<p>$$v_{screen} &#x3D; M_{viewport} \cdot \text{W-Divide}(P \cdot V \cdot M \cdot v_{local})$$</p>
+<ul>
+<li><strong>W-Divide (透视除法)</strong>：这是在乘完MVP矩阵后，由<strong>GPU硬件自动执行</strong>的操作。它会把前面计算得到的四维向量 $(x, y, z, w)$ 的前三个分量，统统除以它的第四个分量 $w$（我们在投影矩阵里已经让 $w &#x3D; -z$）。正是这一步除法，真正实现了画面“近大远小”的透视收缩，并把所有可见顶点严格压缩进了 $[-1, 1]$ 的NDC空间。</li>
+<li><strong>Viewport (视口转换)</strong>：拿到 $[-1, 1]$ 的NDC坐标后，最后一步就是简单地按比例拉伸平移，把它们映射到你实际的屏幕分辨率上（比如 $1920 \times 1080$ 的宽和高）。</li>
 </ul>
-<p><img src="/images/2025/07/19/5d711588-f16c-4def-abe0-211657624766.png" alt="组合模式.png"></p>
-<hr>
-<h2 id="3-装饰器模式"><a href="#3-装饰器模式" class="headerlink" title="3. 装饰器模式"></a>3. 装饰器模式</h2><p>在不修改已有类的前提下，为其添加功能。<br>装饰器类继承于要装饰的类的 <strong>共有基类</strong>，</p>
-<hr>
-<h2 id="4-外观模式-和-代理模式"><a href="#4-外观模式-和-代理模式" class="headerlink" title="4.外观模式 和 代理模式"></a>4.外观模式 和 代理模式</h2><ul>
-<li>外观模式 ： <strong>简化</strong>子系统接口，提供一个<strong>统一</strong>的高层接口，让外部调用者更容易使用复杂系统</li>
-<li>代理模式 ： 控制对对象的访问，可以在<strong>访问对象前后</strong>添加控制逻辑，如延迟加载、安全检查、缓存、权限控制等</li>
-</ul>
-<p><img src="/images/2025/07/19/41d29411-9d35-4701-abfd-74c52b21b6d5.png" alt="外观模式与代理模式.png"></p>
-<hr>
-<h2 id="5-享元模式"><a href="#5-享元模式" class="headerlink" title="5. 享元模式"></a>5. 享元模式</h2><p><img src="/images/2025/07/19/c0c791f4-de6b-4fe2-aa14-17b42aa3072a.png" alt="享元模式.png"></p>
+<pre><code class="language-cpp">// 视口转换 从NDC[-1,1] 到 屏幕坐标 [0, width - 1], [0, height - 1]
+void gl::init_viewport(const int x, const int y, const int w, const int h) &#123;
+    Viewport = &#123;
+        &#123;w / 2.0,       0, 0, x + w / 2.0&#125;, 
+        &#123;      0, h / 2.0, 0, y + h / 2.0&#125;, 
+        &#123;      0,       0, 1,           0&#125;, 
+        &#123;      0,       0, 0,           1&#125;
+    &#125;;
+&#125;
+</code></pre>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1687019603@qq.com </span>
