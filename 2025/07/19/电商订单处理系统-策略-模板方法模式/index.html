@@ -6,22 +6,38 @@
   <meta name="keywords" content="">
   <meta name="description" content="电商订单处理系统(策略&amp;模板方法模式) | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="当要绘制大量重复模型时，比如绘制大量的草，不同模型在场景里的区别是是世界空间变换不同（位置、缩放、旋转）。这个时候每绘制一个草，都把草模型的顶点数据发送给GPU，就会造成大量性能浪费，每次发送顶点数据时多余的开销。这个时候其实只要给GPU一份草模型的顶点数据，以及不同草的在世界空间的变换（model矩阵）就行。这就是实例化的思想。 在OpenGL中用普通的绘制，绘制大量相同物体时大致是这样的。 f">
+<meta name="description" content="Learn OpenGL 对应章节 与 延迟渲染（Deferred Rendering） 相对的是 正向渲染（Forward Rendering）。 正向渲染（Forward Rendering）正向渲染的流程是，在光栅化得到片段之后，直接进行光照计算，并通过深度测试决定最终哪些片段能够写入帧缓冲。 简单来说，每个片段都需要执行一次着色，而着色过程中还需要遍历场景中的灯光。因此，当场景中灯光数量比">
 <meta property="og:type" content="article">
-<meta property="og:title" content="实例化">
-<meta property="og:url" content="http://example.com/2026/08/14/%E5%AE%9E%E4%BE%8B%E5%8C%96/index.html">
+<meta property="og:title" content="延迟渲染">
+<meta property="og:url" content="http://example.com/2026/08/28/%E5%BB%B6%E8%BF%9F%E6%B8%B2%E6%9F%93/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="当要绘制大量重复模型时，比如绘制大量的草，不同模型在场景里的区别是是世界空间变换不同（位置、缩放、旋转）。这个时候每绘制一个草，都把草模型的顶点数据发送给GPU，就会造成大量性能浪费，每次发送顶点数据时多余的开销。这个时候其实只要给GPU一份草模型的顶点数据，以及不同草的在世界空间的变换（model矩阵）就行。这就是实例化的思想。 在OpenGL中用普通的绘制，绘制大量相同物体时大致是这样的。 f">
+<meta property="og:description" content="Learn OpenGL 对应章节 与 延迟渲染（Deferred Rendering） 相对的是 正向渲染（Forward Rendering）。 正向渲染（Forward Rendering）正向渲染的流程是，在光栅化得到片段之后，直接进行光照计算，并通过深度测试决定最终哪些片段能够写入帧缓冲。 简单来说，每个片段都需要执行一次着色，而着色过程中还需要遍历场景中的灯光。因此，当场景中灯光数量比">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/2026/08/14/0f8ee99a-b423-453d-9652-c7fcedc02cf3.png">
-<meta property="og:image" content="http://example.com/images/2026/08/14/8d54c5ce-c068-4bb2-a3c6-fcd609dbad55.png">
-<meta property="article:published_time" content="2026-08-14T07:52:14.000Z">
-<meta property="article:modified_time" content="2026-08-14T08:42:45.369Z">
+<meta property="og:image" content="http://example.com/images/2026/08/28/5e11bacc-8030-4ca9-b6fb-7289ced8e6ad.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/3682f253-ecd0-4902-b14e-1ba8b2a1f352.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/5624ab85-cbc2-440e-b490-fa5caf2d99d0.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/0ff10d38-6ad2-494e-abea-ae84bfc5dc41.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/40767382-d215-49a5-ad6f-3dd6209ef023.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/d6ee07d9-e4eb-436c-abc9-1f7c645eb185.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/44b415ca-afad-440c-940b-04cfb8bbf0d6.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/45d72aa4-3768-47b6-8b84-631f5619c5b8.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/b3fcfa91-6ddf-4136-82a8-a1309509c46e.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/0c0edd58-0aba-4f9e-bda2-1e8926738ca2.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/46a2bc64-68a4-4870-be9e-cca84cabc4e5.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/cb4a1ecf-2342-47bf-ac50-0a2e12451e8a.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/c68c9915-f192-4ba2-8a0f-5507fefd36ca.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/ee4fd579-ae3d-409c-98f3-64e2118dde27.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/7330c33e-fdb8-4b7b-8629-727fa93a1c7a.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/f59dde2d-3f33-470f-adba-40d4b4a84d74.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/aca960fd-92b5-4c1d-b318-7f30285bfcc9.png">
+<meta property="og:image" content="http://example.com/images/2026/08/28/6e6040db-a092-4e9f-a587-05788e2b3b29.png">
+<meta property="article:published_time" content="2026-08-28T05:23:05.000Z">
+<meta property="article:modified_time" content="2026-08-28T05:23:05.822Z">
 <meta property="article:author" content="追">
 <meta property="article:tag" content="计算机图形学">
 <meta property="article:tag" content="OpenGl">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/2026/08/14/0f8ee99a-b423-453d-9652-c7fcedc02cf3.png">
+<meta name="twitter:image" content="http://example.com/images/2026/08/28/5e11bacc-8030-4ca9-b6fb-7289ced8e6ad.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -152,7 +168,7 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(15)</small>
+                <small>(16)</small>
             
         </div>
     </li>
@@ -194,7 +210,7 @@
         <div data-rel="LearnOpenGl">
             
             LearnOpenGl
-            <small>(1)</small>
+            <small>(2)</small>
         </div>
         
     </li>
@@ -226,8 +242,8 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="15">
-<input type="hidden" id="yelog_site_word_count" value="23.6k">
+<input type="hidden" id="yelog_site_posts_number" value="16">
+<input type="hidden" id="yelog_site_word_count" value="29.2k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -320,6 +336,15 @@
 
     
     <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 LearnOpenGl "
+           href="/2026/08/28/%E5%BB%B6%E8%BF%9F%E6%B8%B2%E6%9F%93/"
+           data-tag="计算机图形学,OpenGl"
+           data-author="" >
+            <span class="post-title" title="延迟渲染">延迟渲染</span>
+            <span class="post-date" title="2026-08-28 13:23:05">2026/08/28</span>
+        </a>
         
         
         <a  class="全部文章 LearnOpenGl "
