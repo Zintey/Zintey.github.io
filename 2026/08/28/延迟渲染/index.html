@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>延迟渲染 | Hexo</title>
-  <meta name="keywords" content=" 计算机图形学 , OpenGl ">
+  <meta name="keywords" content=" 计算机图形学 , OpenGL ">
   <meta name="description" content="延迟渲染 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="Learn OpenGL 对应章节 与 延迟渲染（Deferred Rendering） 相对的是 正向渲染（Forward Rendering）。 正向渲染（Forward Rendering）正向渲染的流程是，在光栅化得到片段之后，直接进行光照计算，并通过深度测试决定最终哪些片段能够写入帧缓冲。 简单来说，每个片段都需要执行一次着色，而着色过程中还需要遍历场景中的灯光。因此，当场景中灯光数量比">
@@ -13,31 +13,31 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Learn OpenGL 对应章节 与 延迟渲染（Deferred Rendering） 相对的是 正向渲染（Forward Rendering）。 正向渲染（Forward Rendering）正向渲染的流程是，在光栅化得到片段之后，直接进行光照计算，并通过深度测试决定最终哪些片段能够写入帧缓冲。 简单来说，每个片段都需要执行一次着色，而着色过程中还需要遍历场景中的灯光。因此，当场景中灯光数量比">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/2026/08/28/5e11bacc-8030-4ca9-b6fb-7289ced8e6ad.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/3682f253-ecd0-4902-b14e-1ba8b2a1f352.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/5624ab85-cbc2-440e-b490-fa5caf2d99d0.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/0ff10d38-6ad2-494e-abea-ae84bfc5dc41.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/40767382-d215-49a5-ad6f-3dd6209ef023.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/d6ee07d9-e4eb-436c-abc9-1f7c645eb185.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/44b415ca-afad-440c-940b-04cfb8bbf0d6.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/45d72aa4-3768-47b6-8b84-631f5619c5b8.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/b3fcfa91-6ddf-4136-82a8-a1309509c46e.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/0c0edd58-0aba-4f9e-bda2-1e8926738ca2.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/46a2bc64-68a4-4870-be9e-cca84cabc4e5.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/cb4a1ecf-2342-47bf-ac50-0a2e12451e8a.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/c68c9915-f192-4ba2-8a0f-5507fefd36ca.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/ee4fd579-ae3d-409c-98f3-64e2118dde27.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/7330c33e-fdb8-4b7b-8629-727fa93a1c7a.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/f59dde2d-3f33-470f-adba-40d4b4a84d74.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/aca960fd-92b5-4c1d-b318-7f30285bfcc9.png">
-<meta property="og:image" content="http://example.com/images/2026/08/28/6e6040db-a092-4e9f-a587-05788e2b3b29.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/4db3390d2b541d9a90e8.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/b9c8b2cf9704e7e3feee.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/ec3ef92abbc74e5dfaac.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/486682f0c4a190d8a3cf.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/df7bc7cd213940391794.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/44f3e75a282ed06cf15f.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/360cb0d8bf4266b6e4fb.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/84363a842a98f5f602dc.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/0434f2c3ed220c475e79.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/04a2017f6ff56c5b7724.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/7bba999be4f0cd983ffb.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/57d3377bbb35beae2636.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/0153b8d6dabe7d5189a3.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/20a659ff6b613f1c908f.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/45e1a63f9277091a081d.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/1f4e8b97a4e9730d3b8b.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/76510ad17bb164f7147a.png">
+<meta property="og:image" content="http://example.com/images/2026/11/14/dde845cff580c3fb9ccd.png">
 <meta property="article:published_time" content="2026-08-28T05:23:05.000Z">
-<meta property="article:modified_time" content="2026-08-28T05:23:05.822Z">
+<meta property="article:modified_time" content="2026-11-14T09:19:30.328Z">
 <meta property="article:author" content="追">
 <meta property="article:tag" content="计算机图形学">
-<meta property="article:tag" content="OpenGl">
+<meta property="article:tag" content="OpenGL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/2026/08/28/5e11bacc-8030-4ca9-b6fb-7289ced8e6ad.png">
+<meta name="twitter:image" content="http://example.com/images/2026/11/14/4db3390d2b541d9a90e8.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -64,7 +64,7 @@
 
 <script src="/js/iconfont.js?v=1.1.0" ></script>
 
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/vendor/katex/katex.min.css"><style>.katex-display{overflow-x:auto;overflow-y:hidden;padding:.25em 0}.desk-math{overflow-x:auto}</style></head>
 <div style="display: none">
   <input class="theme_disqus_on" value="false">
   <input class="theme_preload_comment" value="">
@@ -168,7 +168,7 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(16)</small>
+                <small>(15)</small>
             
         </div>
     </li>
@@ -177,10 +177,25 @@
             
                 
     <li>
-        <div data-rel="边学边记">
+        <div data-rel="计算机图形学">
             
-            边学边记
-            <small>(1)</small>
+            计算机图形学
+            <small>(4)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="随笔">
+            
+            随笔
+            <small>(3)</small>
         </div>
         
     </li>
@@ -195,21 +210,6 @@
         <div data-rel="整理">
             
             整理
-            <small>(2)</small>
-        </div>
-        
-    </li>
-
-            
-        
-    
-        
-            
-                
-    <li>
-        <div data-rel="LearnOpenGl">
-            
-            LearnOpenGl
             <small>(2)</small>
         </div>
         
@@ -242,8 +242,8 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="16">
-<input type="hidden" id="yelog_site_word_count" value="29.2k">
+<input type="hidden" id="yelog_site_posts_number" value="15">
+<input type="hidden" id="yelog_site_word_count" value="31.2k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -287,14 +287,6 @@
     <div class="tag-wrapper">
         
             <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>编程思想</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>多线程</a>
-            </li>
-        
-            <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>计算机图形学</a>
             </li>
         
@@ -303,15 +295,7 @@
             </li>
         
             <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>联机开发</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>面向对象</a>
-            </li>
-        
-            <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>学习笔记</a>
+                <i class="iconfont icon-tag"></i><a>设计模式</a>
             </li>
         
             <li class="article-tag-list-item">
@@ -319,15 +303,15 @@
             </li>
         
             <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>git</a>
+                <i class="iconfont icon-tag"></i><a>Git</a>
             </li>
         
             <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>godot</a>
+                <i class="iconfont icon-tag"></i><a>Godot</a>
             </li>
         
             <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>OpenGl</a>
+                <i class="iconfont icon-tag"></i><a>OpenGL</a>
             </li>
         
     </div>
@@ -338,36 +322,36 @@
     <nav id="title-list-nav">
         
         
-        <a  class="全部文章 LearnOpenGl "
+        <a  class="全部文章 计算机图形学 "
            href="/2026/08/28/%E5%BB%B6%E8%BF%9F%E6%B8%B2%E6%9F%93/"
-           data-tag="计算机图形学,OpenGl"
+           data-tag="计算机图形学,OpenGL"
            data-author="" >
             <span class="post-title" title="延迟渲染">延迟渲染</span>
             <span class="post-date" title="2026-08-28 13:23:05">2026/08/28</span>
         </a>
         
         
-        <a  class="全部文章 LearnOpenGl "
+        <a  class="全部文章 计算机图形学 "
            href="/2026/08/14/%E5%AE%9E%E4%BE%8B%E5%8C%96/"
-           data-tag="计算机图形学,OpenGl"
+           data-tag="计算机图形学,OpenGL"
            data-author="" >
             <span class="post-title" title="实例化">实例化</span>
             <span class="post-date" title="2026-08-14 15:52:14">2026/08/14</span>
         </a>
         
         
-        <a  class="全部文章 "
+        <a  class="全部文章 计算机图形学 "
            href="/2026/06/02/MVP%E7%9F%A9%E9%98%B5%E6%8E%A8%E5%AF%BC/"
-           data-tag="学习笔记,计算机图形学"
+           data-tag="计算机图形学"
            data-author="" >
             <span class="post-title" title="MVP矩阵推导">MVP矩阵推导</span>
             <span class="post-date" title="2026-06-02 16:04:25">2026/06/02</span>
         </a>
         
         
-        <a  class="全部文章 边学边记 "
+        <a  class="全部文章 计算机图形学 "
            href="/2026/04/22/tinyrenderer-cpp%E5%AE%9E%E7%8E%B0%E8%BD%AF%E6%B8%B2%E6%9F%93%E5%99%A8-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"
-           data-tag="学习笔记,计算机图形学"
+           data-tag="计算机图形学"
            data-author="" >
             <span class="post-title" title="tinyrenderer cpp实现软渲染器 学习笔记">tinyrenderer cpp实现软渲染器 学习笔记</span>
             <span class="post-date" title="2026-04-22 14:39:39">2026/04/22</span>
@@ -392,27 +376,27 @@
         </a>
         
         
-        <a  class="全部文章 "
+        <a  class="全部文章 随笔 "
            href="/2025/11/24/godot%E4%B8%AD%E7%9A%84%E5%B0%8F%E5%9D%91%E7%82%B9/"
-           data-tag="godot"
+           data-tag="Godot"
            data-author="" >
             <span class="post-title" title="godot中的小坑点">godot中的小坑点</span>
             <span class="post-date" title="2025-11-24 19:09:39">2025/11/24</span>
         </a>
         
         
-        <a  class="全部文章 "
+        <a  class="全部文章 随笔 "
            href="/2025/11/12/%E5%9C%A8%E5%AE%89%E5%8D%93%E5%B9%B3%E6%9D%BF-%E6%89%8B%E6%9C%BA%E4%B8%8A%E4%B8%8E%E7%94%B5%E8%84%91%E5%8D%8F%E5%90%8C%E5%BC%80%E5%8F%91godot%E9%A1%B9%E7%9B%AE/"
-           data-tag="godot,git"
+           data-tag="Godot,Git"
            data-author="" >
             <span class="post-title" title="在安卓平板/手机上与电脑协同开发godot项目">在安卓平板/手机上与电脑协同开发godot项目</span>
             <span class="post-date" title="2025-11-12 21:44:41">2025/11/12</span>
         </a>
         
         
-        <a  class="全部文章 "
+        <a  class="全部文章 随笔 "
            href="/2025/07/25/Godot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"
-           data-tag="学习笔记,godot"
+           data-tag="Godot"
            data-author="" >
             <span class="post-title" title="Godot学习笔记01">Godot学习笔记01</span>
             <span class="post-date" title="2025-07-25 18:39:09">2025/07/25</span>
@@ -420,17 +404,8 @@
         
         
         <a  class="全部文章 "
-           href="/2025/07/21/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84%E5%93%88%E5%9F%BA%E7%B1%B3%E5%A4%A7%E5%86%92%E9%99%A9-%E5%8F%8C%E4%BA%BA%E8%81%94%E6%9C%BA%E6%B8%B8%E6%88%8F%E7%AC%94%E8%AE%B0/"
-           data-tag="学习笔记,多线程,联机开发"
-           data-author="" >
-            <span class="post-title" title="从零开始的哈基米大冒险:双人联机游戏笔记">从零开始的哈基米大冒险:双人联机游戏笔记</span>
-            <span class="post-date" title="2025-07-21 23:08:49">2025/07/21</span>
-        </a>
-        
-        
-        <a  class="全部文章 "
            href="/2025/07/19/%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
-           data-tag="编程思想,面向对象"
+           data-tag="设计模式"
            data-author="" >
             <span class="post-title" title="行为型模式">行为型模式</span>
             <span class="post-date" title="2025-07-19 18:59:32">2025/07/19</span>
@@ -466,7 +441,7 @@
         
         <a  class="全部文章 "
            href="/2025/07/19/%E7%BB%93%E6%9E%84%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
-           data-tag="编程思想,面向对象"
+           data-tag="设计模式"
            data-author="" >
             <span class="post-title" title="结构型模式">结构型模式</span>
             <span class="post-date" title="2025-07-19 18:35:13">2025/07/19</span>
@@ -475,7 +450,7 @@
         
         <a  class="全部文章 "
            href="/2025/07/19/%E5%88%9B%E9%80%A0%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
-           data-tag="编程思想,面向对象"
+           data-tag="设计模式"
            data-author="" >
             <span class="post-title" title="创造型模式">创造型模式</span>
             <span class="post-date" title="2025-07-19 18:25:39">2025/07/19</span>
@@ -511,7 +486,7 @@
             <i class="iconfont icon-category"></i>
             
             
-            <a  data-rel="LearnOpenGl">LearnOpenGl</a>
+            <a  data-rel="计算机图形学">计算机图形学</a>
             
         </span>
         
@@ -521,14 +496,14 @@
             
             <a class="color2">计算机图形学</a>
             
-            <a class="color2">OpenGl</a>
+            <a class="color2">OpenGL</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2026-08-28 13:23:05'>2026-08-28 13:23</time>
+            发布时间 : <time class="date" title='最后更新: 2026-11-14 17:19:30'>2026-08-28 13:23</time>
         
     </div>
     <div class="article-meta">
@@ -580,11 +555,11 @@
 <p>这也就导致正向渲染在渲染大量光源时，性能会随着灯光数量增加而明显下降。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/Zintey/LearnOpenGL/blob/master/%E9%AB%98%E7%BA%A7%E5%85%89%E7%85%A7/8.%E5%BB%B6%E8%BF%9F%E7%9D%80%E8%89%B2%E6%B3%95/%E5%BB%B6%E8%BF%9F%E5%85%89%E7%85%A7%E5%A4%84%E7%90%86%E9%98%B6%E6%AE%B5_%E6%AD%A3%E5%90%91%E6%B8%B2%E6%9F%93%E5%AF%B9%E7%85%A7%E7%89%88.cpp">正向渲染代码</a>，<a target="_blank" rel="noopener" href="https://github.com/Zintey/LearnOpenGL/blob/master/%E9%AB%98%E7%BA%A7%E5%85%89%E7%85%A7/8.%E5%BB%B6%E8%BF%9F%E7%9D%80%E8%89%B2%E6%B3%95/forward_lighting.vert">vertex</a>，<a target="_blank" rel="noopener" href="https://github.com/Zintey/LearnOpenGL/blob/master/%E9%AB%98%E7%BA%A7%E5%85%89%E7%85%A7/8.%E5%BB%B6%E8%BF%9F%E7%9D%80%E8%89%B2%E6%B3%95/forward_lighting.frag">fragment</a>。</p>
 <p>下图是正向渲染 1000 个模型（每个约 6000 个面），<strong>25</strong> 个灯光下帧率为 <strong>78</strong> 左右：</p>
-<p><img src="/images/2026/08/28/5e11bacc-8030-4ca9-b6fb-7289ced8e6ad.png" alt="正向渲染 25灯光"></p>
+<p><img src="/images/2026/11/14/4db3390d2b541d9a90e8.png" alt="正向渲染 25灯光"></p>
 <p>下图是正向渲染 1000 个模型（每个约 6000 个面），<strong>50</strong> 个灯光下帧率为 <strong>50</strong> 左右：</p>
-<p><img src="/images/2026/08/28/3682f253-ecd0-4902-b14e-1ba8b2a1f352.png" alt="正向渲染 50灯光"></p>
+<p><img src="/images/2026/11/14/b9c8b2cf9704e7e3feee.png" alt="正向渲染 50灯光"></p>
 <p>下图是正向渲染 1000 个模型（每个约 6000 个面），<strong>100</strong> 个灯光下帧率为 <strong>22</strong> 左右：</p>
-<p><img src="/images/2026/08/28/5624ab85-cbc2-440e-b490-fa5caf2d99d0.png" alt="正向渲染 100灯光"></p>
+<p><img src="/images/2026/11/14/ec3ef92abbc74e5dfaac.png" alt="正向渲染 100灯光"></p>
 <h2 id="延迟渲染（Deferred-Rendering）"><a href="#延迟渲染（Deferred-Rendering）" class="headerlink" title="延迟渲染（Deferred Rendering）"></a>延迟渲染（Deferred Rendering）</h2><p>为了减少正向渲染中不必要的光照计算，我们可以把光照计算从几何渲染阶段拿出来，延迟到几何信息确定之后再进行，这就是延迟渲染。</p>
 <p>延迟渲染一般可以分成两个阶段：</p>
 <ol>
@@ -739,13 +714,13 @@ void main()
 <p><strong>把当前可见片段的几何信息保存下来。</strong></p>
 <p>我们可以看一下保存下来的 G-Buffer 分别是什么样子。</p>
 <p>下面是 Position：</p>
-<p><img src="/images/2026/08/28/0ff10d38-6ad2-494e-abea-ae84bfc5dc41.png" alt="Gbuffer position"></p>
+<p><img src="/images/2026/11/14/486682f0c4a190d8a3cf.png" alt="Gbuffer position"></p>
 <p>下面是 Normal：</p>
-<p><img src="/images/2026/08/28/40767382-d215-49a5-ad6f-3dd6209ef023.png" alt="Gbuffer normal"></p>
+<p><img src="/images/2026/11/14/df7bc7cd213940391794.png" alt="Gbuffer normal"></p>
 <p>下面是 Albedo 漫反射颜色：</p>
-<p><img src="/images/2026/08/28/d6ee07d9-e4eb-436c-abc9-1f7c645eb185.png" alt="Gbuffer albedo"></p>
+<p><img src="/images/2026/11/14/44f3e75a282ed06cf15f.png" alt="Gbuffer albedo"></p>
 <p>下面是 Specular 高光强度：</p>
-<p><img src="/images/2026/08/28/44b415ca-afad-440c-940b-04cfb8bbf0d6.png" alt="Gbuffer spec"></p>
+<p><img src="/images/2026/11/14/360cb0d8bf4266b6e4fb.png" alt="Gbuffer spec"></p>
 <p>到这里，Geometry Pass 就结束了。</p>
 <p>接下来进入真正的光照计算。</p>
 <h3 id="Lighting-Pass"><a href="#Lighting-Pass" class="headerlink" title="Lighting Pass"></a>Lighting Pass</h3><p>延迟渲染具体的光照计算其实和正向渲染没有本质区别。</p>
@@ -795,11 +770,11 @@ void main()
 <hr>
 <p>下面来看看延迟渲染下的性能提升。</p>
 <p>下图是延迟渲染 1000 个模型（每个约 6000 个面），<strong>25</strong> 个灯光下帧率为 <strong>95</strong> 左右（正向渲染为 78）：</p>
-<p><img src="/images/2026/08/28/45d72aa4-3768-47b6-8b84-631f5619c5b8.png" alt="延迟渲染 25灯光"></p>
+<p><img src="/images/2026/11/14/84363a842a98f5f602dc.png" alt="延迟渲染 25灯光"></p>
 <p>下图是延迟渲染 1000 个模型（每个约 6000 个面），<strong>50</strong> 个灯光下帧率为 <strong>80</strong> 左右（正向渲染为 50）：</p>
-<p><img src="/images/2026/08/28/b3fcfa91-6ddf-4136-82a8-a1309509c46e.png" alt="延迟渲染 50灯光"></p>
+<p><img src="/images/2026/11/14/0434f2c3ed220c475e79.png" alt="延迟渲染 50灯光"></p>
 <p>下图是延迟渲染 1000 个模型（每个约 6000 个面），<strong>100</strong> 个灯光下帧率为 <strong>65</strong> 左右（正向渲染为 22）：</p>
-<p><img src="/images/2026/08/28/0c0edd58-0aba-4f9e-bda2-1e8926738ca2.png" alt="延迟渲染 100灯光"></p>
+<p><img src="/images/2026/11/14/04a2017f6ff56c5b7724.png" alt="延迟渲染 100灯光"></p>
 <p>从结果可以比较明显地看出，灯光数量增加以后，延迟渲染的优势越来越明显。</p>
 <p>原因也比较直观。</p>
 <p>正向渲染中，光照计算发生在模型的 Fragment Shader 中，场景中有多少个可见片段，就要进行多少次对应的灯光计算。</p>
@@ -817,7 +792,7 @@ void main()
 <p>如果这个时候直接把 light cube 渲染到默认帧缓冲中，它进行深度测试时使用的就不是 Geometry Pass 中的深度。</p>
 <p>这样就会出现 light cube 穿过模型或者显示在模型前面的情况。</p>
 <p>下面是没有处理深度信息时的效果：</p>
-<p><img src="/images/2026/08/28/46a2bc64-68a4-4870-be9e-cca84cabc4e5.png" alt="正向渲染 light cube 深度信息错误"></p>
+<p><img src="/images/2026/11/14/7bba999be4f0cd983ffb.png" alt="正向渲染 light cube 深度信息错误"></p>
 <p>可以看到，虽然 light cube 实际上应该被模型挡住，但是因为默认帧缓冲中的深度信息和 G-Buffer 不一致，深度测试没有按照场景原本的深度进行。</p>
 <p>解决这个问题的方法也比较简单。</p>
 <p>在渲染 light cube 之前，把 G-Buffer 中的深度缓冲复制到默认帧缓冲。</p>
@@ -830,7 +805,7 @@ glBindFramebuffer(GL_FRAMEBUFFER, 0);
 <p>这里把 <code>gBuffer</code> 作为读取源，把默认帧缓冲作为目标，只复制 <code>GL_DEPTH_BUFFER_BIT</code>。</p>
 <p>这样默认帧缓冲中就拥有了 Geometry Pass 得到的深度信息。</p>
 <p>接下来再正常开启深度测试，渲染 light cube，就可以得到正确的遮挡关系。</p>
-<p><img src="/images/2026/08/28/cb4a1ecf-2342-47bf-ac50-0a2e12451e8a.png" alt="正向渲染 light cube 正确深度"></p>
+<p><img src="/images/2026/11/14/57d3377bbb35beae2636.png" alt="正向渲染 light cube 正确深度"></p>
 <p>所以这里实际上就是把 Deferred Rendering 和 Forward Rendering 放到了同一个渲染流程中。</p>
 <p>Geometry Pass 负责生成场景的 G-Buffer，Lighting Pass 负责计算不透明物体的光照，最后再使用 Forward Rendering 渲染 light cube 等不需要写入 G-Buffer 的物体。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/Zintey/LearnOpenGL/blob/master/%E9%AB%98%E7%BA%A7%E5%85%89%E7%85%A7/8.%E5%BB%B6%E8%BF%9F%E7%9D%80%E8%89%B2%E6%B3%95/%E7%BB%93%E5%90%88%E5%BB%B6%E8%BF%9F%E6%B8%B2%E6%9F%93%E4%B8%8E%E6%AD%A3%E5%90%91%E6%B8%B2%E6%9F%93.cpp">结合延迟渲染与正向渲染 cpp 代码</a></p>
@@ -850,7 +825,7 @@ glBindFramebuffer(GL_FRAMEBUFFER, 0);
 <p>以点光源为例，我们可以给它设置一个半径，例如半径为 10，那么距离灯光位置超过 10 的片段，就可以直接认为这个灯光不会产生影响。</p>
 <p>因此，对于点光源来说，我们可以直接使用一个球体来表示它的影响范围。</p>
 <p>这个球体本身并不是为了显示出来，而是为了利用它的几何范围来确定当前灯光影响哪些像素。</p>
-<p><img src="/images/2026/08/28/c68c9915-f192-4ba2-8a0f-5507fefd36ca.png" alt="光体积可视化"><br><img src="/images/2026/08/28/ee4fd579-ae3d-409c-98f3-64e2118dde27.png" alt="光体积可视化"></p>
+<p><img src="/images/2026/11/14/0153b8d6dabe7d5189a3.png" alt="光体积可视化"><br><img src="/images/2026/11/14/20a659ff6b613f1c908f.png" alt="光体积可视化"></p>
 <p>例如现在有一个点光源，它的半径为 10，那么我们就创建一个半径为 10 的球体。</p>
 <p>渲染这个球体时，球体覆盖到的屏幕区域，就是这个灯光可能影响到的区域。</p>
 <p>然后在这个区域内读取 G-Buffer，并计算当前灯光的光照。</p>
@@ -999,10 +974,10 @@ glBlendFunc(GL_ONE, GL_ONE);
 <p>现在继续测试加入光体积之后的效果。</p>
 <p>测试场景保持不变，仍然是 1000 个模型，每个模型大约 6000 个面。</p>
 <p>100 个灯光。</p>
-<p>正向渲染的帧率大约为 <strong>25 FPS</strong>：<br>普通延迟渲染的帧率大约为 <strong>75 FPS</strong>：<br>使用光体积之后，灯光半径设置为 <strong>10</strong>，帧率提升到了大约 <strong>95 FPS</strong>：<br><img src="/images/2026/08/28/7330c33e-fdb8-4b7b-8629-727fa93a1c7a.png" alt="延迟渲染+光体积 100灯光"></p>
-<p><strong>500</strong> 个灯光：<br>帧率大约为 <strong>65 FPS</strong>。<br><img src="/images/2026/08/28/f59dde2d-3f33-470f-adba-40d4b4a84d74.png" alt="延迟渲染+光体积 500灯光"></p>
-<p><strong>1000</strong> 个灯光：<br><img src="/images/2026/08/28/aca960fd-92b5-4c1d-b318-7f30285bfcc9.png" alt="延迟渲染+光体积 1000灯光"><br>帧率大约为 <strong>45 FPS</strong>。</p>
-<p><strong>2000</strong> 个灯光：<br><img src="/images/2026/08/28/6e6040db-a092-4e9f-a587-05788e2b3b29.png" alt="延迟渲染+光体积 2000灯光"><br>帧率大约为 <strong>30 FPS</strong>。</p>
+<p>正向渲染的帧率大约为 <strong>25 FPS</strong>：<br>普通延迟渲染的帧率大约为 <strong>75 FPS</strong>：<br>使用光体积之后，灯光半径设置为 <strong>10</strong>，帧率提升到了大约 <strong>95 FPS</strong>：<br><img src="/images/2026/11/14/45e1a63f9277091a081d.png" alt="延迟渲染+光体积 100灯光"></p>
+<p><strong>500</strong> 个灯光：<br>帧率大约为 <strong>65 FPS</strong>。<br><img src="/images/2026/11/14/1f4e8b97a4e9730d3b8b.png" alt="延迟渲染+光体积 500灯光"></p>
+<p><strong>1000</strong> 个灯光：<br><img src="/images/2026/11/14/76510ad17bb164f7147a.png" alt="延迟渲染+光体积 1000灯光"><br>帧率大约为 <strong>45 FPS</strong>。</p>
+<p><strong>2000</strong> 个灯光：<br><img src="/images/2026/11/14/dde845cff580c3fb9ccd.png" alt="延迟渲染+光体积 2000灯光"><br>帧率大约为 <strong>30 FPS</strong>。</p>
 <p>从这个测试可以看到，普通延迟渲染虽然已经比正向渲染好很多，但是它仍然需要让每个像素检查所有灯光。<br>光体积进一步把这个范围缩小到了每个灯光实际影响到的屏幕区域。<br>在灯光数量不断增加的情况下，这个优化就比较明显了。</p>
 <p>当然，光体积也不是灯光越多性能就越好。灯光数量达到一定程度之后，渲染光体积本身也会带来越来越多的 Draw Call 和几何处理开销。</p>
 <p>尤其是当大量光体积在屏幕上互相重叠时，同一个像素仍然可能需要执行很多次光照计算。</p>
@@ -1036,48 +1011,6 @@ glBlendFunc(GL_ONE, GL_ONE);
 
 
 
-
-    
-        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-    "HTML-CSS": {
-        preferredFont: "TeX",
-        availableFonts: ["STIX","TeX"],
-        linebreaks: { automatic:true },
-        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
-    },
-    tex2jax: {
-        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
-        processEscapes: true,
-        ignoreClass: "tex2jax_ignore|dno",
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-        equationNumbers: { autoNumber: "AMS" },
-        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
-        Macros: { href: "{}" }
-    },
-    messageStyle: "none"
-    });
-</script>
-<!-- 给MathJax元素添加has-jax class -->
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<!-- 通过连接CDN加载MathJax的js代码 -->
-<script type="text/javascript" async
-        src="//cdn.jsdelivr.net/npm/mathjax@2.7.8/unpacked/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-<input type="hidden" id="MathJax-js"
-        value="//cdn.jsdelivr.net/npm/mathjax@2.7.8/unpacked/MathJax.js?config=TeX-MML-AM_CHTML">
-</input>
-    
 
 
 
