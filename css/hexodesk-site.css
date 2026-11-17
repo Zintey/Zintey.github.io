@@ -89,3 +89,9 @@ html body .nav .nav-right .title-list :is(#title-list-nav,#local-search-result) 
 html body .nav .nav-right .title-list :is(#title-list-nav,#local-search-result) .search-result{color:var(--site-muted)}
 html body .nav .nav-right .title-list :is(#title-list-nav,#local-search-result) .search-keyword{color:var(--site-accent);background:color-mix(in srgb,var(--site-accent) 14%,transparent);border-radius:3px;padding:0 .08em;font-style:normal;font-weight:600;text-shadow:none}
 html body .nav .nav-right .title-list #no-item-tips{color:var(--site-muted)}html body .nav .nav-right .title-list #no-item-tips span{color:var(--site-accent)}
+/* Override the original theme's green/green_title table variants as well. */
+html body #post .pjax article .article-entry table{background:var(--site-panel);color:var(--site-text);border-color:var(--site-line)}
+html body #post .pjax article .article-entry table tr{background:var(--site-panel);color:var(--site-text);border-color:var(--site-line)}
+html body #post .pjax article .article-entry table tr:nth-child(2n),html body #post .pjax article .article-entry table:is(.green,.green_title) tr:nth-child(2n){background:var(--site-code)}
+html body #post .pjax article .article-entry table tr td{background:transparent;color:var(--site-text);border-color:var(--site-line)}
+html body #post .pjax article .article-entry table tr th,html body #post .pjax article .article-entry table:is(.green,.green_title) tr th{background:var(--site-quote);color:var(--site-title);border-color:var(--site-line)}
