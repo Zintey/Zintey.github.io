@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+<head><script src="/js/hexodesk-init.js"></script>
+  <meta charset="utf-8">
+  <title>Hexo</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="Hexo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="本文主要介绍 UE 的垃圾回收机制（Garbage Collection，简称 GC），包括是什么、具体机制以及怎么用。  是什么  具体机制 怎么用   是什么GC（Garbage Collection，垃圾回收）是一种自动内存管理机制，用来回收程序中不再需要的对象所占用的内存。先讲讲普通 C++ 如何管理内存。标准 C++ 本身没有内建的追踪式 GC，通过 new 创建的对象通常需要按所有权规">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UE GC 垃圾回收">
+<meta property="og:url" content="http://example.com/notes/18f59302d22a5d3d/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要介绍 UE 的垃圾回收机制（Garbage Collection，简称 GC），包括是什么、具体机制以及怎么用。  是什么  具体机制 怎么用   是什么GC（Garbage Collection，垃圾回收）是一种自动内存管理机制，用来回收程序中不再需要的对象所占用的内存。先讲讲普通 C++ 如何管理内存。标准 C++ 本身没有内建的追踪式 GC，通过 new 创建的对象通常需要按所有权规">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-11-17T10:38:21.603Z">
+<meta property="article:modified_time" content="2026-11-17T10:38:21.603Z">
+<meta property="article:author" content="追">
+<meta property="article:tag" content="UE">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-dark.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/hexodesk-site.css"><link rel="stylesheet" href="/vendor/katex/katex.min.css"><link rel="stylesheet" href="/vendor/hexodesk-callouts.css"><style>.katex-display{overflow-x:auto;overflow-y:hidden;padding:.25em 0}.desk-math{overflow-x:auto}</style></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav mobile">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>追</span>
+</div><nav class="desk-site-entries" aria-label="博客浏览入口"><a href="/">归档</a><a href="/?view=tags">标签</a></nav>
+
+<div class="icon">
+    
+        
+    
+        
+            <a title="github"
+               href="https://github.com/Zintey"
+               target="_blank">
+                
+                    <i class="iconfont icon-github"></i>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1687019603@qq.com"
+               target="_blank">
+                
+                    <i class="iconfont icon-email"></i>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1687019603&site=qq&menu=yes"
+               target="_blank">
+                
+                    <i class="iconfont icon-qq"></i>
+                
+            </a>
+        
+    
+        
+    
+        
+            <a title="neteasemusic"
+               href="https://music.163.com/#/user/home?id=3276394979"
+               target="_blank">
+                
+                    <i class="iconfont icon-neteasemusic"></i>
+                
+            </a>
+        
+    
+</div>
+
+
+
+    <a class="more-menus">更多菜单</a>
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(13)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="计算机图形学">
+            
+            计算机图形学
+            <small>(4)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="随笔">
+            
+            随笔
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="整理">
+            
+            整理
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="UE">
+            
+            UE
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+                <a class="dynamic-menu "
+                   target="_blank"
+                        
+                   href="https://github.com/Zintey">github</a>
+        
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">关于</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">友链</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="13">
+<input type="hidden" id="yelog_site_word_count" value="36.1k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>计算机图形学</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>计算机网络</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>设计模式</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>最优化理论</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Godot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OpenGL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>UE</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 UE "
+           href="/notes/18f59302d22a5d3d/"
+           data-tag="UE"
+           data-author="" >
+            <span class="post-title" title="UE GC 垃圾回收">UE GC 垃圾回收</span>
+            <span class="post-date" title="2026-11-17 18:38:21">2026/11/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 计算机图形学 "
+           href="/2026/08/28/%E5%BB%B6%E8%BF%9F%E6%B8%B2%E6%9F%93/"
+           data-tag="计算机图形学,OpenGL"
+           data-author="" >
+            <span class="post-title" title="延迟渲染">延迟渲染</span>
+            <span class="post-date" title="2026-08-28 13:23:05">2026/08/28</span>
+        </a>
+        
+        
+        <a  class="全部文章 计算机图形学 "
+           href="/2026/08/14/%E5%AE%9E%E4%BE%8B%E5%8C%96/"
+           data-tag="计算机图形学,OpenGL"
+           data-author="" >
+            <span class="post-title" title="实例化">实例化</span>
+            <span class="post-date" title="2026-08-14 15:52:14">2026/08/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 计算机图形学 "
+           href="/2026/06/02/MVP%E7%9F%A9%E9%98%B5%E6%8E%A8%E5%AF%BC/"
+           data-tag="计算机图形学"
+           data-author="" >
+            <span class="post-title" title="MVP矩阵推导">MVP矩阵推导</span>
+            <span class="post-date" title="2026-06-02 16:04:25">2026/06/02</span>
+        </a>
+        
+        
+        <a  class="全部文章 计算机图形学 "
+           href="/2026/04/22/tinyrenderer-cpp%E5%AE%9E%E7%8E%B0%E8%BD%AF%E6%B8%B2%E6%9F%93%E5%99%A8-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"
+           data-tag="计算机图形学"
+           data-author="" >
+            <span class="post-title" title="tinyrenderer cpp实现软渲染器 学习笔记">tinyrenderer cpp实现软渲染器 学习笔记</span>
+            <span class="post-date" title="2026-04-22 14:39:39">2026/04/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 整理 "
+           href="/2026/02/02/%E6%9C%80%E4%BC%98%E5%8C%96%E7%90%86%E8%AE%BA%E6%95%B4%E7%90%86/"
+           data-tag="最优化理论"
+           data-author="" >
+            <span class="post-title" title="最优化理论整理">最优化理论整理</span>
+            <span class="post-date" title="2026-02-02 11:25:16">2026/02/02</span>
+        </a>
+        
+        
+        <a  class="全部文章 整理 "
+           href="/2026/01/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%95%B4%E7%90%86/"
+           data-tag="计算机网络"
+           data-author="" >
+            <span class="post-title" title="计算机网络整理">计算机网络整理</span>
+            <span class="post-date" title="2026-01-26 14:25:22">2026/01/26</span>
+        </a>
+        
+        
+        <a  class="全部文章 随笔 "
+           href="/2025/11/24/godot%E4%B8%AD%E7%9A%84%E5%B0%8F%E5%9D%91%E7%82%B9/"
+           data-tag="Godot"
+           data-author="" >
+            <span class="post-title" title="godot中的小坑点">godot中的小坑点</span>
+            <span class="post-date" title="2025-11-24 19:09:39">2025/11/24</span>
+        </a>
+        
+        
+        <a  class="全部文章 随笔 "
+           href="/2025/11/12/%E5%9C%A8%E5%AE%89%E5%8D%93%E5%B9%B3%E6%9D%BF-%E6%89%8B%E6%9C%BA%E4%B8%8A%E4%B8%8E%E7%94%B5%E8%84%91%E5%8D%8F%E5%90%8C%E5%BC%80%E5%8F%91godot%E9%A1%B9%E7%9B%AE/"
+           data-tag="Godot,Git"
+           data-author="" >
+            <span class="post-title" title="在安卓平板/手机上与电脑协同开发godot项目">在安卓平板/手机上与电脑协同开发godot项目</span>
+            <span class="post-date" title="2025-11-12 21:44:41">2025/11/12</span>
+        </a>
+        
+        
+        <a  class="全部文章 随笔 "
+           href="/2025/07/25/Godot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"
+           data-tag="Godot"
+           data-author="" >
+            <span class="post-title" title="Godot学习笔记01">Godot学习笔记01</span>
+            <span class="post-date" title="2025-07-25 18:39:09">2025/07/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="行为型模式">行为型模式</span>
+            <span class="post-date" title="2025-07-19 18:59:32">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E7%BB%93%E6%9E%84%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="结构型模式">结构型模式</span>
+            <span class="post-date" title="2025-07-19 18:35:13">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E5%88%9B%E9%80%A0%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="创造型模式">创造型模式</span>
+            <span class="post-date" title="2025-07-19 18:25:39">2025/07/19</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post" class="index">
+    <div class="pjax">
+        <article class="index desk-home" data-desk-home data-root="/"><header class="desk-home-header"><h1>文章归档</h1><span>13 篇文章</span></header><nav class="desk-home-tabs" aria-label="浏览方式"><a data-desk-view="timeline" href="/" aria-current="page">时间线</a><a data-desk-view="tags" href="/?view=tags">全部标签 <small>8</small></a><a data-desk-view="stats" href="/?view=stats">写作概览</a></nav><section class="desk-stats-view" data-counter-enabled="true" hidden><div class="desk-stats-grid"><div class="desk-stat-card" title="中文按字、英文按词统计"><span>总字数</span><strong data-total-words="36099">36,099</strong></div><div class="desk-stat-card"><span>公开文章</span><strong>13</strong><small>平均 2,777 字 / 篇</small></div><div class="desk-stat-card" title="按发表日期统计"><span>2026 年新增</span><strong>7</strong></div><div class="desk-stat-card" title="不蒜子全站页面浏览次数，包含主页等页面"><span>累计访问 · PV</span><strong data-desk-site-views aria-live="polite" aria-label="累计访问数据暂不可用">—</strong></div></div><div class="desk-rank-heading"><h2>文章篇幅</h2><div class="desk-sort-options" role="group" aria-label="按字数排序"><button type="button" data-desk-sort="words-desc" aria-pressed="true">最长优先</button><button type="button" data-desk-sort="words-asc" aria-pressed="false">最短优先</button></div></div><ol class="desk-word-ranking"><li data-words="8389" data-timestamp="1770002716000" data-desk-rank-title="最优化理论整理"><span data-rank>01</span><div><a class="desk-rank-title" href="/2026/02/02/最优化理论整理/">最优化理论整理</a><time datetime="2026-02-02">2026-02-02</time></div><span class="desk-rank-value">8,389 <small>字</small></span></li><li data-words="5677" data-timestamp="1787894585000" data-desk-rank-title="延迟渲染"><span data-rank>02</span><div><a class="desk-rank-title" href="/2026/08/28/延迟渲染/">延迟渲染</a><time datetime="2026-08-28">2026-08-28</time></div><span class="desk-rank-value">5,677 <small>字</small></span></li><li data-words="5053" data-timestamp="1769408722000" data-desk-rank-title="计算机网络整理"><span data-rank>03</span><div><a class="desk-rank-title" href="/2026/01/26/计算机网络整理/">计算机网络整理</a><time datetime="2026-01-26">2026-01-26</time></div><span class="desk-rank-value">5,053 <small>字</small></span></li><li data-words="4780" data-timestamp="1794911901603" data-desk-rank-title="UE GC 垃圾回收"><span data-rank>04</span><div><a class="desk-rank-title" href="/notes/18f59302d22a5d3d/">UE GC 垃圾回收</a><time datetime="2026-11-17">2026-11-17</time></div><span class="desk-rank-value">4,780 <small>字</small></span></li><li data-words="4694" data-timestamp="1752922772000" data-desk-rank-title="行为型模式"><span data-rank>05</span><div><a class="desk-rank-title" href="/2025/07/19/行为型模式/">行为型模式</a><time datetime="2025-07-19">2025-07-19</time></div><span class="desk-rank-value">4,694 <small>字</small></span></li><li data-words="2881" data-timestamp="1780387465000" data-desk-rank-title="MVP矩阵推导"><span data-rank>06</span><div><a class="desk-rank-title" href="/2026/06/02/MVP矩阵推导/">MVP矩阵推导</a><time datetime="2026-06-02">2026-06-02</time></div><span class="desk-rank-value">2,881 <small>字</small></span></li><li data-words="2773" data-timestamp="1776839979000" data-desk-rank-title="tinyrenderer cpp实现软渲染器 学习笔记"><span data-rank>07</span><div><a class="desk-rank-title" href="/2026/04/22/tinyrenderer-cpp实现软渲染器-学习笔记/">tinyrenderer cpp实现软渲染器 学习笔记</a><time datetime="2026-04-22">2026-04-22</time></div><span class="desk-rank-value">2,773 <small>字</small></span></li><li data-words="1116" data-timestamp="1786693934000" data-desk-rank-title="实例化"><span data-rank>08</span><div><a class="desk-rank-title" href="/2026/08/14/实例化/">实例化</a><time datetime="2026-08-14">2026-08-14</time></div><span class="desk-rank-value">1,116 <small>字</small></span></li><li data-words="267" data-timestamp="1752921313000" data-desk-rank-title="结构型模式"><span data-rank>09</span><div><a class="desk-rank-title" href="/2025/07/19/结构型模式/">结构型模式</a><time datetime="2025-07-19">2025-07-19</time></div><span class="desk-rank-value">267 <small>字</small></span></li><li data-words="211" data-timestamp="1752920739000" data-desk-rank-title="创造型模式"><span data-rank>10</span><div><a class="desk-rank-title" href="/2025/07/19/创造型模式/">创造型模式</a><time datetime="2025-07-19">2025-07-19</time></div><span class="desk-rank-value">211 <small>字</small></span></li><li data-words="158" data-timestamp="1753439949000" data-desk-rank-title="Godot学习笔记01"><span data-rank>11</span><div><a class="desk-rank-title" href="/2025/07/25/Godot学习笔记01/">Godot学习笔记01</a><time datetime="2025-07-25">2025-07-25</time></div><span class="desk-rank-value">158 <small>字</small></span></li><li data-words="56" data-timestamp="1762955081000" data-desk-rank-title="在安卓平板/手机上与电脑协同开发godot项目"><span data-rank>12</span><div><a class="desk-rank-title" href="/2025/11/12/在安卓平板-手机上与电脑协同开发godot项目/">在安卓平板/手机上与电脑协同开发godot项目</a><time datetime="2025-11-12">2025-11-12</time></div><span class="desk-rank-value">56 <small>字</small></span></li><li data-words="44" data-timestamp="1763982579000" data-desk-rank-title="godot中的小坑点"><span data-rank>13</span><div><a class="desk-rank-title" href="/2025/11/24/godot中的小坑点/">godot中的小坑点</a><time datetime="2025-11-24">2025-11-24</time></div><span class="desk-rank-value">44 <small>字</small></span></li></ol></section><section class="desk-tags-view" hidden><div class="desk-tags-heading"><h2>全部标签 <small data-desk-tag-result-count>13 篇</small></h2><button type="button" data-desk-clear-tags hidden>清除标签</button></div><input type="search" data-desk-tag-search placeholder="筛选标签…" aria-label="筛选标签"><div class="desk-tag-cloud"><button type="button" class="desk-tag-chip" data-desk-tag="计算机图形学" aria-pressed="false">计算机图形学 <span>4</span></button><button type="button" class="desk-tag-chip" data-desk-tag="计算机网络" aria-pressed="false">计算机网络 <span>1</span></button><button type="button" class="desk-tag-chip" data-desk-tag="设计模式" aria-pressed="false">设计模式 <span>3</span></button><button type="button" class="desk-tag-chip" data-desk-tag="最优化理论" aria-pressed="false">最优化理论 <span>1</span></button><button type="button" class="desk-tag-chip" data-desk-tag="Git" aria-pressed="false">Git <span>1</span></button><button type="button" class="desk-tag-chip" data-desk-tag="Godot" aria-pressed="false">Godot <span>3</span></button><button type="button" class="desk-tag-chip" data-desk-tag="OpenGL" aria-pressed="false">OpenGL <span>2</span></button><button type="button" class="desk-tag-chip" data-desk-tag="UE" aria-pressed="false">UE <span>1</span></button></div><p class="desk-no-tags" hidden>没有匹配的标签</p></section><section class="desk-timeline-view"><nav class="desk-year-nav" aria-label="按年份浏览"><a data-desk-year="" href="/">全部年份</a><a data-desk-year="2026" href="#desk-year-2026">2026 <small>7</small></a><a data-desk-year="2025" href="#desk-year-2025">2025 <small>6</small></a></nav></section><section class="desk-results"><div class="desk-home-search"><input type="search" data-desk-title-search placeholder="搜索文章标题…" aria-label="搜索归档标题"><span data-desk-result-count>13 篇</span></div><div class="desk-filter-bar" hidden><span data-desk-filter-label></span><a data-desk-clear href="/">清除筛选</a></div><section class="desk-timeline-group" id="desk-year-2026"><h2>2026</h2><ol><li class="desk-timeline-entry" data-year="2026" data-desk-title="UE GC 垃圾回收" data-tags="[&quot;UE&quot;]"><time datetime="2026-11-17">11/17</time><div><a class="desk-post-link" href="/notes/18f59302d22a5d3d/">UE GC 垃圾回收</a><div class="desk-entry-tags"><a class="desk-tag-chip" data-desk-tag="UE" href="/?tag=UE">UE</a></div></div></li><li class="desk-timeline-entry" data-year="2026" data-desk-title="延迟渲染" data-tags="[&quot;计算机图形学&quot;,&quot;OpenGL&quot;]"><time datetime="2026-08-28">08/28</time><div><a class="desk-post-link" href="/2026/08/28/延迟渲染/">延迟渲染</a><div class="desk-entry-tags"><a class="desk-tag-chip" data-desk-tag="计算机图形学" href="/?tag=%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6">计算机图形学</a><a class="desk-tag-chip" data-desk-tag="OpenGL" href="/?tag=OpenGL">OpenGL</a></div></div></li><li class="desk-timeline-entry" data-year="2026" data-desk-title="实例化" data-tags="[&quot;计算机图形学&quot;,&quot;OpenGL&quot;]"><time datetime="2026-08-14">08/14</time><div><a class="desk-post-link" href="/2026/08/14/实例化/">实例化</a><div class="desk-entry-tags"><a class="desk-tag-chip" data-desk-tag="计算机图形学" href="/?tag=%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6">计算机图形学</a><a class="desk-tag-chip" data-desk-tag="OpenGL" href="/?tag=OpenGL">OpenGL</a></div></div></li><li class="desk-timeline-entry" data-year="2026" data-desk-title="MVP矩阵推导" data-tags="[&quot;计算机图形学&quot;]"><time datetime="2026-06-02">06/02</time><div><a class="desk-post-link" href="/2026/06/02/MVP矩阵推导/">MVP矩阵推导</a><div class="desk-entry-tags"><a class="desk-tag-chip" data-desk-tag="计算机图形学" href="/?tag=%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6">计算机图形学</a></div></div></li><li class="desk-timeline-entry" data-year="2026" data-desk-title="tinyrenderer cpp实现软渲染器 学习笔记" data-tags="[&quot;计算机图形学&quot;]"><time datetime="2026-04-22">04/22</time><div><a class="desk-post-link" href="/2026/04/22/tinyrenderer-cpp实现软渲染器-学习笔记/">tinyrenderer cpp实现软渲染器 学习笔记</a><div class="desk-entry-tags"><a class="desk-tag-chip" data-desk-tag="计算机图形学" href="/?tag=%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6">计算机图形学</a></div></div></li><li class="desk-timeline-entry" data-year="2026" data-desk-title="最优化理论整理" data-tags="[&quot;最优化理论&quot;]"><time datetime="2026-02-02">02/02</time><div><a class="desk-post-link" href="/2026/02/02/最优化理论整理/">最优化理论整理</a><div class="desk-entry-tags"><a class="desk-tag-chip" data-desk-tag="最优化理论" href="/?tag=%E6%9C%80%E4%BC%98%E5%8C%96%E7%90%86%E8%AE%BA">最优化理论</a></div></div></li><li class="desk-timeline-entry" data-year="2026" data-desk-title="计算机网络整理" data-tags="[&quot;计算机网络&quot;]"><time datetime="2026-01-26">01/26</time><div><a class="desk-post-link" href="/2026/01/26/计算机网络整理/">计算机网络整理</a><div class="desk-entry-tags"><a class="desk-tag-chip" data-desk-tag="计算机网络" href="/?tag=%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C">计算机网络</a></div></div></li></ol></section><section class="desk-timeline-group" id="desk-year-2025"><h2>2025</h2><ol><li class="desk-timeline-entry" data-year="2025" data-desk-title="godot中的小坑点" data-tags="[&quot;Godot&quot;]"><time datetime="2025-11-24">11/24</time><div><a class="desk-post-link" href="/2025/11/24/godot中的小坑点/">godot中的小坑点</a><div class="desk-entry-tags"><a class="desk-tag-chip" data-desk-tag="Godot" href="/?tag=Godot">Godot</a></div></div></li><li class="desk-timeline-entry" data-year="2025" data-desk-title="在安卓平板/手机上与电脑协同开发godot项目" data-tags="[&quot;Godot&quot;,&quot;Git&quot;]"><time datetime="2025-11-12">11/12</time><div><a class="desk-post-link" href="/2025/11/12/在安卓平板-手机上与电脑协同开发godot项目/">在安卓平板/手机上与电脑协同开发godot项目</a><div class="desk-entry-tags"><a class="desk-tag-chip" data-desk-tag="Godot" href="/?tag=Godot">Godot</a><a class="desk-tag-chip" data-desk-tag="Git" href="/?tag=Git">Git</a></div></div></li><li class="desk-timeline-entry" data-year="2025" data-desk-title="Godot学习笔记01" data-tags="[&quot;Godot&quot;]"><time datetime="2025-07-25">07/25</time><div><a class="desk-post-link" href="/2025/07/25/Godot学习笔记01/">Godot学习笔记01</a><div class="desk-entry-tags"><a class="desk-tag-chip" data-desk-tag="Godot" href="/?tag=Godot">Godot</a></div></div></li><li class="desk-timeline-entry" data-year="2025" data-desk-title="行为型模式" data-tags="[&quot;设计模式&quot;]"><time datetime="2025-07-19">07/19</time><div><a class="desk-post-link" href="/2025/07/19/行为型模式/">行为型模式</a><div class="desk-entry-tags"><a class="desk-tag-chip" data-desk-tag="设计模式" href="/?tag=%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a></div></div></li><li class="desk-timeline-entry" data-year="2025" data-desk-title="结构型模式" data-tags="[&quot;设计模式&quot;]"><time datetime="2025-07-19">07/19</time><div><a class="desk-post-link" href="/2025/07/19/结构型模式/">结构型模式</a><div class="desk-entry-tags"><a class="desk-tag-chip" data-desk-tag="设计模式" href="/?tag=%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a></div></div></li><li class="desk-timeline-entry" data-year="2025" data-desk-title="创造型模式" data-tags="[&quot;设计模式&quot;]"><time datetime="2025-07-19">07/19</time><div><a class="desk-post-link" href="/2025/07/19/创造型模式/">创造型模式</a><div class="desk-entry-tags"><a class="desk-tag-chip" data-desk-tag="设计模式" href="/?tag=%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a></div></div></li></ol></section><p class="desk-empty-results" hidden>没有符合条件的文章，可以清除筛选后重试。</p></section></article>
+        
+        <p>
+            <a  class="dashang" onclick="dashangToggle()">赏</a>
+        </p>
+        
+        
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2025
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+</div>
+<div class="full-toc">
+    <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+<div id="desk-reading-tools" role="group" aria-label="阅读工具"><button type="button" id="desk-theme-toggle" aria-label="切换明暗模式" title="切换明暗模式">☀</button><button type="button" id="desk-scroll-top" aria-label="回到顶部" title="回到顶部"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"/></svg></button></div><script defer src="/js/hexodesk-home-model.js"></script><script defer src="/js/hexodesk-site.js"></script><script defer src="/js/hexodesk-sections.js"></script><script defer src="/js/hexodesk-mermaid.js"></script></body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+        /* 渲染*/
+        function HTMLDecode(text) {
+            var temp = document.createElement("div");
+            temp.innerHTML = text;
+            var output = temp.innerText || temp.textContent;
+            temp = null;
+            return output;
+        }
+        if (window.mermaid){
+            window.mermaid = null
+        }
+        $.getScript("//cdnjs.cloudflare.com/ajax/libs/mermaid/8.3.1/mermaid.min.js", function () {
+            var mermaidOptions = JSON.parse(HTMLDecode("{&#34;theme&#34;:&#34;default&#34;,&#34;startOnLoad&#34;:true,&#34;flowchart&#34;:{&#34;useMaxWidth&#34;:false,&#34;htmlLabels&#34;:true}}"))
+            if (window.mermaid) {
+                mermaid.initialize(mermaidOptions)
+                mermaid.contentLoaded()
+            }
+        })
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 572px;
+    }
+    .nav.fullscreen {
+        margin-left: -572px;
+    }
+    .nav-left {
+        width: 150px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 522px;
+        }
+        .nav.fullscreen {
+            margin-left: -522px;
+        }
+        .nav-left {
+            width: 130px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 522px;
+            margin-left: -522px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+    #post .pjax article :not(pre) > code {
+        color: #24292e;
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+        background-color: rgba(27,31,35,.05);
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0;
+        padding: .2em .4em;
+    }
+    
+</style>
+
+
+
+
+
+
+<div class="mobile-menus-out" >
+
+</div>
+<div class="mobile-menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_blank"  href="https://github.com/Zintey">github</a>
+    
+</div>
+
+
+</html>

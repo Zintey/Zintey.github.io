@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html>
+<head><script src="/js/hexodesk-init.js"></script>
+  <meta charset="utf-8">
+  <title>UE GC 垃圾回收 | Hexo</title>
+  <meta name="keywords" content=" UE ">
+  <meta name="description" content="UE GC 垃圾回收 | Hexo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="本文主要介绍 UE 的垃圾回收机制（Garbage Collection，简称 GC），包括是什么、具体机制以及怎么用。  是什么  具体机制 怎么用   是什么GC（Garbage Collection，垃圾回收）是一种自动内存管理机制，用来回收程序中不再需要的对象所占用的内存。先讲讲普通 C++ 如何管理内存。标准 C++ 本身没有内建的追踪式 GC，通过 new 创建的对象通常需要按所有权规">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UE GC 垃圾回收">
+<meta property="og:url" content="http://example.com/notes/18f59302d22a5d3d/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要介绍 UE 的垃圾回收机制（Garbage Collection，简称 GC），包括是什么、具体机制以及怎么用。  是什么  具体机制 怎么用   是什么GC（Garbage Collection，垃圾回收）是一种自动内存管理机制，用来回收程序中不再需要的对象所占用的内存。先讲讲普通 C++ 如何管理内存。标准 C++ 本身没有内建的追踪式 GC，通过 new 创建的对象通常需要按所有权规">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-11-17T10:38:21.603Z">
+<meta property="article:modified_time" content="2026-11-17T10:38:21.603Z">
+<meta property="article:author" content="追">
+<meta property="article:tag" content="UE">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-dark.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/hexodesk-site.css"><link rel="stylesheet" href="/vendor/katex/katex.min.css"><link rel="stylesheet" href="/vendor/hexodesk-callouts.css"><style>.katex-display{overflow-x:auto;overflow-y:hidden;padding:.25em 0}.desk-math{overflow-x:auto}</style></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>追</span>
+</div><nav class="desk-site-entries" aria-label="博客浏览入口"><a href="/">归档</a><a href="/?view=tags">标签</a></nav>
+
+<div class="icon">
+    
+        
+    
+        
+            <a title="github"
+               href="https://github.com/Zintey"
+               target="_blank">
+                
+                    <i class="iconfont icon-github"></i>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:1687019603@qq.com"
+               target="_blank">
+                
+                    <i class="iconfont icon-email"></i>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=1687019603&site=qq&menu=yes"
+               target="_blank">
+                
+                    <i class="iconfont icon-qq"></i>
+                
+            </a>
+        
+    
+        
+    
+        
+            <a title="neteasemusic"
+               href="https://music.163.com/#/user/home?id=3276394979"
+               target="_blank">
+                
+                    <i class="iconfont icon-neteasemusic"></i>
+                
+            </a>
+        
+    
+</div>
+
+
+
+    <a class="more-menus">更多菜单</a>
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(13)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="计算机图形学">
+            
+            计算机图形学
+            <small>(4)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="随笔">
+            
+            随笔
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="整理">
+            
+            整理
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="UE">
+            
+            UE
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+                <a class="dynamic-menu "
+                   target="_blank"
+                        
+                   href="https://github.com/Zintey">github</a>
+        
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">关于</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">友链</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="13">
+<input type="hidden" id="yelog_site_word_count" value="36.1k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>计算机图形学</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>计算机网络</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>设计模式</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>最优化理论</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Git</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Godot</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>OpenGL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>UE</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 UE "
+           href="/notes/18f59302d22a5d3d/"
+           data-tag="UE"
+           data-author="" >
+            <span class="post-title" title="UE GC 垃圾回收">UE GC 垃圾回收</span>
+            <span class="post-date" title="2026-11-17 18:38:21">2026/11/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 计算机图形学 "
+           href="/2026/08/28/%E5%BB%B6%E8%BF%9F%E6%B8%B2%E6%9F%93/"
+           data-tag="计算机图形学,OpenGL"
+           data-author="" >
+            <span class="post-title" title="延迟渲染">延迟渲染</span>
+            <span class="post-date" title="2026-08-28 13:23:05">2026/08/28</span>
+        </a>
+        
+        
+        <a  class="全部文章 计算机图形学 "
+           href="/2026/08/14/%E5%AE%9E%E4%BE%8B%E5%8C%96/"
+           data-tag="计算机图形学,OpenGL"
+           data-author="" >
+            <span class="post-title" title="实例化">实例化</span>
+            <span class="post-date" title="2026-08-14 15:52:14">2026/08/14</span>
+        </a>
+        
+        
+        <a  class="全部文章 计算机图形学 "
+           href="/2026/06/02/MVP%E7%9F%A9%E9%98%B5%E6%8E%A8%E5%AF%BC/"
+           data-tag="计算机图形学"
+           data-author="" >
+            <span class="post-title" title="MVP矩阵推导">MVP矩阵推导</span>
+            <span class="post-date" title="2026-06-02 16:04:25">2026/06/02</span>
+        </a>
+        
+        
+        <a  class="全部文章 计算机图形学 "
+           href="/2026/04/22/tinyrenderer-cpp%E5%AE%9E%E7%8E%B0%E8%BD%AF%E6%B8%B2%E6%9F%93%E5%99%A8-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"
+           data-tag="计算机图形学"
+           data-author="" >
+            <span class="post-title" title="tinyrenderer cpp实现软渲染器 学习笔记">tinyrenderer cpp实现软渲染器 学习笔记</span>
+            <span class="post-date" title="2026-04-22 14:39:39">2026/04/22</span>
+        </a>
+        
+        
+        <a  class="全部文章 整理 "
+           href="/2026/02/02/%E6%9C%80%E4%BC%98%E5%8C%96%E7%90%86%E8%AE%BA%E6%95%B4%E7%90%86/"
+           data-tag="最优化理论"
+           data-author="" >
+            <span class="post-title" title="最优化理论整理">最优化理论整理</span>
+            <span class="post-date" title="2026-02-02 11:25:16">2026/02/02</span>
+        </a>
+        
+        
+        <a  class="全部文章 整理 "
+           href="/2026/01/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%95%B4%E7%90%86/"
+           data-tag="计算机网络"
+           data-author="" >
+            <span class="post-title" title="计算机网络整理">计算机网络整理</span>
+            <span class="post-date" title="2026-01-26 14:25:22">2026/01/26</span>
+        </a>
+        
+        
+        <a  class="全部文章 随笔 "
+           href="/2025/11/24/godot%E4%B8%AD%E7%9A%84%E5%B0%8F%E5%9D%91%E7%82%B9/"
+           data-tag="Godot"
+           data-author="" >
+            <span class="post-title" title="godot中的小坑点">godot中的小坑点</span>
+            <span class="post-date" title="2025-11-24 19:09:39">2025/11/24</span>
+        </a>
+        
+        
+        <a  class="全部文章 随笔 "
+           href="/2025/11/12/%E5%9C%A8%E5%AE%89%E5%8D%93%E5%B9%B3%E6%9D%BF-%E6%89%8B%E6%9C%BA%E4%B8%8A%E4%B8%8E%E7%94%B5%E8%84%91%E5%8D%8F%E5%90%8C%E5%BC%80%E5%8F%91godot%E9%A1%B9%E7%9B%AE/"
+           data-tag="Godot,Git"
+           data-author="" >
+            <span class="post-title" title="在安卓平板/手机上与电脑协同开发godot项目">在安卓平板/手机上与电脑协同开发godot项目</span>
+            <span class="post-date" title="2025-11-12 21:44:41">2025/11/12</span>
+        </a>
+        
+        
+        <a  class="全部文章 随笔 "
+           href="/2025/07/25/Godot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"
+           data-tag="Godot"
+           data-author="" >
+            <span class="post-title" title="Godot学习笔记01">Godot学习笔记01</span>
+            <span class="post-date" title="2025-07-25 18:39:09">2025/07/25</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="行为型模式">行为型模式</span>
+            <span class="post-date" title="2025-07-19 18:59:32">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E7%BB%93%E6%9E%84%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="结构型模式">结构型模式</span>
+            <span class="post-date" title="2025-07-19 18:35:13">2025/07/19</span>
+        </a>
+        
+        
+        <a  class="全部文章 "
+           href="/2025/07/19/%E5%88%9B%E9%80%A0%E5%9E%8B%E6%A8%A1%E5%BC%8F/"
+           data-tag="设计模式"
+           data-author="" >
+            <span class="post-title" title="创造型模式">创造型模式</span>
+            <span class="post-date" title="2025-07-19 18:25:39">2025/07/19</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-obsidian/c56a499f8515beaa" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">UE GC 垃圾回收</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="UE">UE</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color3">UE</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2026-11-17 18:38:21'>2026-11-17 18:38</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>字数:4.8k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E6%9C%BA%E5%88%B6"><span class="toc-text">具体机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GUObjectArray%E6%95%B0%E7%BB%84"><span class="toc-text">GUObjectArray数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90"><span class="toc-text">可达性分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GC-%E5%A6%82%E4%BD%95%E5%8F%91%E7%8E%B0%E5%AF%B9%E8%B1%A1%E9%97%B4%E7%9A%84%E5%BC%95%E7%94%A8"><span class="toc-text">GC 如何发现对象间的引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GC-Schema"><span class="toc-text">GC Schema</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E7%94%A8"><span class="toc-text">怎么用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-UPROPERTY-%EF%BC%9A%E6%9C%80%E5%B8%B8%E8%A7%81%E7%9A%84%E5%BC%BA%E5%BC%95%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-text">1. UPROPERTY()：最常见的强引用方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#UObject-%E5%92%8C-TObjectPtr-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">UObject* 和 TObjectPtr 的区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#USTRUCT-%E5%92%8C%E5%AE%B9%E5%99%A8%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8"><span class="toc-text">USTRUCT 和容器中的引用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-TStrongObjectPtr%EF%BC%9A%E6%99%AE%E9%80%9A-C-%E7%B1%BB%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%BC%95%E7%94%A8"><span class="toc-text">2. TStrongObjectPtr：普通 C++ 类中的强引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-AddToRoot-%EF%BC%9A%E7%9B%B4%E6%8E%A5%E6%8A%8A%E5%AF%B9%E8%B1%A1%E5%8A%A0%E5%85%A5%E6%A0%B9%E9%9B%86%E5%90%88"><span class="toc-text">3. AddToRoot()：直接把对象加入根集合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-FGCObject%EF%BC%9A%E6%89%8B%E5%8A%A8%E5%90%91-GC-%E6%8A%A5%E5%91%8A%E5%BC%95%E7%94%A8"><span class="toc-text">4. FGCObject：手动向 GC 报告引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E4%B8%8D%E6%83%B3%E9%98%BB%E6%AD%A2-GC-%E5%9B%9E%E6%94%B6%EF%BC%9A%E5%BC%B1%E5%BC%95%E7%94%A8%E5%92%8C%E8%BD%AF%E5%BC%95%E7%94%A8"><span class="toc-text">5. 不想阻止 GC 回收：弱引用和软引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%85%B6%E4%BB%96%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-text">6. 其他需要注意的情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文主要介绍 UE 的垃圾回收机制（Garbage Collection，简称 GC），包括是什么、具体机制以及怎么用。</p>
+<ul>
+<li><a href="#what">是什么 </a></li>
+<li><a href="#why">具体机制</a></li>
+<li><a href="#how">怎么用</a></li>
+</ul>
+<p><a id="what"></a></p>
+<h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><p>GC（Garbage Collection，垃圾回收）是一种自动内存管理机制，用来回收程序中不再需要的对象所占用的内存。<br>先讲讲普通 C++ 如何管理内存。标准 C++ 本身没有内建的追踪式 GC，通过 <code>new</code> 创建的对象通常需要按所有权规则释放。</p>
+<pre><code class="language-cpp">MyClass* p = new MyClass(); // 通过new申请堆内存
+...
+delete p; // delete释放p指向的内存
+</code></pre>
+<p>如果每次 <code>new</code> 都需要手动配对 <code>delete</code>，不仅麻烦，还容易因遗漏而造成内存泄漏。<br>于是可以采用RAII思想（<strong>R</strong>esource <strong>A</strong>cquisition <strong>I</strong>s <strong>I</strong>nitialization 资源获取即初始化），简单来说，就是<strong>将资源的生命周期绑定到对象的生命周期，通过构造函数获取资源，通过析构函数释放资源。</strong>（关于<a href="/notes/c1ce241fbb90ca84/">RAII</a>更详细的介绍可以看这篇文章）<br>下面是利用RAII机制，简单封装的一个类（MyPtr）</p>
+<details class="desk-callout" data-callout="note"><summary><span class="desk-callout-icon" aria-hidden="true">i</span><span>查看代码</span></summary><div class="desk-callout-content"><pre><code class="language-cpp">#include &lt;iostream&gt;
+template&lt;typename T&gt;
+class MyPtr
+&#123;
+public:
+    MyPtr() &#123; pointer = new T(); &#125;
+    ~MyPtr() &#123; delete pointer; &#125;
+    MyPtr(const MyPtr&amp;) = delete;
+    MyPtr&amp; operator=(const MyPtr&amp;) = delete;
+    T* operator-&gt;() &#123; return pointer; &#125;
+    T&amp; operator*() &#123; return *pointer; &#125;
+private:
+    T* pointer;
+&#125;;
+class Node &#123;
+public:
+    Node() &#123; std::cout &lt;&lt; &quot;begin&quot; &lt;&lt; std::endl; &#125;
+    ~Node() &#123; std::cout &lt;&lt; &quot;end&quot; &lt;&lt; std::endl; &#125;
+    void SetData(int d) &#123; data = d; &#125;
+    int GetData() &#123; return data; &#125;
+private:
+    int data;
+&#125;;
+int main()
+&#123;
+    MyPtr&lt;Node&gt; p;
+    p-&gt;SetData(10);
+    std::cout &lt;&lt; p-&gt;GetData() &lt;&lt; std::endl;
+    return 0;
+&#125;
+</code></pre>
+</div></details>
+<p>C++ 标准库也提供了<a href="/notes/118632e695ee2d8f/">智能指针</a>，如 <code>std::unique_ptr</code>、<code>std::shared_ptr</code> 和 <code>std::weak_ptr</code>。其中 <code>unique_ptr</code> 独占所有权，<code>shared_ptr</code> 通过强引用计数管理共享所有权，<code>weak_ptr</code> 不增加强引用计数。<code>shared_ptr</code> 之间如果形成强引用环，就可能无法自动释放对象。<br>UE 对 <code>UObject</code> 及其派生类采用了另一套基于可达性分析的 GC 机制，并利用反射信息识别对象引用。通常可以通过 <code>NewObject</code> 创建对象，再由 GC 在后续周期中回收不再可达、且没有其他保活机制的对象。<br><a id="why"></a></p>
+<h2 id="具体机制"><a href="#具体机制" class="headerlink" title="具体机制"></a>具体机制</h2><p>UE 的 GC 可以简化理解为“标记—清除”：从根对象等有效引用来源出发，标记可达对象；再将未标记、且符合回收条件的对象交由后续销毁与内存回收流程处理。</p>
+<p>因此，需要一个地方管理所有 <code>UObject</code>，还需要一种机制识别它们之间的引用关系。</p>
+<h3 id="GUObjectArray数组"><a href="#GUObjectArray数组" class="headerlink" title="GUObjectArray数组"></a><code>GUObjectArray</code>数组</h3><p>先讲讲存放所有对象的地方<br>创建 <code>UObject</code> 的一种常见方式是 <code>NewObject</code>，例如 <code>UObject* obj = NewObject&lt;UObject&gt;();</code>。此外还有加载对象、创建默认子对象等途径。<br>最终会调用到<code>UObjectBase::AddObject</code>，这个函数如下</p>
+<details class="desk-callout" data-callout="note"><summary><span class="desk-callout-icon" aria-hidden="true">i</span><span>AddObject</span></summary><div class="desk-callout-content"><pre><code class="language-cpp">UE_AUTORTFM_ALWAYS_OPEN
+void UObjectBase::AddObject(FName InName, EInternalObjectFlags InSetInternalFlags, int32 InInternalIndex, int32 InSerialNumber, FRemoteObjectId InRemoteId)
+&#123;
+	new (&amp;NamePrivate) FNameAndObjectHashIndex(InName); // Overwrite potentially compiled-in string
+	EInternalObjectFlags InternalFlagsToSet = InSetInternalFlags;
+	if (!IsInGameThread())
+	&#123;
+		InternalFlagsToSet |= EInternalObjectFlags::Async;
+	&#125;
+	if (ObjectFlags &amp; RF_MarkAsRootSet)
+	&#123;		
+		InternalFlagsToSet |= EInternalObjectFlags::RootSet;
+		ObjectFlags &amp;= ~RF_MarkAsRootSet;
+	&#125;
+	if (ObjectFlags &amp; RF_MarkAsNative)
+	&#123;
+		InternalFlagsToSet |= EInternalObjectFlags::Native;
+		ObjectFlags &amp;= ~RF_MarkAsNative;
+	&#125;
+	GUObjectArray.AllocateUObjectIndex(this, InternalFlagsToSet, InInternalIndex, InSerialNumber, InRemoteId);
+	check(InName != NAME_None &amp;&amp; InternalIndex &gt;= 0);
+	HashObject(this);
+	check(IsValidLowLevel());
+&#125;
+</code></pre>
+</div></details>
+<p>其中<code>GUObjectArray.AllocateUObjectIndex(this, InternalFlagsToSet, InInternalIndex, InSerialNumber, InRemoteId);</code> 将这个<code>UObject</code>对象加到了<code>GUObjectArray</code>数组中<br>因此，<code>UObject</code> 及其派生类的实例都会被纳入这套全局对象管理结构（不是说普通 C++ 对象也在其中）。</p>
+<h3 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h3><p>现在我们有了一个存着所有<code>UObject</code>对象的数组，接着需要一种机制来判断哪些对象不可回收<br>UE 采用可达性分析的方式，具体是什么可达呢？<br>可以先将 <code>RootSet</code> 理解为可达性分析的起点：GC 会沿着能识别的强引用关系继续遍历。实际引擎还存在其他引用来源和保活机制。<br>如果一个对象可以从<code>RootSet</code>的一个节点通过一层层的引用到达，则表示它不可回收</p>
+<p>举个例子，假设一个 <code>UMyObject</code> 实例由 <code>GameInstance</code> 持有：</p>
+<pre><code class="language-cpp">UCLASS()
+class MY_API UMyObject : public UObject
+&#123;
+    GENERATED_BODY()
+public:
+    UPROPERTY()
+    TObjectPtr&lt;UObject&gt; B;
+&#125;;
+
+UCLASS()
+class MY_API UMyGameInstance : public UGameInstance
+&#123;
+    GENERATED_BODY()
+public:
+    virtual void Init() override
+    &#123;
+        Super::Init();
+        A = NewObject&lt;UMyObject&gt;(this);
+        A-&gt;B = NewObject&lt;UObject&gt;(A);
+    &#125;
+
+private:
+    UPROPERTY()
+    TObjectPtr&lt;UMyObject&gt; A;
+&#125;;
+</code></pre>
+<p>这里在 <code>Init()</code> 中创建对象，而不是在 <code>UObject</code> 构造函数里直接调用 <code>NewObject</code>。<br>可以先假设 <code>GameInstance</code> 是 GC 的有效起点，并且 A、B 没有其他强引用。<br>那么现在的引用关系就是</p>
+<figure class="desk-mermaid"><div class="desk-mermaid-output" hidden></div><pre class="desk-mermaid-source">flowchart TD
+    G[MyGameInstance] --&gt; |持有引用| A[A]
+    A --&gt; |持有引用| B[B]
+</pre><figcaption class="desk-mermaid-error" role="status" hidden></figcaption></figure>
+<p>现在A、B都可以通过MyGameInstance遍历到，所以GC系统会判定它们为不可回收</p>
+<p>当<code>MyGameInstance</code> 不在持有 <code>A</code> 时，比如在某些操作时将<code>A</code>赋值为<code>nullptr</code>时，引用关系就变为</p>
+<figure class="desk-mermaid"><div class="desk-mermaid-output" hidden></div><pre class="desk-mermaid-source">flowchart TD
+    G[MyGameInstance] -.-&gt;|X| A[A]
+    A --&gt; |持有引用| B[B]
+</pre><figcaption class="desk-mermaid-error" role="status" hidden></figcaption></figure>
+<p>如果没有其他强引用或保活机制，<code>A</code>、<code>B</code> 此时都不可达，会在之后的 GC 周期中进入回收流程。</p>
+<h3 id="GC-如何发现对象间的引用"><a href="#GC-如何发现对象间的引用" class="headerlink" title="GC 如何发现对象间的引用"></a>GC 如何发现对象间的引用</h3><p>现在知道了所有<code>UObject</code>对象存放的地方，以及 GC 是怎么判断一个对象不可回收。<br>但怎么让 GC 在可达性分析时发现引用关系呢？<br>需要有个东西，能记录每个实例都有什么引用，在运行时可以通过这个东西来找到每个实例的引用对象，以此不断递归下去。以<code>RootSet</code>的节点开始递归，就可以标记所有不可回收的节点，完成可达性分析。<br>先假设每个实例都保存一个 <code>MemberPtr</code> 数组，记录它的引用，如下伪代码（不是 UE 的实际实现）：</p>
+<pre><code class="language-cpp">class Object &#123;
+protected:
+    std::vector&lt;Object*&gt; MemberPtr;
+&#125;;
+
+class MyObj : public Object &#123;
+    Object* A = nullptr;
+    Object* B = nullptr;
+public:
+    MyObj() &#123;
+        MemberPtr.push_back(A);
+        MemberPtr.push_back(B);
+    &#125;
+&#125;;
+</code></pre>
+<p>但这个其实有问题<br>（1）我们在构造函数中把所有引用添加到<code>MemberPtr</code>，但如果运行过程中，引用<code>A</code>、<code>B</code>发生了变化，<code>MemberPtr</code>中的值并不会改变<br>（2）每次都要在构造函数中把所有需要让GC系统做可达性分析的引用都手动添加一下，很麻烦。</p>
+<p>先解决第一个问题<br>要是我们存放<code>A</code>、<code>B</code>的地址，而不是指向的值，那不就解决了吗，比如</p>
+<pre><code class="language-cpp">class Object &#123;
+protected:
+    std::vector&lt;void*&gt; MemberPtr;
+&#125;;
+
+class MyObj : public Object &#123;
+    Object* A = nullptr;
+    Object* B = nullptr;
+public:
+    MyObj() &#123;
+        MemberPtr.push_back(&amp;A);
+        MemberPtr.push_back(&amp;B);
+    &#125;
+&#125;;
+</code></pre>
+<p>在使用<code>MemberPtr</code>时在做这样的操作</p>
+<pre><code class="language-cpp">for (void* member_address : MemberPtr)
+&#123;
+	Object* member_ptr = *static_cast&lt;Object**&gt;(member_address);
+&#125;
+</code></pre>
+<p>这样就能在遍历时读到成员 <code>A</code>、<code>B</code> 当前保存的指针值。<br>但其实没必要这么麻烦，cpp 有一种特殊的指针，叫<a href="/notes/84bf9131a0d668c7/">类成员指针</a>，它可以描述某个类中的特定成员，而不绑定具体实例。对于简单的数据成员，其底层通常可以用成员偏移量来理解，但 C++ 标准不保证它一定以偏移量存储<br>可以用这个类成员指针来替代上面我们自己写的<code>void*</code>指针</p>
+<pre><code class="language-cpp">template&lt;typename T&gt;
+class Object &#123;
+protected:
+    std::vector&lt;T* T::*&gt; MemberPtr;
+&#125;;
+
+class MyObj : public Object&lt;MyObj&gt; &#123;
+    MyObj* A = nullptr;
+    MyObj* B = nullptr;
+public:
+    MyObj() &#123;
+        MemberPtr.push_back(&amp;MyObj::A);
+        MemberPtr.push_back(&amp;MyObj::B);
+    &#125;
+&#125;;
+</code></pre>
+<p>这里借助<a href="/notes/29329342d74ed0e0/">奇异递归模板模式</a>（CRTP）让基类模板知道派生类的类型。不过，<code>MemberPtr</code> 仍然只能存储 <code>MyObj* MyObj::*</code> 这一种成员指针，无法直接存储其他成员类型。</p>
+<p>为了支持不同类型的成员，也为了避免每次都手动向 <code>MemberPtr</code> 注册，我们来看看 UE 是怎么实现的。<br>UE 通过<a href="/notes/05fc96ecdc3b6d4e/">UE反射系统</a>和一系列宏，标记需要在运行时获取的类及成员信息，例如：</p>
+<pre><code class="language-cpp">UCLASS()
+class UMyObj : public UObject
+&#123;
+    GENERATED_BODY()
+private:
+    UPROPERTY()
+    TObjectPtr&lt;UMyObj&gt; A;
+
+    UPROPERTY()
+    TObjectPtr&lt;UMyObj&gt; B;
+&#125;;
+</code></pre>
+<p>其中：</p>
+<ul>
+<li><code>UCLASS()</code> 告诉 UHT，这个类需要生成 UE 反射信息。</li>
+<li><code>GENERATED_BODY()</code> 将 UHT 生成的必要 C++ 声明引入类中。</li>
+<li><code>UPROPERTY()</code> 告诉 UHT，这个成员需要加入 UE 的反射系统。</li>
+</ul>
+<p>UHT（Unreal Header Tool）会在 C++ 编译前解析这些声明，并生成相应代码。这并不是说宏在运行时遍历、注册每个实例的成员，而是<strong>为类生成可复用的属性描述</strong>。</p>
+<p>假设用我们自己的简化结构来表示 UHT 产生的信息，可以理解成：</p>
+<pre><code class="language-cpp">// 原理伪代码，不是 UE 实际生成的源码
+struct MemberInfo
+&#123;
+    const char* Name;
+    size_t Offset;
+    MemberType Type;
+&#125;;
+
+MemberInfo Members[] = &#123;
+    &#123;&quot;A&quot;, /* A 的偏移量 */, MemberType::ObjectReference&#125;,
+    &#123;&quot;B&quot;, /* B 的偏移量 */, MemberType::ObjectReference&#125;
+&#125;;
+</code></pre>
+<p>有了成员名称、类型和位置信息，就能在运行时定位任意实例的对应成员；不同实例可以共用同一份类级别描述。</p>
+<p>UE 实际使用的是 <code>UClass</code> 和 <code>FProperty</code> 等反射类型。<code>UClass</code> 描述类，<code>FProperty</code> 描述成员属性。不同成员由不同属性类型描述，例如 <code>FIntProperty</code> 对应整数、<code>FObjectProperty</code> 等对象属性类型对应 UObject 引用，<code>FArrayProperty</code> 对应数组。</p>
+<p>但反射系统记录了属性，还不代表 GC 会扫描全部属性：GC 只需要关心那些包含 UObject 引用的属性。</p>
+<h3 id="GC-Schema"><a href="#GC-Schema" class="headerlink" title="GC Schema"></a>GC Schema</h3><p>为了高效遍历对象引用，UE 会根据属性反射信息构建专门用于 GC 的引用描述，称为 <strong>GC Schema（引用 Schema）</strong>。其中记录了如何从对象内部找到需要追踪的引用，而不只是成员名称。</p>
+<p>相关实现中可以看到 <code>FProperty::EmitReferenceInfo</code> 和 <code>UE::GC::FSchemaBuilder</code>：不同属性根据自身类型生成引用信息，由 Schema Builder 组织成 GC 使用的 Schema。</p>
+<p>可以把它简单理解成：</p>
+<pre><code class="language-cpp">// 仅用于说明原理，不是 UE 的真实 Schema 数据结构
+struct GCReferenceInfo
+&#123;
+    size_t Offset;
+    ReferenceKind Kind;
+&#125;;
+
+// 比如：
+// A -&gt; 一个 UObject 引用
+// Children -&gt; 包含 UObject 引用的数组，需要遍历元素
+</code></pre>
+<p>因此，对于：</p>
+<pre><code class="language-cpp">UPROPERTY()
+TObjectPtr&lt;UObject&gt; A;
+
+UPROPERTY()
+TArray&lt;TObjectPtr&lt;UObject&gt;&gt; Children;
+
+UPROPERTY()
+int32 Data = 0;
+</code></pre>
+<p>GC 需要处理 <code>A</code> 和 <code>Children</code> 中的引用，但不需要沿着普通整数 <code>Data</code> 继续查找对象。对于数组、结构体等类型，还需要按照对应规则遍历内部元素。</p>
+<p>GC 进行可达性分析时，就可以根据对象所属类的 Schema 找到该实例持有的 UObject 引用，再继续访问这些对象。这样就把前面提到的“对象地址 + 成员定位信息”与实际 GC 的引用遍历联系起来了。</p>
+<p>需要注意，<code>UPROPERTY()</code> 是 GC 发现引用的重要途径，但并不是唯一途径；引擎也提供 <code>AddReferencedObjects</code>、<code>FGCObject</code> 等方式报告引用。</p>
+<p><a id="how"></a></p>
+<h2 id="怎么用"><a href="#怎么用" class="headerlink" title="怎么用"></a>怎么用</h2><p>前面了解了 GC 如何通过 Schema 等信息发现对象引用，实际使用时最重要的就是：<strong>让 GC 能发现需要保留的引用；不需要保留对象时，使用弱引用。</strong></p>
+<p>下面按不同场景介绍。以下主要讨论由 UE GC 管理的 <code>UObject</code> 及其派生类，普通 <code>new</code> 出来的 C++ 对象不在这套 GC 管理范围内。</p>
+<h3 id="1-UPROPERTY-：最常见的强引用方式"><a href="#1-UPROPERTY-：最常见的强引用方式" class="headerlink" title="1. UPROPERTY()：最常见的强引用方式"></a>1. UPROPERTY()：最常见的强引用方式</h3><p>如果一个 <code>UObject</code> 要长期持有另一个 <code>UObject</code>，通常直接使用：</p>
+<pre><code class="language-cpp">UCLASS()
+class UMyObj : public UObject
+&#123;
+    GENERATED_BODY()
+
+public:
+    UPROPERTY()
+    TObjectPtr&lt;UObject&gt; Target = nullptr;
+&#125;;
+</code></pre>
+<p>只要 <code>UMyObj</code> 实例自身可达，GC 就能通过反射信息发现 <code>Target</code>，并继续追踪它引用的对象。如果 <code>UMyObj</code> 自己已经不可达，那么这个 <code>UPROPERTY()</code> 也无法单独让 <code>Target</code> 存活。</p>
+<p><code>UPROPERTY()</code> 的作用是把成员加入反射系统，<strong>并不是所有标记了 <code>UPROPERTY()</code> 的成员都会形成 GC 强引用</strong>。例如 <code>int32</code> 不是对象引用，<code>TWeakObjectPtr</code> 也是弱引用。</p>
+<h4 id="UObject-和-TObjectPtr-的区别"><a href="#UObject-和-TObjectPtr-的区别" class="headerlink" title="UObject* 和 TObjectPtr 的区别"></a>UObject* 和 TObjectPtr 的区别</h4><p>这几种写法需要区分：</p>
+<pre><code class="language-cpp">// ① 被反射系统识别的裸指针成员（传统写法）
+UPROPERTY()
+UObject* A = nullptr;
+
+// ② 推荐的 UObject 引用成员写法
+UPROPERTY()
+TObjectPtr&lt;UObject&gt; B = nullptr;
+
+// ③ 没有 UPROPERTY 的普通裸指针
+UObject* C = nullptr;
+
+// ④ 没有 UPROPERTY 的 TObjectPtr
+TObjectPtr&lt;UObject&gt; D = nullptr;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>写法</th>
+<th>是否能通过该成员形成 GC 强引用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>UPROPERTY() UObject*</code></td>
+<td>在支持此类反射属性的常见 UE 配置中，可以</td>
+</tr>
+<tr>
+<td><code>UPROPERTY() TObjectPtr&lt;UObject&gt;</code></td>
+<td>可以，UE5 推荐写法</td>
+</tr>
+<tr>
+<td><code>UObject*</code>（无 <code>UPROPERTY</code>）</td>
+<td>不会仅因为这个指针存在而保活对象</td>
+</tr>
+<tr>
+<td><code>TObjectPtr&lt;UObject&gt;</code>（无 <code>UPROPERTY</code>）</td>
+<td>不会仅因为这个成员存在而保活对象</td>
+</tr>
+</tbody></table>
+<p>也就是说，<strong>不是把 <code>UObject*</code> 换成 <code>TObjectPtr</code>，GC 就自动能找到这个引用</strong>；通常还需要 <code>UPROPERTY()</code> 等 GC 能识别的引用报告机制。</p>
+<p><code>TObjectPtr</code> 是 UE5 针对 <code>UObject</code> 引用提供的指针封装，除了反射支持，还能配合引擎的增量 GC 使用写屏障等机制。因此在 UE5 中，推荐优先使用 <code>UPROPERTY() TObjectPtr&lt;T&gt;</code> 来声明需要被 GC 追踪的成员。</p>
+<p>普通 <code>UObject*</code> 仍适合函数参数、返回值，以及不会跨越 GC 时机的短期访问；但它本身不提供生命周期保证。</p>
+<h4 id="USTRUCT-和容器中的引用"><a href="#USTRUCT-和容器中的引用" class="headerlink" title="USTRUCT 和容器中的引用"></a>USTRUCT 和容器中的引用</h4><p><code>UPROPERTY()</code> 也可以用于反射结构体内的属性。对于 GC 能识别的嵌套结构体和 UE 容器，引擎会沿着其属性描述继续寻找引用。</p>
+<pre><code class="language-cpp">USTRUCT()
+struct FMyData
+&#123;
+    GENERATED_BODY()
+
+    UPROPERTY()
+    TObjectPtr&lt;UObject&gt; Target = nullptr;
+&#125;;
+
+UCLASS()
+class UMyObj : public UObject
+&#123;
+    GENERATED_BODY()
+
+public:
+    UPROPERTY()
+    FMyData Data;
+
+    UPROPERTY()
+    TArray&lt;TObjectPtr&lt;UObject&gt;&gt; Children;
+&#125;;
+</code></pre>
+<p>如果 <code>UMyObj</code> 可达，那么 GC 能根据反射信息继续检查 <code>Data.Target</code> 和 <code>Children</code> 中的引用。这里不能只给最里面的成员加 <code>UPROPERTY()</code>，却让外层容器或结构体完全脱离 GC 的可发现路径。</p>
+<h3 id="2-TStrongObjectPtr：普通-C-类中的强引用"><a href="#2-TStrongObjectPtr：普通-C-类中的强引用" class="headerlink" title="2. TStrongObjectPtr：普通 C++ 类中的强引用"></a>2. TStrongObjectPtr：普通 C++ 类中的强引用</h3><p>如果持有者不是 <code>UObject</code>，例如普通的 C++ 类，就不能像 <code>UCLASS</code> 一样给它的普通成员使用 <code>UPROPERTY()</code> 来参与 UE 反射。</p>
+<p>此时可以使用 <code>TStrongObjectPtr</code>：</p>
+<pre><code class="language-cpp">#include &quot;UObject/StrongObjectPtrTemplates.h&quot;
+
+class FMyManager
+&#123;
+public:
+    TStrongObjectPtr&lt;UObject&gt; Target;
+
+    void Init()
+    &#123;
+        Target.Reset(NewObject&lt;UObject&gt;());
+    &#125;
+&#125;;
+</code></pre>
+<p><code>TStrongObjectPtr</code> 会向 GC 提供强引用，只要这个强引用仍然存在，就能防止目标对象因为不可达而被 GC 回收。它不需要 <code>UPROPERTY()</code>，也不能用 <code>UPROPERTY()</code> 标记。</p>
+<p>例如也可以在局部作用域中使用：</p>
+<pre><code class="language-cpp">TStrongObjectPtr&lt;UObject&gt; Target(NewObject&lt;UObject&gt;());
+// Target 存活期间，目标对象受到 GC 保护
+</code></pre>
+<p>不过它不是普通 <code>UObject</code> 成员引用的首选。因为它会独立提供保活引用，滥用容易导致对象迟迟无法回收；创建、销毁这类引用也有成本。<strong>在 <code>UObject</code> 成员中，通常还是优先使用 <code>UPROPERTY() TObjectPtr&lt;T&gt;</code>。</strong></p>
+<h3 id="3-AddToRoot-：直接把对象加入根集合"><a href="#3-AddToRoot-：直接把对象加入根集合" class="headerlink" title="3. AddToRoot()：直接把对象加入根集合"></a>3. AddToRoot()：直接把对象加入根集合</h3><p>还有一种方式是直接让对象成为 GC 根：</p>
+<pre><code class="language-cpp">UObject* Obj = NewObject&lt;UObject&gt;();
+Obj-&gt;AddToRoot();
+
+// 使用 Obj ...
+
+Obj-&gt;RemoveFromRoot();
+</code></pre>
+<p>调用 <code>AddToRoot()</code> 后，这个对象会被当作 GC 的根对象，不会因为普通引用消失而被回收；调用 <code>RemoveFromRoot()</code> 后，才重新允许 GC 根据可达性判断它是否能被回收。</p>
+<p>这种方式比较直接，但需要自己管理何时移除根引用。如果忘记 <code>RemoveFromRoot()</code>，就可能让对象长期无法回收。</p>
+<p>因此，<strong>不建议把 <code>AddToRoot()</code> 当作日常持有 UObject 的默认方案</strong>，只有确实需要显式控制根对象生命周期时再使用。</p>
+<h3 id="4-FGCObject：手动向-GC-报告引用"><a href="#4-FGCObject：手动向-GC-报告引用" class="headerlink" title="4. FGCObject：手动向 GC 报告引用"></a>4. FGCObject：手动向 GC 报告引用</h3><p>如果普通 C++ 类中有多个 <code>UObject</code> 引用，或者需要自定义引用收集逻辑，可以继承 <code>FGCObject</code>，在 <code>AddReferencedObjects</code> 中把需要保留的对象报告给 GC。</p>
+<pre><code class="language-cpp">#include &quot;UObject/GCObject.h&quot;
+
+class FMyManager : public FGCObject
+&#123;
+public:
+    UObject* A = nullptr;
+    UObject* B = nullptr;
+
+    virtual void AddReferencedObjects(FReferenceCollector&amp; Collector) override
+    &#123;
+        Collector.AddReferencedObject(A);
+        Collector.AddReferencedObject(B);
+    &#125;
+
+    virtual FString GetReferencerName() const override
+    &#123;
+        return TEXT(&quot;FMyManager&quot;);
+    &#125;
+&#125;;
+</code></pre>
+<p>只要这个 <code>FGCObject</code> 实例本身仍然有效并已注册到 GC 的引用报告机制中，GC 就可以通过它提供的引用找到 <code>A</code>、<code>B</code>。</p>
+<p>与 <code>TStrongObjectPtr</code> 相比，<code>FGCObject</code> 更适合需要自行收集多个引用的管理类；同时必须保证负责报告引用的 <code>FGCObject</code> 实例生命周期正确。</p>
+<p>此外，UE 还提供 <code>TGCObjectScopeGuard</code> 等作用域辅助工具，可在特定作用域中保护一个或多个对象引用。</p>
+<p>对于 <code>UObject</code> 派生类，引擎还有 <code>AddReferencedObjects(UObject*, FReferenceCollector&amp;)</code> 这类类级别的引用报告入口，可以处理常规属性 Schema 没有覆盖的自定义引用。它与普通 C++ 类使用的 <code>FGCObject</code> 不是同一种继承方式。</p>
+<h3 id="5-不想阻止-GC-回收：弱引用和软引用"><a href="#5-不想阻止-GC-回收：弱引用和软引用" class="headerlink" title="5. 不想阻止 GC 回收：弱引用和软引用"></a>5. 不想阻止 GC 回收：弱引用和软引用</h3><p>有时我们只是想记录一个对象，允许它在没有其他强引用时被回收，这时就不应该用强引用保活它。</p>
+<p>例如 <code>TWeakObjectPtr</code>：</p>
+<pre><code class="language-cpp">TWeakObjectPtr&lt;UObject&gt; Target;
+
+// 使用前检查
+if (UObject* Obj = Target.Get())
+&#123;
+    // 使用 Obj
+&#125;
+</code></pre>
+<p>弱引用不会阻止 GC 回收目标对象。对象失效后，可以通过 <code>IsValid()</code> 或 <code>Get()</code> 判断，避免继续把悬空地址当成有效对象使用。</p>
+<p>另一种常见类型是 <code>TSoftObjectPtr</code>，主要用于保存资源引用路径，并支持按需加载。它同样不等于 GC 强引用：<strong>软引用可以定位或加载资源，但不会仅因为存在软引用就让已加载对象一直存活。</strong></p>
+<h3 id="6-其他需要注意的情况"><a href="#6-其他需要注意的情况" class="headerlink" title="6. 其他需要注意的情况"></a>6. 其他需要注意的情况</h3><p><strong>Outer 不等于强引用。</strong></p>
+<pre><code class="language-cpp">UObject* Child = NewObject&lt;UObject&gt;(Outer);
+</code></pre>
+<p>这里指定 <code>Outer</code>，并不等于 <code>Outer</code> 自动对 <code>Child</code> 形成 GC 强引用。<code>Outer</code> 主要参与对象的归属、命名等机制，是否保活仍取决于 GC 能识别的引用关系或其他保活机制。</p>
+<p><strong>AActor &#x2F; UActorComponent 有自己的生命周期规则。</strong></p>
+<p>它们也属于 <code>UObject</code> 体系，但不能简单地认为“只要存在强引用，Actor 就绝对不能销毁”。例如 <code>AActor::Destroy()</code> 会走 Actor 的销毁流程，不能用普通 UObject 的 GC 规则完全代替 Actor 生命周期管理。</p>
+<p><strong>不要随便对 UObject 使用 delete。</strong></p>
+<p>通常通过 <code>NewObject</code>、<code>SpawnActor</code> 等引擎 API 创建对象，再按对应生命周期机制管理。GC 管理的 <code>UObject</code> 不应该由业务代码直接 <code>delete</code>。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>通常使用的方式</th>
+<th>是否保活目标对象</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>UObject</code> 的引用成员</td>
+<td><code>UPROPERTY() TObjectPtr&lt;T&gt;</code></td>
+<td>是，前提是持有者可达</td>
+</tr>
+<tr>
+<td>传统 UObject 裸指针反射属性</td>
+<td><code>UPROPERTY() T*</code></td>
+<td>通常是；UE5 更推荐 <code>TObjectPtr</code></td>
+</tr>
+<tr>
+<td>普通 C++ 类持有少量 UObject</td>
+<td><code>TStrongObjectPtr&lt;T&gt;</code></td>
+<td>是</td>
+</tr>
+<tr>
+<td>普通 C++ 类自行收集多个引用</td>
+<td><code>FGCObject</code></td>
+<td>是，针对主动报告的引用</td>
+</tr>
+<tr>
+<td>显式把对象作为 GC 根</td>
+<td><code>AddToRoot()</code></td>
+<td>是，直到解除根标记</td>
+</tr>
+<tr>
+<td>UObject 自定义引用报告</td>
+<td><code>AddReferencedObjects</code></td>
+<td>是，针对主动报告的引用</td>
+</tr>
+<tr>
+<td>仅观察对象，不负责保活</td>
+<td><code>TWeakObjectPtr&lt;T&gt;</code></td>
+<td>否</td>
+</tr>
+<tr>
+<td>资源路径及按需加载</td>
+<td><code>TSoftObjectPtr&lt;T&gt;</code></td>
+<td>否</td>
+</tr>
+<tr>
+<td>普通成员裸指针、无反射注册</td>
+<td><code>T*</code></td>
+<td>否，除非另有引用来源</td>
+</tr>
+</tbody></table>
+<p>所以在日常开发中<br><strong>优先使用 <code>UPROPERTY() TObjectPtr&lt;T&gt;</code> 来声明需要 GC 追踪的 UObject 成员引用</strong>；<br>普通 C++ 持有者再考虑 <code>TStrongObjectPtr</code> 或 <code>FGCObject</code>；<br>需要主动控制根集合时才使用 <code>AddToRoot()</code>。<br>而不需要保活对象时，则使用弱引用或软引用。</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 1687019603@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+
+
+
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2025
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+<div id="desk-reading-tools" role="group" aria-label="阅读工具"><button type="button" id="desk-theme-toggle" aria-label="切换明暗模式" title="切换明暗模式">☀</button><button type="button" id="desk-scroll-top" aria-label="回到顶部" title="回到顶部"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"/></svg></button></div><script defer src="/js/hexodesk-home-model.js"></script><script defer src="/js/hexodesk-site.js"></script><script defer src="/js/hexodesk-sections.js"></script><script defer src="/js/hexodesk-mermaid.js"></script></body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+        /* 渲染*/
+        function HTMLDecode(text) {
+            var temp = document.createElement("div");
+            temp.innerHTML = text;
+            var output = temp.innerText || temp.textContent;
+            temp = null;
+            return output;
+        }
+        if (window.mermaid){
+            window.mermaid = null
+        }
+        $.getScript("//cdnjs.cloudflare.com/ajax/libs/mermaid/8.3.1/mermaid.min.js", function () {
+            var mermaidOptions = JSON.parse(HTMLDecode("{&#34;theme&#34;:&#34;default&#34;,&#34;startOnLoad&#34;:true,&#34;flowchart&#34;:{&#34;useMaxWidth&#34;:false,&#34;htmlLabels&#34;:true}}"))
+            if (window.mermaid) {
+                mermaid.initialize(mermaidOptions)
+                mermaid.contentLoaded()
+            }
+        })
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 572px;
+    }
+    .nav.fullscreen {
+        margin-left: -572px;
+    }
+    .nav-left {
+        width: 150px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 522px;
+        }
+        .nav.fullscreen {
+            margin-left: -522px;
+        }
+        .nav-left {
+            width: 130px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 522px;
+            margin-left: -522px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+    #post .pjax article :not(pre) > code {
+        color: #24292e;
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+        background-color: rgba(27,31,35,.05);
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0;
+        padding: .2em .4em;
+    }
+    
+</style>
+
+
+
+
+
+
+<div class="mobile-menus-out" >
+
+</div>
+<div class="mobile-menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_blank"  href="https://github.com/Zintey">github</a>
+    
+</div>
+
+
+</html>
